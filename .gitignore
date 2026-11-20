@@ -1,0 +1,4 @@
+node_modules/
+dist/
+# 抓取的真实页面样本，含个人信息，只留在本机
+test/fixtures.local/

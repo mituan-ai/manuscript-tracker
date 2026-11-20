@@ -1,0 +1,22 @@
+{
+  "name": "manuscript-tracker",
+  "private": true,
+  "type": "module",
+  "description": "mituan 投稿追踪（Manuscript Tracker）：自动查询 IEEE、Elsevier 等期刊稿件状态的浏览器扩展，无需构建，可直接加载",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "deploy": "bash scripts/deploy.sh",
+    "package": "bash scripts/package.sh",
+    "build:site": "bash scripts/build-site.sh",
+    "deploy:site": "bash scripts/deploy-site.sh"
+  },
+  "devDependencies": {
+    "linkedom": "^0.18.0"
+  },
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mituan-ai/manuscript-tracker.git"
+  },
+  "homepage": "https://tracker.eonmaze.com/"
+}

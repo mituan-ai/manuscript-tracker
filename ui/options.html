@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>追踪面板 · mituan 投稿追踪</title>
+  <link rel="icon" href="logo.svg">
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .wrap { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+    .bar { position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--line);
+           background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: blur(14px); }
+    .bar .wrap { display: flex; align-items: center; gap: 14px; min-height: 68px; flex-wrap: wrap; padding-top: 8px; padding-bottom: 8px; }
+    .bar .tabs { margin-left: 22px; }
+    .bar .tabs button { padding: 7px 18px; font-size: 14px; }
+    #checked { font-size: 12.5px; color: var(--faint); white-space: nowrap; }
+    main.wrap { padding-top: 26px; padding-bottom: 6px; }
+    .view { display: grid; gap: 16px; }
+    .alerts { display: grid; gap: 10px; }
+    .alerts:empty { display: none; }
+
+    /* 稿件 */
+    .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .tile { display: grid; justify-items: start; justify-content: stretch; gap: 4px; padding: 15px 18px; border-radius: 14px; text-align: left; line-height: 1.2;
+            background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); backdrop-filter: blur(14px); }
+    .tile b { font-size: 28px; letter-spacing: -.5px; }
+    .tile span { font-size: 13px; color: var(--muted); }
+    .tile.on { border-color: rgba(var(--accent-rgb),.65); box-shadow: 0 0 0 1px rgba(var(--accent-rgb),.5) inset, var(--shadow); }
+    .tile.on span { color: var(--text); }
+    .tile[data-filter="active"] b { color: var(--accent-text); }
+    .tile[data-filter="revision"].has b { color: var(--warn); }
+    .tile[data-filter="results"].has b { color: var(--ok); }
+    .toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+    .search { position: relative; flex: 0 1 360px; }
+    .search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--faint); pointer-events: none; }
+    .search input { padding-left: 36px; background: var(--card-solid); }
+    #resultHint { font-size: 13px; color: var(--muted); }
+    .journals { display: grid; gap: 14px; }
+    .ms[role="button"] { cursor: pointer; transition: background .12s; }
+    .ms[role="button"]:hover, .ms[aria-expanded="true"] { background: var(--hover); }
+    .ms .t { font-size: 14px; }
+    .detail { padding: 4px 18px 18px 88px; background: var(--hover); display: grid; gap: 14px; }
+    .facts { display: flex; flex-wrap: wrap; gap: 10px 32px; font-size: 13px; }
+    .facts span { display: block; font-size: 11.5px; color: var(--faint); }
+    .timeline { list-style: none; margin: 0; padding: 0 0 0 16px; border-left: 2px solid var(--line); display: grid; gap: 8px; }
+    .timeline li { position: relative; font-size: 13px; }
+    .timeline li::before { content: ""; position: absolute; left: -23px; top: 5px; width: 8px; height: 8px; border-radius: 50%;
+                           background: var(--bg); border: 2px solid var(--c, var(--line-strong)); }
+    .timeline time { font: 12px var(--mono); color: var(--muted); margin-right: 12px; }
+    .detail .row a.button { color: var(--text); }
+    .ms.flash { animation: flash 1.6s ease-out 2; }
+    @keyframes flash { 30% { background: rgba(var(--accent-rgb),.16); } }
+    .onboard { display: grid; gap: 18px; justify-items: center; text-align: center; padding: 44px 24px; }
+    .onboard img { width: 56px; height: 56px; }
+    .onboard h2 { font-size: 22px; margin: 0; } .onboard h2::before { display: none; }
+    .onboard p { margin: 0; color: var(--muted); max-width: 34em; }
+    .onboard .picks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; width: 100%; max-width: 760px; }
+    .onboard .picks button { display: grid; gap: 4px; justify-items: start; text-align: left; white-space: normal; padding: 14px 16px; border-radius: 12px; }
+    .onboard .installed { display: flex; gap: 12px; align-items: flex-start; text-align: left; width: 100%; max-width: 760px; box-sizing: border-box; padding: 14px 16px; border-radius: 12px; background: color-mix(in srgb, var(--ok) 12%, transparent); border: 1px solid color-mix(in srgb, var(--ok) 40%, transparent); }
+    .onboard .installed .ok { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--ok); color: #fff; font-weight: 800; }
+    .onboard .installed > div { display: grid; gap: 2px; font-size: 13px; line-height: 1.6; } .onboard .installed > div > b { font-size: 15px; }
+    .onboard .installed span { color: var(--muted); } .onboard .installed span b { color: var(--text); }
+    .onboard .picks b { font-size: 14px; } .onboard .picks span { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* 账号 */
+    .intro { display: flex; align-items: center; gap: 14px; padding: 16px 20px; }
+    .intro .ico { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; flex: none; background: rgba(var(--accent-rgb),.12); color: var(--accent-text); }
+    .intro .ico svg { width: 19px; height: 19px; }
+    .intro p { margin: 0; font-size: 13px; color: var(--muted); }
+    .intro b { color: var(--text); }
+    .families { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+    .fam { display: grid; gap: 14px; align-content: start; transition: box-shadow .3s, border-color .3s; }
+    .fam.focus { border-color: rgba(var(--accent-rgb),.65); box-shadow: 0 0 0 1px rgba(var(--accent-rgb),.5) inset, var(--shadow); }
+    .fam > header { display: flex; align-items: flex-start; gap: 12px; }
+    .fam > header h3 { font-size: 16.5px; }
+    .fam > header .small { margin-top: 3px; }
+    .fam .found { font-size: 12.5px; color: var(--muted); margin-top: -6px; }
+    .slot { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; background: var(--soft); display: grid; gap: 10px; }
+    .slot-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .slot-head .label { font-weight: 600; font-size: 13.5px; }
+    .slot-head .opt { font-size: 11.5px; color: var(--faint); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; }
+    .slot .who { font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+    .slot .who b { color: var(--text); font-weight: 600; }
+    .slot .who .bad { color: var(--bad); font-weight: 600; }
+    .slot .hint { font-size: 12.5px; color: var(--muted); }
+    .slot form { display: grid; gap: 8px; }
+    .slot form .two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .fam .foot { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .fam .foot a { margin-left: auto; font-size: 12.5px; display: inline-flex; align-items: center; gap: 4px; }
+    .fam .foot a svg { width: 13px; height: 13px; }
+    .fam .msg { font-size: 12.5px; color: var(--muted); overflow-wrap: anywhere; }
+    .fam .msg:empty { display: none; }
+    .adv { border-top: 1px dashed var(--line); padding-top: 12px; }
+    .adv > div { display: grid; gap: 10px; margin-top: 10px; }
+    .adv code { font-size: 11.5px; }
+    .sites { display: flex; flex-wrap: wrap; gap: 6px; }
+    .sites span { font-size: 12px; border: 1px solid var(--line); border-radius: 8px; padding: 2px 8px; background: var(--card-solid); }
+    .fam[data-family=other] { grid-column: 1 / -1; }
+    .webs { display: grid; gap: 8px; }
+    .webs:empty { display: none; }
+    .web { display: flex; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; background: var(--soft); }
+    .web b { font-size: 13.5px; font-weight: 600; }
+    .web .small { margin-top: 2px; overflow-wrap: anywhere; }
+    .web .bad { color: var(--bad); }
+    .howto { display: grid; gap: 6px; font-size: 13px; color: var(--muted); }
+    .howto ol { margin: 0; padding-left: 20px; display: grid; gap: 3px; }
+    .howto b { color: var(--text); font-weight: 600; }
+
+    /* 设置 */
+    .setlist { padding: 4px 22px; }
+    .set { display: flex; align-items: center; gap: 18px; padding: 16px 0; border-top: 1px solid var(--line); }
+    .set:first-child { border-top: 0; }
+    .set .txt { flex: 1; min-width: 0; }
+    .set .txt b { display: block; font-size: 14px; font-weight: 600; }
+    .set .txt span { color: var(--muted); font-size: 12.5px; }
+    .set .acts { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+    details.logs { padding: 14px 22px; }
+    details.logs summary { font-size: 13.5px; }
+    #logs { margin-top: 12px; max-height: 360px; overflow: auto; font: 12px/1.7 var(--mono); white-space: pre-wrap; color: var(--muted); }
+    #logs .err { color: var(--bad); }
+
+    @media (max-width: 900px) {
+      .families { grid-template-columns: minmax(0, 1fr); }
+      .onboard .picks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .bar .tabs { margin-left: 0; order: 3; }
+    }
+    @media (max-width: 680px) {
+      .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .detail { padding-left: 18px; }
+      #checked { display: none; }
+    }
+  </style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" id="home" target="_blank" title="mituan 投稿追踪官网"><img src="logo.svg" alt=""><span class="wordmark">mituan</span><span class="product">投稿追踪</span></a>
+    <nav class="seg tabs" id="tabs" aria-label="页面">
+      <button type="button" data-tab="manuscripts" class="on">稿件</button>
+      <button type="button" data-tab="accounts">账号<span class="dot" id="acctDot" hidden></span></button>
+      <button type="button" data-tab="settings">设置</button>
+    </nav>
+    <span class="grow"></span>
+    <span id="checked"></span>
+    <button class="primary" id="refreshAll"></button>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- 稿件 -->
+  <section class="view" id="view-manuscripts">
+    <div class="alerts" id="alerts"></div>
+    <div class="card onboard" id="onboard" hidden>
+      <div class="installed" id="installed" hidden>
+        <span class="ok">✓</span>
+        <div><b>安装成功！</b><span>建议把 mituan 图标固定到浏览器工具栏：点右上角的拼图图标，在「mituan 投稿追踪」旁边点<b>眼睛图标</b>（Edge）或<b>图钉图标</b>（Chrome）。</span></div>
+      </div>
+      <img src="logo.svg" alt="">
+      <h2>连接投稿账号，开始自动追踪</h2>
+      <p>选择你投稿的期刊类型，填一次账号。之后扩展会定时查询每篇稿件的状态，有变化就通知你。</p>
+      <div class="picks" id="picks"></div>
+      <p class="small">更省事：直接去投稿网站正常登录一次，扩展会自动记住这次的账号。</p>
+    </div>
+    <div id="dash">
+      <div class="tiles" id="tiles"></div>
+      <div class="toolbar">
+        <label class="search"><span id="searchIcon"></span><input type="search" id="search" placeholder="搜索期刊、稿件号或标题" aria-label="搜索稿件"></label>
+        <span id="resultHint"></span>
+        <span class="grow"></span>
+        <button class="ghost sm" id="export" title="下载全部稿件和状态历史（Markdown）"></button>
+      </div>
+    </div>
+    <div class="journals" id="journals"></div>
+  </section>
+
+  <!-- 账号 -->
+  <section class="view" id="view-accounts" hidden>
+    <div class="card intro">
+      <span class="ico" id="lockIcon"></span>
+      <p><b>每类期刊只需连接一次。</b>账号用本机生成的密钥加密，只保存在这个浏览器里，只会发往对应的投稿网站。也可以不在这里填：去投稿网站正常登录一次，扩展会自动记住。</p>
+    </div>
+    <div class="families" id="families"></div>
+  </section>
+
+  <!-- 设置 -->
+  <section class="view" id="view-settings" hidden>
+    <div class="card setlist">
+      <div class="set">
+        <div class="txt"><b>状态变化时通知我</b><span>弹出桌面通知。第一次查询只记录，不会一下子弹出很多通知。</span></div>
+        <label class="switch"><input type="checkbox" id="notify" aria-label="状态变化时通知我"><i></i></label>
+      </div>
+      <div class="set">
+        <div class="txt"><b>查询频率</b><span id="freqDesc"></span></div>
+        <select id="freq" aria-label="查询频率"></select>
+      </div>
+      <div class="set">
+        <div class="txt"><b>我在投稿网站上操作时不打扰</b><span>最近 10 分钟用过 IEEE 投稿页面，或正停在那个页面上时，跳过这一轮，避免把你登出。</span></div>
+        <label class="switch"><input type="checkbox" id="pause" aria-label="我在投稿网站上操作时不打扰"><i></i></label>
+      </div>
+      <div class="set">
+        <div class="txt"><b>记住我在投稿网站上登录的账号</b><span>你在投稿网站上手动登录成功后，加密保存这次的账号，之后自动查询。</span></div>
+        <label class="switch"><input type="checkbox" id="capture" aria-label="记住我在投稿网站上登录的账号"><i></i></label>
+      </div>
+      <div class="set">
+        <div class="txt"><b>关掉浏览器窗口后继续查询</b><span id="bgHint"></span></div>
+      </div>
+      <div class="set">
+        <div class="txt"><b>外观</b><span>跟随系统、暗色或亮色</span></div>
+        <span id="themeSlot"></span>
+      </div>
+    </div>
+
+    <div class="card setlist">
+      <div class="set">
+        <div class="txt"><b>导出投稿记录</b><span>全部稿件和每篇的状态历史，Markdown 格式</span></div>
+        <div class="acts"><button class="sm" id="copyMd">复制</button><button class="sm" id="downloadMd">下载</button></div>
+      </div>
+      <div class="set">
+        <div class="txt"><b>反馈问题</b><span>复制诊断信息贴到 GitHub Issues。只含版本、运行状态和日志，不含账号、密码和稿件标题。</span></div>
+        <div class="acts"><button class="sm" id="copyDiag">复制诊断信息</button><a class="button sm" id="issues" target="_blank">提交反馈</a></div>
+      </div>
+      <div class="set">
+        <div class="txt"><b>清除全部数据</b><span>删除本机保存的全部账号、密钥、稿件记录和日志。卸载扩展也会一并删除。</span></div>
+        <div class="acts"><button class="sm danger" id="clearAll">全部清除</button></div>
+      </div>
+    </div>
+
+    <details class="card logs" id="logsBox">
+      <summary>运行日志 <span class="faint">· 只保存在本机，排查问题时用</span></summary>
+      <div id="logs"></div>
+    </details>
+  </section>
+
+  <footer id="footer"></footer>
+</main>
+<script type="module" src="options.js"></script>
+</body>
+</html>

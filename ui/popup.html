@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>mituan · 投稿追踪</title>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { width: 460px; max-height: 600px; overflow-x: hidden; }
+    .top { display: flex; align-items: center; gap: 6px; padding: 12px 14px; position: sticky; top: 0; z-index: 2;
+           background: color-mix(in srgb, var(--bg) 84%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .top .brand { gap: 8px; }
+    .top .brand img { width: 28px; height: 28px; }
+    .top .wordmark { font-size: 19px; }
+    .top .brand .product { font-size: 13.5px; gap: 8px; }
+    .top .brand .product::before { height: 15px; }
+    #summary { display: flex; align-items: baseline; gap: 8px; padding: 12px 16px 2px; font-size: 13px; color: var(--muted); }
+    #summary b { color: var(--text); font-size: 15px; }
+    #summary .when { margin-left: auto; font-size: 12px; color: var(--faint); }
+    #alerts { display: grid; gap: 8px; padding: 10px 14px 0; }
+    #alerts:empty { display: none; }
+    #alerts .banner { padding: 10px 12px; border-radius: 12px; }
+    #alerts .banner .ico { width: 26px; height: 26px; }
+    #list { display: grid; gap: 10px; padding: 10px 14px 6px; }
+    .journal { border-radius: 14px; }
+    .journal > header { padding: 11px 14px 8px; }
+    .journal > header h3 { font-size: 13.5px; }
+    .journal .count { display: none; }
+    .ms { padding: 9px 14px; cursor: pointer; }
+    .ms:hover { background: var(--hover); }
+    .ms .t { font-size: 13px; }
+    .ms .meta { font-size: 12px; }
+    .welcome { text-align: center; padding: 26px 22px; display: grid; gap: 10px; justify-items: center; }
+    .welcome img { width: 46px; height: 46px; }
+    .welcome b { font-size: 15px; }
+    .welcome p { margin: 0; color: var(--muted); font-size: 13px; }
+    .more { text-align: center; font-size: 12.5px; padding: 2px 0 4px; }
+    footer { padding: 8px 0 12px; font-size: 11.5px; }
+    #here { padding: 10px 14px 0; }
+    #here:empty { display: none; }
+    .here { display: grid; gap: 10px; padding: 14px; border-radius: 14px; border-color: rgba(var(--accent-rgb),.35); }
+    .here-head { display: flex; gap: 10px; align-items: flex-start; }
+    .here .ico { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; flex: none; background: rgba(var(--accent-rgb),.12); color: var(--accent-text); font-weight: 700; }
+    .here .ico svg { width: 16px; height: 16px; }
+    .here b { font-size: 13.5px; }
+    .here .small { color: var(--muted); font-size: 12px; margin-top: 2px; }
+    .here .faint { color: var(--faint); margin: 0; }
+    .here label { display: grid; gap: 5px; font-size: 12px; color: var(--muted); }
+    .here.slim { display: flex; align-items: center; gap: 10px; padding: 10px 12px; }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <a class="brand" id="home" target="_blank" title="mituan 投稿追踪官网"><img src="logo.svg" alt=""><span class="wordmark">mituan</span><span class="product">投稿追踪</span></a>
+    <span class="grow"></span>
+    <button class="icon ghost" id="refresh" title="立即查询全部稿件" aria-label="立即查询"></button>
+    <button class="primary sm" id="panel" title="全部稿件、账号与设置"></button>
+  </header>
+  <div id="here"></div>
+  <div id="summary"></div>
+  <div id="alerts"></div>
+  <main id="list"><div class="empty">加载中…</div></main>
+  <footer id="footer"></footer>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

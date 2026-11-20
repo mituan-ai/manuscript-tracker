@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>mituan 投稿追踪 · 所有投稿，一处追踪</title>
+  <meta name="description" content="免费的浏览器扩展：替你定时查询 IEEE、Elsevier 等期刊投稿系统，把每篇稿件的审稿状态按期刊汇总在一起，有变化就通知你。账号只加密保存在你自己的浏览器里，源码公开。">
+  <meta property="og:title" content="mituan 投稿追踪 · 所有投稿，一处追踪">
+  <meta property="og:description" content="不用再挨个登录查审稿状态。免费使用、源码公开，账号只在你自己的电脑上。">
+  <meta property="og:image" content="https://tracker.eonmaze.com/icon-128.png">
+  <link rel="icon" href="logo.svg">
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header class="nav">
+  <div class="wrap navin">
+    <a class="brand" href="#top" aria-label="mituan 投稿追踪"><img src="logo.svg" alt=""><span class="wordmark">mituan</span><span class="product">投稿追踪</span></a>
+    <nav class="links">
+      <a href="#support">支持范围</a>
+      <a href="#how">怎么用</a>
+      <a href="#security">数据安全</a>
+      <a href="#install">安装</a>
+      <a href="#faq">常见问题</a>
+      <a href="https://github.com/mituan-ai/manuscript-tracker" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+    <span id="themeSlot"></span>
+    <a class="btn primary sm" href="#install">免费安装</a>
+  </div>
+</header>
+
+<main id="top">
+  <!-- 首屏 -->
+  <section class="wrap hero">
+    <div class="pitch">
+      <span class="eyebrow">免费 · 源码公开 · 账号只在你的电脑上</span>
+      <h1>所有投稿，<span class="grad">一处追踪</span></h1>
+      <p class="lead">不用再挨个登录投稿网站查状态。mituan 投稿追踪是一个浏览器扩展，替你定时查询 IEEE、Elsevier 等期刊的投稿系统，把每篇稿件的进度按期刊汇总在一起，<b>状态一变就通知你</b>。</p>
+      <div class="cta">
+        <a class="btn primary lg" href="#install" id="heroCta">免费安装</a>
+        <a class="btn lg" href="#how">看看怎么用</a>
+      </div>
+      <ul class="ticks">
+        <li>3 步装好，无需注册</li>
+        <li>账号只加密保存在本机</li>
+        <li>关掉网页也会自动查询</li>
+      </ul>
+    </div>
+
+    <div class="shot" aria-hidden="true">
+      <div class="mock">
+        <div class="mock-top">
+          <span class="brand"><img src="logo.svg" alt=""><span class="wordmark">mituan</span><span class="product">投稿追踪</span></span>
+          <span class="fakebtn">追踪面板</span>
+        </div>
+        <div class="mock-sum"><b>4</b> 篇进行中 · 3 本期刊<span>3 分钟前查询</span></div>
+        <section class="journal">
+          <header><h3>IEEE Transactions on Pattern Analysis and Machine Intelligence</h3><span class="abbr">TPAMI</span></header>
+          <div class="ms compact unseen"><span class="stage" style="color:#d97706;background:#d977061f;border-color:#d9770655">需修改</span><div class="t"><span class="new">新</span>Self-Supervised Scene Graphs for Long-Horizon Video Reasoning</div><div class="meta"><span class="mid">TPAMI-2026-03-0412</span> · Major Revision · <span class="hot">2 小时前有变化</span></div></div>
+          <div class="ms compact"><span class="stage" style="color:#2563eb;background:#2563eb1f;border-color:#2563eb55">审稿中</span><div class="t">Uncertainty-Aware Diffusion Models for Open-World Detection</div><div class="meta"><span class="mid">TPAMI-2026-05-1188</span> · Under Review · 已投 34 天</div></div>
+        </section>
+        <section class="journal">
+          <header><h3>Medical Image Analysis</h3></header>
+          <div class="ms compact"><span class="stage" style="color:#7c3aed;background:#7c3aed1f;border-color:#7c3aed55">待决定</span><div class="t">Foundation Models for Few-Shot Lesion Segmentation in CT</div><div class="meta"><span class="mid">MEDIA-D-26-00391</span> · Required Reviews Complete · 已投 63 天</div></div>
+        </section>
+        <section class="journal">
+          <header><h3>Automatica</h3></header>
+          <div class="ms compact"><span class="stage" style="color:#16a34a;background:#16a34a1f;border-color:#16a34a55">接收</span><div class="t">Distributed Event-Triggered Control of Multi-Agent Systems</div><div class="meta"><span class="mid">26-0786</span> · Accept · 1 天前有变化</div></div>
+        </section>
+      </div>
+      <div class="toastcard notice">
+        <img src="icon-128.png" alt="">
+        <div><b>投稿状态有变化</b><span>TPAMI-2026-03-0412：Under Review → Major Revision</span></div>
+      </div>
+      <div class="toastcard lockchip"><span class="lk"></span>账号已加密，只存在本机</div>
+    </div>
+  </section>
+
+  <!-- 支持范围 -->
+  <section class="wrap" id="support">
+    <div class="head"><h2>支持哪些期刊</h2><p>按投稿系统支持，同一系统上的期刊都能用。哪些已经用真实稿件实测过，下面分开标明。</p></div>
+    <div class="pubs">
+      <article class="card pub main">
+        <header><h3>IEEE</h3><span class="pill ok">已实测</span></header>
+        <p>用 ScholarOne Manuscripts 或 IEEE Author Portal 投稿的 IEEE 期刊，填一次账号即可自动登录查询。</p>
+        <div class="jchips"><span>TPAMI<small>人工智能</small></span><span>TNNLS<small>机器学习</small></span><span>TII<small>工业信息</small></span><span>TMI<small>医学影像</small></span><span>TPWRS<small>电力系统</small></span><span>T-ASE<small>自动化</small></span></div>
+        <p class="fine">IEEE TAC、RA-L 等用 PaperCept 投稿的期刊暂不包括。</p>
+      </article>
+      <article class="card pub main">
+        <header><h3>Elsevier</h3><span class="pill warn">待验证</span></header>
+        <p>凭投稿确认邮件里的「Track your submission」链接查询，不需要登录；在追踪页上点一下扩展图标就能添加。</p>
+        <div class="jchips"><span>Pattern Recognition<small>模式识别</small></span><span>Medical Image Analysis<small>医学影像</small></span><span>Applied Energy<small>能源</small></span><span>Water Research<small>环境</small></span><span>Neural Networks<small>神经网络</small></span></div>
+        <p class="fine">已用 Elsevier 官方示例稿件测试通过，还没有用真实在审稿件验证。</p>
+      </article>
+    </div>
+    <div class="pubs minor">
+      <article class="card pub">
+        <header><h4>Springer Nature</h4><span class="pill idle">未实测</span></header>
+        <p>Nature 系列（如 Nature Medicine）、Springer 期刊：在投稿系统的稿件列表页点扩展图标添加。</p>
+      </article>
+      <article class="card pub">
+        <header><h4>IFAC PaperPlaza</h4><span class="pill ok">已实测</span></header>
+        <p>Automatica、IFAC 世界大会等 IFAC 期刊和会议。</p>
+      </article>
+      <article class="card pub">
+        <header><h4>CCDC、CCC</h4><span class="pill ok">已实测</span></header>
+        <p>中国控制与决策会议、中国控制会议等 TCCT 会议。</p>
+      </article>
+      <article class="card pub">
+        <header><h4>更多出版社</h4><span class="pill idle">未实测</span></header>
+        <p>Wiley、Taylor &amp; Francis、The BMJ 等用 ScholarOne 的期刊，以及用表格列出稿件的其他投稿系统。</p>
+      </article>
+    </div>
+    <div class="legend">
+      <span><i class="pill ok">已实测</i>用真实稿件验证过</span>
+      <span><i class="pill warn">待验证</i>已接入，接口测试通过</span>
+      <span><i class="pill idle">未实测</i>通用识别，不针对具体期刊；识别不到时不会显示</span>
+    </div>
+  </section>
+
+  <!-- 怎么用 -->
+  <section class="wrap" id="how">
+    <div class="head"><h2>三步开始，之后什么都不用管</h2><p>设置只做一次。之后它在后台定时查询，你只需要等通知。</p></div>
+    <ol class="how">
+      <li class="card">
+        <span class="num">1</span>
+        <h3>安装扩展</h3>
+        <p>下载后加载到 Edge 或 Chrome，约 1 分钟，不用注册账号。</p>
+      </li>
+      <li class="card">
+        <span class="num">2</span>
+        <h3>连接一次投稿账号</h3>
+        <p>在追踪面板里填一次账号，或者去投稿网站正常登录一次，扩展会自动记住。其他出版社的期刊，在稿件列表页点一下扩展图标即可添加。</p>
+      </li>
+      <li class="card">
+        <span class="num">3</span>
+        <h3>坐等通知</h3>
+        <p>稿件进入审稿、收到决定时弹出桌面通知。点工具栏图标，随时看全部进度。</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- 优势 -->
+  <section class="wrap" id="features">
+    <div class="head"><h2>为什么好用</h2></div>
+    <div class="feats">
+      <div class="card feat"><span class="fi fi-list"></span><h3>按期刊一眼看清</h3><p>每本期刊一张卡片，阶段用颜色区分：审稿中、需修改、接收一目了然。同一篇稿件不会重复出现。</p></div>
+      <div class="card feat"><span class="fi fi-bell"></span><h3>有变化才打扰你</h3><p>状态变了才通知，第一次查询只记录。你正在投稿网站上操作时，它会自动避开，不会把你登出。</p></div>
+      <div class="card feat"><span class="fi fi-moon"></span><h3>关掉网页也在查</h3><p>登录和查询都在后台完成，不用开着任何投稿网站。登录过期了会自己重新登录。</p></div>
+      <div class="card feat"><span class="fi fi-clock"></span><h3>完整的状态历史</h3><p>每篇稿件从投稿到决定的每一步都有记录，可以一键导出成 Markdown，整理投稿记录很方便。</p></div>
+    </div>
+  </section>
+
+  <!-- 数据安全 -->
+  <section class="wrap" id="security">
+    <div class="secure card">
+      <div class="secure-txt">
+        <span class="eyebrow">数据安全</span>
+        <h2>账号只在你自己的电脑上</h2>
+        <p class="muted">没有服务器，没有注册，没有云同步。扩展只在你的浏览器和投稿网站之间工作。</p>
+        <ul class="points">
+          <li><b>本机加密保存</b>账号密码用 AES-GCM 加密，密钥由浏览器生成且不可导出，连扩展自己都读不出密钥。</li>
+          <li><b>只发往对应的网站</b>每个账号只会发往它所属投稿系统的登录地址，代码里有域名白名单。</li>
+          <li><b>只看不改</b>只打开查看状态的页面，不会提交、修改或撤回任何稿件。</li>
+          <li><b>源码公开可查</b>全部代码公开在 <a href="https://github.com/mituan-ai/manuscript-tracker" target="_blank" rel="noopener">GitHub</a>，任何人都可以检查。</li>
+        </ul>
+      </div>
+      <div class="flow" aria-hidden="true">
+        <div class="node me"><img src="logo.svg" alt=""><b>你的浏览器</b><span>账号加密保存</span></div>
+        <div class="link ok"><i></i><span>只发往对应网站</span></div>
+        <div class="node sites"><b>投稿网站</b><span>IEEE · Elsevier · Springer · …</span></div>
+        <div class="link no"><i></i><span>不经过任何服务器</span></div>
+        <div class="node cloud"><b>第三方服务器</b><span>不存在</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 安装 -->
+  <section class="wrap" id="install">
+    <div class="head"><h2>安装</h2><p>照着下面 3 步做，大约 2 分钟。不需要懂电脑，每一步都配了图。</p></div>
+    <div class="mobile-note card" id="mobileNote" hidden>手机浏览器不能安装扩展，请在电脑上打开 <b>tracker.eonmaze.com</b> 安装。</div>
+    <div class="browsers" role="tablist" aria-label="选择浏览器">
+      <button type="button" role="tab" data-b="edge"><span class="bi bi-edge"></span>Edge<small>推荐</small></button>
+      <button type="button" role="tab" data-b="chrome"><span class="bi bi-chrome"></span>Chrome<small>Google</small></button>
+      <button type="button" role="tab" data-b="chromium"><span class="bi bi-other"></span>其他 Chromium<small>360、QQ、Brave…</small></button>
+      <button type="button" role="tab" data-b="firefox"><span class="bi bi-firefox"></span>Firefox<small>暂不支持</small></button>
+      <button type="button" role="tab" data-b="safari"><span class="bi bi-safari"></span>Safari<small>暂不支持</small></button>
+    </div>
+
+    <div class="card panel" data-for="edge chrome chromium">
+      <p class="why-manual"><b>为什么要手动安装？</b>mituan 投稿追踪还没有上架浏览器的扩展商店，所以需要自己装一次。装好后用起来和商店里的扩展一样。</p>
+      <p class="why-manual" data-only="chromium">360、QQ 等浏览器的扩展页面各不相同，下面按 Chrome 的界面说明，我们没有逐一测试。</p>
+      <ol class="stepper" aria-label="安装步骤">
+        <li><a href="#ins-1"><i>1</i>下载并解压</a></li>
+        <li><a href="#ins-2"><i>2</i>打开开关</a></li>
+        <li><a href="#ins-3"><i>3</i>选择文件夹</a></li>
+        <li><a href="#ins-4"><i>✓</i>完成</a></li>
+      </ol>
+
+      <section class="istep" id="ins-1">
+        <div class="itxt">
+          <h3><i>1</i>下载并解压</h3>
+          <a class="btn primary lg" href="download/manuscript-tracker.zip" download id="dlBtn">下载扩展</a>
+          <span class="small faint dlmeta">manuscript-tracker.zip · v__VERSION__ · __SIZE_KB__ KB</span>
+          <ol class="do">
+            <li>下载完成后，点浏览器右上角下载提示里的<b>文件夹图标</b>（「在文件夹中显示」），会打开「下载」文件夹，并选中 <code>manuscript-tracker.zip</code>。</li>
+            <li><b>右键</b>点这个文件，选<b>「全部解压缩」</b>，在弹出的窗口里直接点<b>「提取」</b>。</li>
+            <li>旁边会出现一个 <b>manuscript-tracker</b> 文件夹，这就是扩展本身。<b>请不要删除或移动它</b>，删掉后扩展就不能用了。</li>
+          </ol>
+          <p class="tip">装了 WinRAR、360 压缩、Bandizip 等软件的电脑，右键菜单里选「解压到 manuscript-tracker」也可以。Mac 上双击 zip 文件就会解压。</p>
+        </div>
+        <div class="ivis mock-zip" aria-hidden="true">
+          <div class="mk-file"><span class="ic-zip"></span>manuscript-tracker.zip</div>
+          <ul class="mk-menu"><li>打开</li><li class="hl">全部解压缩…</li><li>复制</li><li>属性</li></ul>
+          <span class="mk-arrow">↓</span>
+          <div class="mk-dlg"><b>提取压缩(Zipped)文件夹</b><span>选择一个目标并提取文件</span><code>C:\Users\你\Downloads\manuscript-tracker</code><button type="button" tabindex="-1" class="hl">提取(E)</button></div>
+          <span class="mk-arrow">↓</span>
+          <div class="mk-file"><span class="ic-folder"></span><b>manuscript-tracker</b><em>这就是扩展</em></div>
+        </div>
+      </section>
+
+      <section class="istep" id="ins-2">
+        <div class="itxt">
+          <h3><i>2</i>打开扩展管理页，打开「<span data-dev>开发人员模式</span>」</h3>
+          <ol class="do">
+            <li>点下面的按钮复制地址。在浏览器里按 <kbd>Ctrl</kbd>+<kbd>T</kbd> 新建一个标签页，在最上方的地址栏里按 <kbd>Ctrl</kbd>+<kbd>V</kbd> 粘贴，再按回车。
+              <span class="copyline"><code id="extUrl" data-url>edge://extensions</code><button type="button" class="sm primary" id="copyUrl">复制地址</button></span></li>
+            <li>在打开的页面<b data-devwhere>左下角</b>找到「<span data-dev>开发人员模式</span>」，点一下右边的开关，把它打开。</li>
+          </ol>
+          <p class="tip" data-only="edge">看不到这个开关？先把浏览器窗口最大化（双击窗口最上方的空白处）。窗口比较窄时，左边这一栏会收进页面左上角的 ☰ 按钮里。</p>
+          <p class="tip">这个开关的作用是允许安装扩展商店以外的扩展。装好以后请<b>一直保持打开</b>，关掉的话浏览器会停用这个扩展。</p>
+        </div>
+        <figure class="ivis ishot" data-n="1" style="--x:3.1%;--y:90%;--w:20.3%;--h:5.3%">
+          <img data-shot="1" src="img/install/edge-1.webp" width="1280" height="760" loading="lazy" alt="Edge 的扩展页面，左下角是开发人员模式开关">
+          <span class="ring"></span>
+          <figcaption>真实截图：<span data-name>Microsoft Edge</span> 的扩展页面</figcaption>
+        </figure>
+      </section>
+
+      <section class="istep" id="ins-3">
+        <div class="itxt">
+          <h3><i>3</i>点「<span data-load>加载解压缩的扩展</span>」，选中 manuscript-tracker 文件夹</h3>
+          <ol class="do">
+            <li>打开开关后，页面<b data-loadwhere>右上方</b>会多出几个按钮，点<b>「<span data-load>加载解压缩的扩展</span>」</b>。</li>
+            <li>在弹出的窗口左侧点<b>「下载」</b>，在右边<b>单击</b>选中 <b>manuscript-tracker 文件夹</b>（是文件夹，不是 zip 文件），再点右下角的<b>「选择文件夹」</b>。</li>
+          </ol>
+          <p class="tip">不小心双击进了这个文件夹也没关系，直接点「选择文件夹」就行。Mac 上选中文件夹后点右下角的确认按钮。</p>
+        </div>
+        <div class="ivis istack">
+          <figure class="ishot" data-n="2" style="--x:66.1%;--y:13.3%;--w:12.5%;--h:5.5%">
+            <img data-shot="2" src="img/install/edge-2.webp" width="1280" height="760" loading="lazy" alt="打开开发人员模式后，扩展页面上方出现加载扩展的按钮">
+            <span class="ring"></span>
+            <figcaption>真实截图：打开开关后出现的按钮</figcaption>
+          </figure>
+          <figure class="mock-pick" aria-hidden="true">
+            <div class="mk-title">选择文件夹的窗口（示意）</div>
+            <div class="mk-cols">
+              <ul class="mk-nav"><li>桌面</li><li class="hl">下载</li><li>文档</li><li>图片</li></ul>
+              <div class="mk-list"><div class="sel"><span class="ic-folder"></span>manuscript-tracker</div><div class="dim"><span class="ic-zip"></span>manuscript-tracker.zip<em>不要选它</em></div></div>
+            </div>
+            <div class="mk-foot"><span>文件夹：manuscript-tracker</span><button type="button" tabindex="-1" class="hl">选择文件夹</button><button type="button" tabindex="-1">取消</button></div>
+          </figure>
+        </div>
+      </section>
+
+      <section class="istep done" id="ins-4">
+        <div class="itxt">
+          <h3><i>✓</i>装好了</h3>
+          <p>扩展页上出现「mituan 投稿追踪」，同时浏览器会自动打开一个写着<b>「安装成功！」</b>的页面，就说明装好了。在那个页面选择你投稿的期刊类型、连接账号，之后就不用再管它了。</p>
+          <p class="tip">建议把图标固定到工具栏：点浏览器右上角的<b>拼图图标</b>，在「mituan 投稿追踪」旁边点<b data-pin>眼睛图标</b>。以后点这个图标就能看到所有稿件。</p>
+        </div>
+        <div class="ivis istack">
+          <figure class="ishot" data-n="3" style="--x:29.7%;--y:57%;--w:63.4%;--h:21.1%">
+            <img data-shot="3" src="img/install/edge-3.webp" width="1280" height="760" loading="lazy" alt="扩展页面上出现 mituan 投稿追踪">
+            <span class="ring"></span>
+            <figcaption>真实截图：装好后的扩展页面</figcaption>
+          </figure>
+          <figure class="ishot plain">
+            <img src="img/install/welcome.webp" width="1040" height="520" loading="lazy" alt="装好后自动打开的安装成功页面，下面是选择期刊类型、连接账号">
+            <figcaption>装好后自动打开的页面</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <div class="trouble">
+        <h3>遇到问题？</h3>
+        <details><summary>提示「<span data-err>清单文件丢失或不可读取</span>」</summary><p>说明选中的不是解压出来的文件夹。重新点「<span data-load>加载解压缩的扩展</span>」，选 manuscript-tracker 文件夹：打开它应该能直接看到 manifest.json、background.js 这些文件。如果打开后里面还有一个 manuscript-tracker 文件夹，就选里面那个。</p></details>
+        <details><summary>选择窗口里只有 zip 文件，没有文件夹</summary><p>还没有解压。回到第 1 步，右键点 manuscript-tracker.zip，选「全部解压缩」，再点「提取」。</p></details>
+        <details data-only="edge"><summary>Edge 弹出「关闭开发人员模式下的扩展」</summary><p>这是 Edge 对所有手动安装的扩展的例行提醒。请点<b>「2 周后提醒」</b>，不要点「关闭扩展」。如果已经点了：回到扩展页面，打开「开发人员模式」，再打开「mituan 投稿追踪」卡片右上角的开关，账号和记录都还在。</p></details>
+        <details><summary>工具栏上找不到 mituan 图标</summary><p>点浏览器右上角的拼图图标，在「mituan 投稿追踪」旁边点<span data-pin>眼睛图标</span>，图标就会一直显示在工具栏上。</p></details>
+        <details><summary>以后怎么更新？</summary><p>先删除「下载」文件夹里旧的 manuscript-tracker.zip（只删 zip，不要删文件夹），再下载新版，同样右键「全部解压缩」→「提取」，提示有同名文件时选择替换。最后在扩展页面的「mituan 投稿追踪」卡片上点<span data-reload>「重新加载」</span>。账号和记录都会保留。</p></details>
+      </div>
+    </div>
+
+    <div class="card panel soon" data-for="firefox">
+      <span class="bi bi-firefox big"></span>
+      <div><h3>Firefox 暂不支持</h3>
+        <p>这个扩展目前只支持 Edge、Chrome 等 Chromium 内核的浏览器。Edge 和 Chrome 都是免费的，可以和 Firefox 同时安装，互不影响。</p>
+        <div class="row"><a class="btn" href="https://www.microsoft.com/edge/download" target="_blank" rel="noopener">下载 Microsoft Edge</a><a class="btn" href="https://www.google.com/chrome/" target="_blank" rel="noopener">下载 Google Chrome</a></div></div>
+    </div>
+    <div class="card panel soon" data-for="safari">
+      <span class="bi bi-safari big"></span>
+      <div><h3>Safari 暂不支持</h3>
+        <p>Safari 扩展必须打包成 Mac App 并通过 App Store 发布，暂时还没有上架计划。在 Mac 上可以使用 Edge 或 Chrome，安装方法完全相同。</p>
+        <div class="row"><a class="btn" href="https://www.microsoft.com/edge/download" target="_blank" rel="noopener">下载 Microsoft Edge</a><a class="btn" href="https://www.google.com/chrome/" target="_blank" rel="noopener">下载 Google Chrome</a></div></div>
+    </div>
+  </section>
+
+  <!-- 常见问题 -->
+  <section class="wrap" id="faq">
+    <div class="head"><h2>常见问题</h2></div>
+    <div class="faq card">
+      <details><summary>收费吗？需要注册吗？</summary><p>完全免费，也不需要注册。代码公开在 GitHub，采用 <a href="https://polyformproject.org/licenses/noncommercial/1.0.0" target="_blank" rel="noopener">PolyForm Noncommercial 1.0.0</a> 许可：个人以及高校、科研机构等非商业用途可以免费使用和修改，不允许商业使用。</p></details>
+      <details><summary>支持哪些投稿系统？</summary><p>用真实稿件实测过的：IEEE 期刊的 ScholarOne Manuscripts 与 IEEE Author Portal、IFAC 的 PaperPlaza（Automatica 及 IFAC 会议）、TCCT 会议系统（CCDC、CCC 等）。Elsevier 的投稿追踪链接已用官方示例稿件测试通过，尚待真实稿件验证。其他投稿系统用通用识别，见下一条。</p></details>
+      <details><summary>我的期刊不在上面，能用吗？</summary><p>可以试试：登录投稿网站，打开列出你稿件的页面（例如 Editorial Manager 的「Submissions Being Processed」），点工具栏上的 mituan 图标，识别到稿件时会出现「追踪这些稿件」。这种通用识别不针对具体期刊，没有逐一实测，也不保存这些网站的密码；登录过期时，再打开一次那个页面就会恢复。用不了的话欢迎在 <a href="https://github.com/mituan-ai/manuscript-tracker/issues" target="_blank" rel="noopener">GitHub Issues</a> 告诉我们是哪个系统。</p></details>
+      <details><summary>我的账号密码安全吗？</summary><p>账号只加密保存在你自己的浏览器里，只会发往对应投稿网站的登录地址，不经过任何服务器。本网站只提供下载，不收集任何数据。卸载扩展时账号会一并删除。</p></details>
+      <details><summary>要一直开着投稿网站吗？关掉浏览器还能查吗？</summary><p>不用开着投稿网站，登录和查询都在后台完成。关掉所有浏览器窗口后，只要浏览器还在后台运行就会继续查询：Edge 默认如此；Chrome 需要在「设置 → 系统」里打开「关闭 Google Chrome 后继续运行后台应用」。彻底退出浏览器或关机时不会查询，下次打开浏览器时会马上补上。</p></details>
+      <details><summary>为什么要打开「开发人员模式」？</summary><p>这个扩展还没有上架扩展商店，浏览器只允许在开发人员模式下安装和运行商店以外的扩展，所以装好后也要保持这个开关打开。它只决定能不能使用商店以外的扩展，不会改动浏览器的其他设置。</p></details>
+      <details><summary>偶尔弹出一个小窗口是怎么回事？</summary><p>有些登录页必须在真实页面里完成（例如 IEEE 账号页有防火墙）。扩展会在最小化窗口里自动登录，完成后自动关闭。遇到验证码时窗口会留着，并通知你处理。</p></details>
+      <details><summary>会不会把我在投稿网站上踢下线？</summary><p>你最近 10 分钟用过 IEEE 投稿网站，或者正停在那个页面上时，扩展会跳过这一轮，不打断你。</p></details>
+      <details><summary>有油猴（Tampermonkey）脚本版吗？</summary><p>没有。油猴脚本只在你打开对应网页时运行，做不到关掉网页后的后台查询、自动登录和桌面通知，而这些正是它最有用的地方。安装扩展和安装油猴脚本一样简单。</p></details>
+      <details><summary>遇到问题怎么反馈？</summary><p>在追踪面板的「设置」里点「复制诊断信息」，贴到 <a href="https://github.com/mituan-ai/manuscript-tracker/issues" target="_blank" rel="noopener">GitHub Issues</a>。诊断信息不含账号、密码和稿件标题。</p></details>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="final card">
+      <h2>把查稿这件事交给它</h2>
+      <p class="muted">免费使用，3 步装好。</p>
+      <a class="btn primary lg" href="#install">免费安装</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Crafted with ♥ by <a href="https://mituan-ai.github.io/" target="_blank" rel="noopener"><b>mituan</b></a> · 投稿追踪 v__VERSION__ · 非商业许可 ·
+  <a href="https://github.com/mituan-ai/manuscript-tracker" target="_blank" rel="noopener">GitHub</a> ·
+  <a href="https://github.com/mituan-ai/manuscript-tracker/issues" target="_blank" rel="noopener">反馈问题</a>
+</footer>
+<script src="site.js"></script>
+</body>
+</html>
