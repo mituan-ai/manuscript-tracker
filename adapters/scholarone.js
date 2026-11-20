@@ -12,6 +12,7 @@
 // 各站点的账号相互独立：某个站点拒绝了密码，只停这个站点，直到你更新它的密码。
 
 import { needCredential, authRejected, needHuman, parseError } from '../lib/errors.js';
+import { B, prefixB } from '../lib/i18n.js';
 import { request, formWith, assertCredentialOrigin, sleep } from '../lib/http.js';
 import { openWorker, navigateWorker, waitWorker, closeWorker, fetchViaTab, isWorkerTab } from '../lib/worker.js';
 import { parseDate } from '../lib/normalize.js';
@@ -53,10 +54,10 @@ const credStamp = (cred) => `${cred.id}@${cred.savedAt}`;
 
 async function credFor(ctx, site) {
   const cred = await ctx.getCred(`scholarone:${site}`);
-  if (!cred) throw needCredential('还没有填写 ScholarOne 账号');
+  if (!cred) throw needCredential(B('还没有填写 ScholarOne 账号', 'No ScholarOne account has been added'));
   const st = await ctx.getState();
   if (!ctx.force && st.rejected?.[site] === credStamp(cred))
-    throw authRejected('上次拒绝了这个账号，请在追踪面板的账号页更新密码（或为这个期刊单独填写账号）');
+    throw authRejected(B('该账号上次登录被拒绝，请在追踪面板的账号页更新密码，或为该期刊单独填写账号', 'This account was rejected last time; update the password on the Accounts tab, or add a separate account for this journal'));
   return cred;
 }
 
@@ -65,8 +66,8 @@ async function openLoginPage(s, site) {
   const url = `${ORIGIN}/${site}`;
   let p = await s.page(url);
   if (p.kind !== 'login') p = await s.page(p.action || url, formWith(p.pairs, { JAVASCRIPT_ENABLED: 'Y', NEXT_PAGE: 'LOGIN' }));
-  if (p.kind !== 'login') throw parseError(`没有打开登录页（${p.kind}：${p.title}）`);
-  if (!p.loginAction) throw parseError('登录页缺少 loginAction');
+  if (p.kind !== 'login') throw parseError(B(`没有打开登录页（${p.kind}：${p.title}）`, `The sign-in page did not open (${p.kind}: ${p.title})`));
+  if (!p.loginAction) throw parseError(B('登录页缺少 loginAction', 'The sign-in page has no loginAction'));
   assertCredentialOrigin('scholarone', p.action);
   return p;
 }
@@ -83,8 +84,8 @@ async function submitLogin(s, site, p, cred) {
       IS_ORCID_TOKEN_IN_SESSION: 'Y',
     }),
   );
-  if (r.kind === 'login') throw authRejected(r.loginError || 'ScholarOne 拒绝了账号或密码');
-  if (!r.roleId && r.kind !== 'dashboard') throw needHuman(`登录后出现了需要处理的页面（${r.title || r.kind}），请手动打开 ${site} 看看`);
+  if (r.kind === 'login') throw authRejected(r.loginError || B('ScholarOne 拒绝了账号或密码', 'ScholarOne rejected the account or password'));
+  if (!r.roleId && r.kind !== 'dashboard') throw needHuman(B(`登录后出现了需要处理的页面（${r.title || r.kind}），请手动打开 ${site} 查看`, `A page that needs your attention appeared after sign-in (${r.title || r.kind}); open ${site} to check`));
   return r;
 }
 
@@ -117,7 +118,7 @@ async function collect(ctx, s, site, venue, start) {
   const url = `${ORIGIN}/${site}`;
   let dash = start;
   if (dash.kind !== 'dashboard') dash = await s.page(start.action || url, formWith(start.pairs, { ...DASH, XIK_CUR_ROLE_ID: start.roleId }));
-  if (dash.kind !== 'dashboard') throw parseError(`没有打开作者看板（${dash.kind}：${dash.title}）`);
+  if (dash.kind !== 'dashboard') throw parseError(B(`没有打开作者看板（${dash.kind}：${dash.title}）`, `The author dashboard did not open (${dash.kind}: ${dash.title})`));
   // 期刊名：优先用 IEEE Author Portal 给的，没有时用页面顶部的
   if (venue === site) venue = dash.journal || start.journal || site;
   const rows = dash.rows.map((r) => ({ ...r, queue: null }));
@@ -179,8 +180,8 @@ export default {
 
   async run(ctx) {
     const sites = await scholaroneSites(ctx);
-    if (!sites.length) return { items: [], note: '还没有要查询的期刊站点：填写 IEEE 账号可自动发现，或在账号页手动添加' };
-    if (await userActive(ctx)) return { skipped: true, note: '你最近在用 ScholarOne，本轮跳过' };
+    if (!sites.length) return { items: [], note: B('还没有要查询的期刊站点：填写 IEEE 账号可自动发现，或在账号页手动添加', 'No journal sites to check yet: add an IEEE account to discover them, or add them on the Accounts tab') };
+    if (await userActive(ctx)) return { skipped: true, note: B('你最近使用过 ScholarOne，本轮跳过', 'Skipped this round because you used ScholarOne recently') };
     const names = (await ctx.getState('rex')).siteNames || {};
     const venue = (site) => names[site] || site;
     const s = new Session(ctx);
@@ -190,8 +191,8 @@ export default {
     let firstError = null;
     let attention = null; // 留给你处理的窗口
     const fail = (site, e) => {
-      ctx.log(`${site}：${e.message}`, 'error');
-      warnings.push(`${site}：${e.message}`);
+      ctx.log(prefixB(site, e.message), 'error');
+      warnings.push(prefixB(site, e.message));
       firstError ||= e;
     };
     const markRejected = async (site, cred) => {

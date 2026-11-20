@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "mituan 投稿追踪",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "定时查询 IEEE、Elsevier、IFAC、CCDC/CCC 等投稿系统中的稿件状态，按期刊汇总，状态变化时发送通知；也可识别其他投稿网站的稿件列表。账号仅加密保存在本机。",
+    "description": "Extension description in the store and on the extensions page"
+  },
+  "actionTitle": {
+    "message": "mituan 投稿追踪",
+    "description": "Toolbar button tooltip"
+  }
+}

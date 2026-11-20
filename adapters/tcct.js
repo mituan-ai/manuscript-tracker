@@ -3,12 +3,14 @@
 // 验证码只在登录失败过的会话里出现，所以默认不需要。
 
 import { needCredential, authRejected, needHuman, parseError } from '../lib/errors.js';
+import { B } from '../lib/i18n.js';
 import { request, assertCredentialOrigin, sleep } from '../lib/http.js';
 import { rsaEncrypt } from '../lib/rsa.js';
 
 const BASE = 'https://cms.amss.ac.cn/';
 const DEFAULT_CONFID = 171; // CCDC 2027；其余会议会自动发现
 const DISCOVER_EVERY = 7 * 24 * 3600 * 1000;
+const CAPTCHA = () => B('TCCT 要求输入验证码，请在网页上手动登录一次', 'TCCT requires a CAPTCHA; sign in manually on the website once');
 
 async function authorPage(ctx, confid) {
   const r = await request(`${BASE}author.php?confid=${confid}`);
@@ -29,9 +31,9 @@ async function login(ctx, cred, confid) {
     // 这个会话之前登录失败过，换一个新会话
     await chrome.cookies.remove({ url: BASE, name: 'CMS_SESSID' }).catch(() => {});
     lp = await loginPage(confid);
-    if (lp.captcha) throw needHuman('TCCT 要求输入验证码，请在网页上手动登录一次');
+    if (lp.captcha) throw needHuman(CAPTCHA());
   }
-  if (!lp.key) throw parseError('TCCT 登录页里没有找到公钥');
+  if (!lp.key) throw parseError(B('TCCT 登录页里没有找到公钥', 'No public key found on the TCCT sign-in page'));
   const url = `${BASE}index.php?confid=${confid}`;
   assertCredentialOrigin('tcct', url);
   const res = await request(url, {
@@ -42,11 +44,11 @@ async function login(ctx, cred, confid) {
   try {
     data = JSON.parse(res.text.trim());
   } catch {
-    throw parseError(`TCCT 登录接口没有返回 JSON（HTTP ${res.status}）`);
+    throw parseError(B(`TCCT 登录接口没有返回 JSON（HTTP ${res.status}）`, `The TCCT sign-in endpoint did not return JSON (HTTP ${res.status})`));
   }
   if (String(data.errno) !== '0') {
-    if (/验证码|captcha/i.test(data.errmsg || '')) throw needHuman('TCCT 要求输入验证码，请在网页上手动登录一次');
-    throw authRejected(data.errmsg || 'TCCT 拒绝了账号或密码');
+    if (/验证码|captcha/i.test(data.errmsg || '')) throw needHuman(CAPTCHA());
+    throw authRejected(data.errmsg || B('TCCT 拒绝了账号或密码', 'TCCT rejected the account or password'));
   }
   ctx.log('登录成功');
 }
@@ -72,12 +74,12 @@ export default {
     if (!first.loggedIn) {
       if (!cred) {
         await ctx.setState({ noSession: true });
-        throw needCredential('TCCT 未登录，且还没有填写 TCCT 账号');
+        throw needCredential(B('TCCT 未登录，且还没有填写 TCCT 账号', 'Not signed in to TCCT, and no TCCT account has been added'));
       }
       ctx.log('会话已失效，自动登录');
       await login(ctx, cred, confids[0]);
       first = await authorPage(ctx, confids[0]);
-      if (!first.loggedIn) throw parseError('登录后仍然打不开作者工作区');
+      if (!first.loggedIn) throw parseError(B('登录后仍然打不开作者工作区', 'The author workspace still does not open after sign-in'));
     }
     pages.set(confids[0], first);
     if (state.noSession) await ctx.setState({ noSession: false });

@@ -155,13 +155,17 @@ details summary { cursor: pointer; color: var(--muted); font-size: 12.5px; }
 .ms.unseen::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0; background: var(--grad); }
 .ms .new { font-size: 11px; font-weight: 700; color: #fff; background: var(--grad); border-radius: 5px; padding: 1px 5px; margin-right: 6px; vertical-align: 1px; }
 
-/* 主题切换 */
-.theme { display: inline-flex; padding: 3px; gap: 2px; border: 1px solid var(--line); border-radius: 10px; background: var(--card-solid); }
-.theme button { border: 0; background: none; color: var(--muted); width: 30px; height: 28px; padding: 0;
+/* 主题切换和语言切换（同一种分段图标按钮；语言用单独的类名，切主题时不会改到它） */
+.theme, .langsw { display: inline-flex; padding: 3px; gap: 2px; border: 1px solid var(--line); border-radius: 10px; background: var(--card-solid); }
+.theme button, .langsw button { border: 0; background: none; color: var(--muted); width: 30px; height: 28px; padding: 0;
                 display: grid; place-items: center; border-radius: 7px; }
-.theme button:hover { color: var(--text); }
-.theme button svg { width: 16px; height: 16px; }
-.theme button.on { background: rgba(var(--accent-rgb),.14); color: var(--accent-text); }
+.theme button:hover, .langsw button:hover { color: var(--text); }
+.theme button svg, .langsw button svg { width: 16px; height: 16px; }
+.theme button.on, .langsw button.on { background: rgba(var(--accent-rgb),.14); color: var(--accent-text); }
+.langsw .glyph { font: 700 12.5px/1 system-ui, sans-serif; letter-spacing: .2px; }
+
+/* 双语静态文字：<span data-l="zh">…</span><span data-l="en">…</span>，按 <html data-lang>（ui/theme.js 设置）只显示一种 */
+html[data-lang="en"] [data-l="zh"], html[data-lang="zh"] [data-l="en"] { display: none !important; }
 
 .toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px); opacity: 0;
          background: var(--raise); border: 1px solid var(--line); border-radius: 12px; padding: 10px 18px;

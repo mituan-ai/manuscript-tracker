@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "mituan Manuscript Tracker",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Tracks manuscript status on IEEE, Elsevier, IFAC, CCDC/CCC and other submission sites, by journal, with change alerts.",
+    "description": "Extension description in the store and on the extensions page"
+  },
+  "actionTitle": {
+    "message": "mituan Manuscript Tracker",
+    "description": "Toolbar button tooltip"
+  }
+}

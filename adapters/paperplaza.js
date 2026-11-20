@@ -3,6 +3,7 @@
 //      → 进入入口 → AccessAuthorspace 命令 → 作者工作区表格。
 
 import { needCredential, authRejected, parseError } from '../lib/errors.js';
+import { B, mapB } from '../lib/i18n.js';
 import { request, formWith, assertCredentialOrigin, sleep } from '../lib/http.js';
 import { parseDate } from '../lib/normalize.js';
 
@@ -47,7 +48,7 @@ export default {
 
     const start = await page(ctx, START);
     const form = start.hasPassword ? start : await page(ctx, start.action, command(start, 'Login'));
-    if (!form.hasPassword) throw parseError('没有找到 PaperPlaza 登录表单');
+    if (!form.hasPassword) throw parseError(B('没有找到 PaperPlaza 登录表单', 'PaperPlaza sign-in form not found'));
     assertCredentialOrigin('paperplaza', form.action);
 
     const access = await page(
@@ -57,22 +58,22 @@ export default {
     );
     // 密码错误时返回标题为 "Error message" 的错误页（实测："The login information is incorrect"）
     if (access.hasPassword || access.loginError || /^error/i.test(access.title || '')) {
-      const msg = access.loginError || 'PaperPlaza 拒绝了账号或密码';
-      if (access.hasPassword || /login|password|incorrect|invalid|PIN/i.test(msg)) throw authRejected(msg);
-      throw parseError(`登录时出错：${msg}`);
+      const msg = access.loginError || B('PaperPlaza 拒绝了账号或密码', 'PaperPlaza rejected the account or password');
+      if (access.hasPassword || /login|password|incorrect|invalid|PIN/i.test(access.loginError || '')) throw authRejected(msg);
+      throw parseError(mapB(msg, (t, l) => (l === 'zh' ? `登录时出错：${t}` : `Sign-in error: ${t}`)));
     }
     ctx.log('登录成功');
 
     const events = uniqueEvents(access.enterLinks);
-    if (!events.length) throw parseError('登录后没有找到期刊或会议入口');
+    if (!events.length) throw parseError(B('登录后没有找到期刊或会议入口', 'No journal or conference found after sign-in'));
 
     const items = [];
     for (const ev of events.slice(0, 8)) {
       const home = await page(ctx, ev.href);
       if (!home.commands.includes('AccessAuthorspace')) continue;
       const ws = await page(ctx, home.action, command(home, 'AccessAuthorspace'));
-      if (ws.securityViolation) throw parseError('PaperPlaza 返回 Security violation（命令格式不对）');
-      if (!ws.rows) throw parseError('没有找到作者工作区表格');
+      if (ws.securityViolation) throw parseError(B('PaperPlaza 返回 Security violation（命令格式不对）', 'PaperPlaza returned a security violation (unexpected request format)'));
+      if (!ws.rows) throw parseError(B('没有找到作者工作区表格', 'Author workspace table not found'));
       const venue = home.title.replace(/\s*Access Page\s*$/i, '').trim() || ev.key;
       const slug = ev.key.split('/').filter(Boolean).pop();
       for (const r of ws.rows) {

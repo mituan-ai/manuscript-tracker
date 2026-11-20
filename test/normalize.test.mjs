@@ -3,6 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { stageOf, parseDate, fmtDate, baseManuscriptId } from '../lib/normalize.js';
 import { prepareItems, isActive, isRecentResult, toMarkdown } from '../ui/common.js';
+import { setLang } from '../lib/i18n.js';
 
 const isCurrent = (i) => isActive(i) || isRecentResult(i); // 弹窗里显示的：进行中，或 30 天内有结果
 
@@ -83,14 +84,21 @@ test('ScholarOne 有详情时隐藏 Author Portal 的重复条目', () => {
   assert.deepEqual(items.map((i) => i.key).sort(), ['rex:MM-000001', 'scholarone:tii:TII-26-0001.R1']);
 });
 
-test('Markdown 导出按论文分组', () => {
-  const md = toMarkdown({
+test('Markdown 导出按论文分组，标题跟随界面语言', () => {
+  const items = {
     x: { platform: 'scholarone', venue: 'TII', manuscriptId: 'TII-1', title: 'A Paper', status: 'Reject', submittedAt: new Date(2026, 0, 2).getTime(), firstSeenAt: 1, history: [{ at: new Date(2026, 2, 3).getTime(), status: 'Reject' }] },
     y: { platform: 'scholarone', venue: 'TASE', manuscriptId: 'TASE-2', title: 'A paper.', status: 'Under Review', submittedAt: new Date(2026, 3, 4).getTime(), firstSeenAt: 2, history: [] },
-  });
+  };
+  setLang('zh');
+  const md = toMarkdown(items);
   assert.equal((md.match(/^### /gm) || []).length, 1, md);
   assert.match(md, /#### 1\. TII（TII-1）\n```\n02-Jan-2026: Submitted\n03-Mar-2026: Reject\n```/);
   assert.match(md, /#### 2\. TASE（TASE-2）/);
+  setLang('en');
+  const en = toMarkdown(items);
+  assert.match(en, /^<!-- mituan Manuscript Tracker export /);
+  assert.match(en, /#### 1\. TII \(TII-1\)\n```\n02-Jan-2026: Submitted/);
+  assert.doesNotMatch(en, /[\u4e00-\u9fa5（）]/);
 });
 
 test('同一篇稿件 ScholarOne 和 IEEE Author Portal 都有时只算一次（通知、角标、列表一致）', async () => {

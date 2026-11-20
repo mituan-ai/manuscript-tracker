@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { abbrOf, journalKey, groupByJournal, prepareItems, problems, FILTERS, isRecentResult } from '../lib/view.js';
+import { abbrOf, journalKey, groupByJournal, prepareItems, problems, FILTERS, FAMILIES, ACCOUNT_LABEL, isRecentResult } from '../lib/view.js';
+import { STAGES } from '../lib/normalize.js';
+import { setLang, L, B, loc, pair, mapB, prefixB } from '../lib/i18n.js';
 
 const D = 86400000;
 const now = Date.now();
@@ -67,9 +69,42 @@ test('问题提示按账号描述，不出现投稿系统内部名称', () => {
       elsevier: { status: 'error' },
     },
   };
+  setLang('zh');
   const p = problems(state);
   assert.deepEqual(p.map((x) => [x.id, x.level]), [['scholarone', 'action'], ['paperplaza', 'action'], ['tcct', 'warn']]);
   assert.equal(p[0].title, 'IEEE 投稿账号的密码被拒绝了');
   assert.equal(p[1].windowId, 7);
   for (const x of p) assert.doesNotMatch(x.title, /ScholarOne|Author Portal|PaperPlaza CMS/);
+  setLang('en');
+  const en = problems({ ...state, platforms: { ...state.platforms, tcct: { status: 'error', message: B('超时', 'Timed out') } } });
+  assert.equal(en[0].title, 'IEEE submission account: password rejected');
+  assert.equal(en[2].detail, 'Timed out');
+  for (const x of en) assert.doesNotMatch(`${x.title} ${x.detail || ''}`, /[\u4e00-\u9fa5]/);
+});
+
+test('界面语言：L 立即取当前语言，B 存两种、loc 显示时再取', () => {
+  setLang('zh');
+  assert.equal(L('中', 'en'), '中');
+  const msg = B('账号被拒绝', 'Account rejected');
+  assert.equal(loc(msg), '账号被拒绝');
+  assert.equal(loc('plain text'), 'plain text');
+  assert.equal(loc(null), null);
+  assert.deepEqual(pair(msg), ['账号被拒绝', 'Account rejected']);
+  assert.deepEqual(pair('同一句'), ['同一句', '同一句']);
+  assert.equal(loc(prefixB('tii', msg)), 'tii：账号被拒绝');
+  assert.equal(loc(mapB('x', (t, l) => `${l}:${t}`)), 'zh:x');
+  // 标签是 getter：换语言后读到的就是新语言
+  assert.equal(STAGES.reviewing.label, '审稿中');
+  assert.equal(FAMILIES[0].name, 'IEEE 期刊');
+  assert.equal(FILTERS.active.label, '进行中');
+  assert.equal(ACCOUNT_LABEL.scholarone, 'IEEE 投稿账号');
+  setLang('en');
+  assert.equal(L('中', 'en'), 'en');
+  assert.equal(loc(msg), 'Account rejected');
+  assert.equal(loc(prefixB('tii', msg)), 'tii: Account rejected');
+  assert.equal(STAGES.reviewing.label, 'In review');
+  assert.equal(FAMILIES[0].name, 'IEEE journals');
+  assert.equal(FILTERS.active.label, 'In progress');
+  assert.equal(ACCOUNT_LABEL.scholarone, 'IEEE submission account');
+  assert.deepEqual(Object.keys(ACCOUNT_LABEL), ['scholarone', 'rex', 'paperplaza', 'tcct', 'elsevier', 'web']);
 });

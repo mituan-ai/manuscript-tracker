@@ -11,7 +11,7 @@ python3 -I - "$ROOT" "$OUT" <<'PY'
 import os, sys, zipfile
 root, out = sys.argv[1], sys.argv[2]
 include = ['manifest.json', 'background.js', 'offscreen.html', 'offscreen.js', 'LICENSE', 'README.md',
-           'adapters', 'content', 'lib', 'ui', 'icons']
+           '_locales', 'adapters', 'content', 'lib', 'ui', 'icons']
 with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as z:
     for name in include:
         path = os.path.join(root, name)

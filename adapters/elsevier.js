@@ -3,6 +3,7 @@
 
 import { request } from '../lib/http.js';
 import { getElsevierIds } from '../lib/vault.js';
+import { B } from '../lib/i18n.js';
 
 const API = 'https://tnlkuelk67.execute-api.us-east-1.amazonaws.com/tracker/';
 const STATUS = { 3: 'Under Review', 4: 'Required Reviews Complete', 23: 'Under Review' };
@@ -32,7 +33,7 @@ export default {
         d = JSON.parse(r.text);
       } catch {}
       if (!r.ok || !d?.PubdNumber) {
-        errors.push(`${id.slice(0, 8)}…：查不到（HTTP ${r.status}），可能已结束审稿或链接有误`);
+        errors.push(B(`${id.slice(0, 8)}…：查不到（HTTP ${r.status}），可能已结束审稿或链接有误`, `${id.slice(0, 8)}…: not found (HTTP ${r.status}); review may have ended or the link is wrong`));
         continue;
       }
       items.push({

@@ -56,7 +56,7 @@
     .onboard h2 { font-size: 22px; margin: 0; } .onboard h2::before { display: none; }
     .onboard p { margin: 0; color: var(--muted); max-width: 34em; }
     .onboard .picks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; width: 100%; max-width: 760px; }
-    .onboard .picks button { display: grid; gap: 4px; justify-items: start; text-align: left; white-space: normal; padding: 14px 16px; border-radius: 12px; }
+    .onboard .picks button { display: grid; gap: 4px; justify-items: start; align-content: start; text-align: left; white-space: normal; padding: 14px 16px; border-radius: 12px; }
     .onboard .installed { display: flex; gap: 12px; align-items: flex-start; text-align: left; width: 100%; max-width: 760px; box-sizing: border-box; padding: 14px 16px; border-radius: 12px; background: color-mix(in srgb, var(--ok) 12%, transparent); border: 1px solid color-mix(in srgb, var(--ok) 40%, transparent); }
     .onboard .installed .ok { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--ok); color: #fff; font-weight: 800; }
     .onboard .installed > div { display: grid; gap: 2px; font-size: 13px; line-height: 1.6; } .onboard .installed > div > b { font-size: 15px; }
@@ -130,16 +130,27 @@
       .detail { padding-left: 18px; }
       #checked { display: none; }
     }
+    /* 英文顶栏更长：放不下时只显示 mituan 字标，最窄时标签页按钮收紧 */
+    @media (min-width: 901px) and (max-width: 1040px), (max-width: 640px) {
+      html[data-lang="en"] .bar .brand .product { display: none; }
+    }
+    @media (max-width: 420px) {
+      .bar .tabs button { padding: 7px 12px; }
+    }
+    @media (max-width: 360px) {
+      .wrap { padding-left: 16px; padding-right: 16px; }
+      .bar .tabs button { padding: 7px 10px; font-size: 13px; }
+    }
   </style>
 </head>
 <body>
 <header class="bar">
   <div class="wrap">
-    <a class="brand" id="home" target="_blank" title="mituan 投稿追踪官网"><img src="logo.svg" alt=""><span class="wordmark">mituan</span><span class="product">投稿追踪</span></a>
-    <nav class="seg tabs" id="tabs" aria-label="页面">
-      <button type="button" data-tab="manuscripts" class="on">稿件</button>
-      <button type="button" data-tab="accounts">账号<span class="dot" id="acctDot" hidden></span></button>
-      <button type="button" data-tab="settings">设置</button>
+    <a class="brand" id="home" target="_blank" title="mituan 投稿追踪官网" data-en-title="mituan Manuscript Tracker website"><img src="logo.svg" alt=""><span class="wordmark">mituan</span><span class="product"><span data-l="zh">投稿追踪</span><span data-l="en">Manuscript Tracker</span></span></a>
+    <nav class="seg tabs" id="tabs" aria-label="页面" data-en-aria-label="Pages">
+      <button type="button" data-tab="manuscripts" class="on"><span data-l="zh">稿件</span><span data-l="en">Manuscripts</span></button>
+      <button type="button" data-tab="accounts"><span data-l="zh">账号</span><span data-l="en">Accounts</span><span class="dot" id="acctDot" hidden></span></button>
+      <button type="button" data-tab="settings"><span data-l="zh">设置</span><span data-l="en">Settings</span></button>
     </nav>
     <span class="grow"></span>
     <span id="checked"></span>
@@ -154,21 +165,21 @@
     <div class="card onboard" id="onboard" hidden>
       <div class="installed" id="installed" hidden>
         <span class="ok">✓</span>
-        <div><b>安装成功！</b><span>建议把 mituan 图标固定到浏览器工具栏：点右上角的拼图图标，在「mituan 投稿追踪」旁边点<b>眼睛图标</b>（Edge）或<b>图钉图标</b>（Chrome）。</span></div>
+        <div><b data-l="zh">安装成功</b><b data-l="en">Installed</b><span data-l="zh">建议将 mituan 图标固定到工具栏：点击浏览器右上角的拼图图标，再点击「mituan 投稿追踪」旁的<b>眼睛图标</b>（Edge）或<b>图钉图标</b>（Chrome）。</span><span data-l="en">Pin the mituan icon to the toolbar: click the puzzle icon at the top right of the browser, then the <b>eye icon</b> (Edge) or <b>pin icon</b> (Chrome) next to mituan Manuscript Tracker.</span></div>
       </div>
       <img src="logo.svg" alt="">
-      <h2>连接投稿账号，开始自动追踪</h2>
-      <p>选择你投稿的期刊类型，填一次账号。之后扩展会定时查询每篇稿件的状态，有变化就通知你。</p>
+      <h2 data-l="zh">连接投稿账号，开始自动追踪</h2><h2 data-l="en">Connect your submission accounts to start tracking</h2>
+      <p data-l="zh">选择投稿的期刊类型并填写账号，扩展将定时查询每篇稿件的状态，并在状态变化时通知你。</p><p data-l="en">Choose where you submit and add the account. The extension checks every manuscript on a schedule and notifies you when a status changes.</p>
       <div class="picks" id="picks"></div>
-      <p class="small">更省事：直接去投稿网站正常登录一次，扩展会自动记住这次的账号。</p>
+      <p class="small" data-l="zh">也可以直接在投稿网站正常登录一次，扩展会自动保存该账号。</p><p class="small" data-l="en">You can also sign in on the submission website as usual; the extension saves the account automatically.</p>
     </div>
     <div id="dash">
       <div class="tiles" id="tiles"></div>
       <div class="toolbar">
-        <label class="search"><span id="searchIcon"></span><input type="search" id="search" placeholder="搜索期刊、稿件号或标题" aria-label="搜索稿件"></label>
+        <label class="search"><span id="searchIcon"></span><input type="search" id="search" placeholder="搜索期刊、稿件号或标题" aria-label="搜索稿件" data-en-placeholder="Search journal, manuscript ID or title" data-en-aria-label="Search manuscripts"></label>
         <span id="resultHint"></span>
         <span class="grow"></span>
-        <button class="ghost sm" id="export" title="下载全部稿件和状态历史（Markdown）"></button>
+        <button class="ghost sm" id="export" title="下载全部稿件和状态历史（Markdown）" data-en-title="Download all manuscripts and status history (Markdown)"></button>
       </div>
     </div>
     <div class="journals" id="journals"></div>
@@ -178,7 +189,7 @@
   <section class="view" id="view-accounts" hidden>
     <div class="card intro">
       <span class="ico" id="lockIcon"></span>
-      <p><b>每类期刊只需连接一次。</b>账号用本机生成的密钥加密，只保存在这个浏览器里，只会发往对应的投稿网站。也可以不在这里填：去投稿网站正常登录一次，扩展会自动记住。</p>
+      <p data-l="zh"><b>每类期刊只需连接一次。</b>账号使用本机生成的密钥加密，仅保存在本浏览器中，只会发送到对应的投稿网站。也可以不在此填写，直接在投稿网站登录一次，扩展会自动保存。</p><p data-l="en"><b>Connect each type of journal once.</b> Accounts are encrypted with a key generated on this device, stored only in this browser and sent only to the matching submission website. You can also skip this and sign in on the submission website once; the extension saves the account automatically.</p>
     </div>
     <div class="families" id="families"></div>
   </section>
@@ -187,47 +198,51 @@
   <section class="view" id="view-settings" hidden>
     <div class="card setlist">
       <div class="set">
-        <div class="txt"><b>状态变化时通知我</b><span>弹出桌面通知。第一次查询只记录，不会一下子弹出很多通知。</span></div>
-        <label class="switch"><input type="checkbox" id="notify" aria-label="状态变化时通知我"><i></i></label>
+        <div class="txt"><b data-l="zh">状态变化时通知</b><b data-l="en">Notify on status changes</b><span data-l="zh">发送桌面通知。首次查询只记录当前状态，不发通知。</span><span data-l="en">Shows a desktop notification. The first check only records the current status.</span></div>
+        <label class="switch"><input type="checkbox" id="notify" aria-label="状态变化时通知" data-en-aria-label="Notify on status changes"><i></i></label>
       </div>
       <div class="set">
-        <div class="txt"><b>查询频率</b><span id="freqDesc"></span></div>
-        <select id="freq" aria-label="查询频率"></select>
+        <div class="txt"><b data-l="zh">查询频率</b><b data-l="en">Check frequency</b><span id="freqDesc"></span></div>
+        <select id="freq" aria-label="查询频率" data-en-aria-label="Check frequency"></select>
       </div>
       <div class="set">
-        <div class="txt"><b>我在投稿网站上操作时不打扰</b><span>最近 10 分钟用过 IEEE 投稿页面，或正停在那个页面上时，跳过这一轮，避免把你登出。</span></div>
-        <label class="switch"><input type="checkbox" id="pause" aria-label="我在投稿网站上操作时不打扰"><i></i></label>
+        <div class="txt"><b data-l="zh">使用投稿网站时暂停查询</b><b data-l="en">Pause while you use a submission website</b><span data-l="zh">10 分钟内使用过 IEEE 投稿页面或正停留在该页面时，跳过本轮查询，避免把你登出。</span><span data-l="en">Skips a round if you used an IEEE submission page in the last 10 minutes or are on one now, so you are not signed out.</span></div>
+        <label class="switch"><input type="checkbox" id="pause" aria-label="使用投稿网站时暂停查询" data-en-aria-label="Pause while you use a submission website"><i></i></label>
       </div>
       <div class="set">
-        <div class="txt"><b>记住我在投稿网站上登录的账号</b><span>你在投稿网站上手动登录成功后，加密保存这次的账号，之后自动查询。</span></div>
-        <label class="switch"><input type="checkbox" id="capture" aria-label="记住我在投稿网站上登录的账号"><i></i></label>
+        <div class="txt"><b data-l="zh">保存在投稿网站登录的账号</b><b data-l="en">Save accounts you sign in with</b><span data-l="zh">在投稿网站手动登录成功后，加密保存该账号，用于之后的自动查询。</span><span data-l="en">After you sign in on a submission website, the account is saved encrypted for automatic checks.</span></div>
+        <label class="switch"><input type="checkbox" id="capture" aria-label="保存在投稿网站登录的账号" data-en-aria-label="Save accounts you sign in with"><i></i></label>
       </div>
       <div class="set">
-        <div class="txt"><b>关掉浏览器窗口后继续查询</b><span id="bgHint"></span></div>
+        <div class="txt"><b data-l="zh">关闭浏览器窗口后继续查询</b><b data-l="en">Keep checking after closing the browser</b><span id="bgHint"></span></div>
       </div>
       <div class="set">
-        <div class="txt"><b>外观</b><span>跟随系统、暗色或亮色</span></div>
+        <div class="txt"><b data-l="zh">外观</b><b data-l="en">Appearance</b><span data-l="zh">跟随系统、暗色或亮色</span><span data-l="en">System, dark or light</span></div>
         <span id="themeSlot"></span>
+      </div>
+      <div class="set">
+        <div class="txt"><b data-l="zh">语言</b><b data-l="en">Language</b><span data-l="zh">跟随系统、中文或 English</span><span data-l="en">System, 中文 or English</span></div>
+        <span id="langSlot"></span>
       </div>
     </div>
 
     <div class="card setlist">
       <div class="set">
-        <div class="txt"><b>导出投稿记录</b><span>全部稿件和每篇的状态历史，Markdown 格式</span></div>
-        <div class="acts"><button class="sm" id="copyMd">复制</button><button class="sm" id="downloadMd">下载</button></div>
+        <div class="txt"><b data-l="zh">导出投稿记录</b><b data-l="en">Export manuscripts</b><span data-l="zh">全部稿件和每篇的状态历史，Markdown 格式</span><span data-l="en">All manuscripts with their status history, in Markdown</span></div>
+        <div class="acts"><button class="sm" id="copyMd"><span data-l="zh">复制</span><span data-l="en">Copy</span></button><button class="sm" id="downloadMd"><span data-l="zh">下载</span><span data-l="en">Download</span></button></div>
       </div>
       <div class="set">
-        <div class="txt"><b>反馈问题</b><span>复制诊断信息贴到 GitHub Issues。只含版本、运行状态和日志，不含账号、密码和稿件标题。</span></div>
-        <div class="acts"><button class="sm" id="copyDiag">复制诊断信息</button><a class="button sm" id="issues" target="_blank">提交反馈</a></div>
+        <div class="txt"><b data-l="zh">反馈问题</b><b data-l="en">Report an issue</b><span data-l="zh">复制诊断信息并粘贴到 GitHub Issues。仅包含版本、运行状态和日志，不含账号、密码和稿件标题。</span><span data-l="en">Copy the diagnostics and paste them into GitHub Issues. They contain only the version, run status and logs; no accounts, passwords or manuscript titles.</span></div>
+        <div class="acts"><button class="sm" id="copyDiag"><span data-l="zh">复制诊断信息</span><span data-l="en">Copy diagnostics</span></button><a class="button sm" id="issues" target="_blank"><span data-l="zh">提交反馈</span><span data-l="en">Open an issue</span></a></div>
       </div>
       <div class="set">
-        <div class="txt"><b>清除全部数据</b><span>删除本机保存的全部账号、密钥、稿件记录和日志。卸载扩展也会一并删除。</span></div>
-        <div class="acts"><button class="sm danger" id="clearAll">全部清除</button></div>
+        <div class="txt"><b data-l="zh">清除全部数据</b><b data-l="en">Clear all data</b><span data-l="zh">删除本机保存的全部账号、密钥、稿件记录和日志。卸载扩展时也会一并删除。</span><span data-l="en">Deletes all accounts, keys, manuscript records and logs stored on this device. Uninstalling the extension also deletes them.</span></div>
+        <div class="acts"><button class="sm danger" id="clearAll"><span data-l="zh">全部清除</span><span data-l="en">Clear all</span></button></div>
       </div>
     </div>
 
     <details class="card logs" id="logsBox">
-      <summary>运行日志 <span class="faint">· 只保存在本机，排查问题时用</span></summary>
+      <summary><span data-l="zh">运行日志 <span class="faint">· 仅保存在本机，用于排查问题</span></span><span data-l="en">Activity log <span class="faint">· Stored only on this device, for troubleshooting</span></span></summary>
       <div id="logs"></div>
     </details>
   </section>

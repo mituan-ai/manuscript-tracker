@@ -1,10 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "mituan 投稿追踪",
+  "name": "__MSG_extName__",
   "short_name": "mituan",
   "version": "0.4.0",
   "homepage_url": "https://tracker.eonmaze.com/",
-  "description": "mituan 出品，免费使用、源码公开。自动查询 IEEE、Elsevier、IFAC、CCDC/CCC 等期刊和会议的稿件状态，也能识别其他投稿网站的稿件列表，有变化就通知你。账号只加密保存在本机。",
+  "description": "__MSG_extDescription__",
+  "default_locale": "en",
   "minimum_chrome_version": "121",
   "icons": {
     "16": "icons/16.png",
@@ -13,7 +14,7 @@
     "128": "icons/128.png"
   },
   "action": {
-    "default_title": "mituan 投稿追踪",
+    "default_title": "__MSG_actionTitle__",
     "default_popup": "ui/popup.html",
     "default_icon": {
       "16": "icons/16.png",

@@ -2,6 +2,7 @@
 // 会话靠 Cookie（"记住我" 30 天）；失效时在最小化窗口里走 ieee.org 统一登录（有 AWS WAF，只能用真实页面）。
 
 import { needCredential, authRejected } from '../lib/errors.js';
+import { B } from '../lib/i18n.js';
 import { request } from '../lib/http.js';
 import { openWorker, waitWorker, closeWorker, fetchViaTab, isWorkerTab } from '../lib/worker.js';
 import { parseDate } from '../lib/normalize.js';
@@ -30,7 +31,7 @@ async function search(fetcher) {
   const r = await fetcher(SEARCH, { headers: { Accept: 'application/json' } });
   if (r.status === 401 || r.status === 403) return null;
   // 服务器出错或维护时不是"没登录"，不要因此打开登录窗口
-  if (r.status >= 500 || r.status === 429) throw new Error(`IEEE Author Portal 暂时不可用（HTTP ${r.status}），稍后自动重试`);
+  if (r.status >= 500 || r.status === 429) throw new Error(B(`IEEE Author Portal 暂时不可用（HTTP ${r.status}），稍后自动重试`, `IEEE Author Portal is temporarily unavailable (HTTP ${r.status}); it will be retried automatically`));
   if (!/json/i.test(r.contentType || '')) return null; // 被重定向到登录页
   try {
     const j = JSON.parse(r.text);
@@ -44,12 +45,12 @@ async function loginWindow(ctx) {
   const cred = await ctx.getCred('ieee');
   if (!cred) {
     await ctx.setState({ noSession: true });
-    throw needCredential('IEEE Author Portal 未登录，且还没有填写 IEEE 账号');
+    throw needCredential(B('IEEE Author Portal 未登录，且还没有填写 IEEE 账号', 'Not signed in to IEEE Author Portal, and no IEEE account has been added'));
   }
   const st = await ctx.getState();
-  if (!ctx.force && st.rejected === cred.savedAt) throw authRejected('IEEE 账号上次被拒绝，请在追踪面板的账号页更新密码');
+  if (!ctx.force && st.rejected === cred.savedAt) throw authRejected(B('IEEE 账号上次被拒绝，请在追踪面板的账号页更新密码', 'The IEEE account was rejected last time; update the password on the Accounts tab'));
   ctx.log('会话已失效，在最小化窗口里自动登录 IEEE 账号');
-  const w = await openWorker({ platform: 'rex', credId: 'ieee', url: `${ORIGIN}/submission/dashboard`, label: 'IEEE 账号' });
+  const w = await openWorker({ platform: 'rex', credId: 'ieee', url: `${ORIGIN}/submission/dashboard`, label: 'IEEE Author Portal' });
   try {
     return await waitWorker(
       w,

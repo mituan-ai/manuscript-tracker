@@ -5,6 +5,7 @@
 import { request, sleep } from '../lib/http.js';
 import { parseDate } from '../lib/normalize.js';
 import { originPattern } from '../lib/scan.js';
+import { B, prefixB } from '../lib/i18n.js';
 
 export { originPattern };
 
@@ -50,7 +51,7 @@ async function scan(ctx, url, done) {
 
 export default {
   id: 'web',
-  label: '其他投稿网站',
+  label: B('其他投稿网站', 'Other sites'),
   credIds: [],
   openUrl: null,
 
@@ -92,8 +93,8 @@ export default {
         ctx.log(`${page.journal}：${status[page.site].count} 篇`);
       } catch (e) {
         status[page.site] = { status: 'error', message: e.message };
-        warnings.push(`${page.journal}：${e.message}`);
-        ctx.log(`${page.journal}：${e.message}`, 'error');
+        warnings.push(prefixB(page.journal, e.message));
+        ctx.log(prefixB(page.journal, e.message), 'error');
       }
     }
     // 查询期间你可能添加或移除了网站：只更新还在的
@@ -102,6 +103,6 @@ export default {
       for (const [site, s] of Object.entries(status)) if (next[site]) next[site] = { ...next[site], message: null, ...s };
       return { ...st, pages: next };
     });
-    return { items, warnings, note: pages.length ? `${pages.length} 个网站` : '还没有添加网站' };
+    return { items, warnings, note: pages.length ? B(`${pages.length} 个网站`, `${pages.length} site${pages.length > 1 ? 's' : ''}`) : B('还没有添加网站', 'No sites added yet') };
   },
 };

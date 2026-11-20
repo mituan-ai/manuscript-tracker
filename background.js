@@ -16,11 +16,16 @@ import { getSettings, saveSettings, getPlatformState, patchPlatformState, update
 import { getWorker, isWorkerTab, onWorkerPage, onWorkerAttempt, closeAllWorkers } from './lib/worker.js';
 import { stageOf, STAGES, hideDuplicates, baseManuscriptId } from './lib/normalize.js';
 import { familyOf, ACCOUNT_LABEL } from './lib/view.js';
+import { L, B, loc, pair, mapB, setLang, resolveLang } from './lib/i18n.js';
 
 // 顺序有意义：ReX 先跑，ScholarOne 才知道要查哪些站点
 const ADAPTERS = [rex, scholarone, paperplaza, tcct, elsevier, web];
 const byId = Object.fromEntries(ADAPTERS.map((a) => [a.id, a]));
 const TICK_MINUTES = 10;
+
+// 后台生成的文字（通知、平台状态）跟随设置里的语言：auto = 浏览器界面语言
+const syncLang = async () => setLang(resolveLang((await getSettings()).lang));
+syncLang();
 
 // ───────────────────────── 运行队列 ─────────────────────────
 
@@ -90,7 +95,7 @@ async function runPlatform(id, { force = false, reason = '定时' } = {}) {
   const { platforms = {} } = await chrome.storage.local.get('platforms');
   const prev = platforms[id] || {};
   if (!(await adapter.enabled(ctx))) {
-    await setPlatformStatus(id, { status: 'disabled', message: '未配置', running: false });
+    await setPlatformStatus(id, { status: 'disabled', message: B('未配置', 'Not set up'), running: false });
     return;
   }
   if (!force && (await stillRejected(adapter, prev))) {
@@ -110,12 +115,12 @@ async function runPlatform(id, { force = false, reason = '定时' } = {}) {
       return;
     }
     const changes = await applyResults(id, res.items, { firstRun: !prev.lastOkAt });
-    const warn = res.warnings?.length ? res.warnings.join('；') : '';
+    const warn = res.warnings?.length ? B(res.warnings.map((w) => pair(w)[0]).join('；'), res.warnings.map((w) => pair(w)[1]).join('; ')) : '';
     await setPlatformStatus(id, {
       windowId: res.attention?.windowId || null,
       rejectedStamp: null,
       status: warn ? 'partial' : 'ok',
-      message: warn || res.note || `${res.items.length} 篇`,
+      message: warn || res.note || B(`${res.items.length} 篇`, `${res.items.length} manuscript${res.items.length === 1 ? '' : 's'}`),
       running: false,
       lastRunAt: Date.now(),
       lastOkAt: Date.now(),
@@ -131,7 +136,7 @@ async function runPlatform(id, { force = false, reason = '定时' } = {}) {
     const code = e.code || 'error';
     const rejectedStamp = code === 'auth-rejected' ? credStamp(adapter, (await credentialSummary()).creds) : null;
     await setPlatformStatus(id, { status: code, message: e.message, running: false, lastRunAt: Date.now(), windowId: e.windowId || null, rejectedStamp });
-    await log(adapter.label, `失败（${code}）：${e.message}`, 'error');
+    await log(adapter.label, mapB(e.message, (t, l) => (l === 'zh' ? `失败（${code}）：${t}` : `Failed (${code}): ${t}`)), 'error');
     if (code === 'auth-rejected' || code === 'need-human') await notifyAttention(adapter, e);
     if (code === 'error') console.error(e);
   } finally {
@@ -173,28 +178,31 @@ async function notifyChanges(changes) {
   const s1Ids = new Set(Object.values(items).filter((i) => i.platform === 'scholarone').map((i) => baseManuscriptId(i.manuscriptId)));
   changes = changes.filter((c) => c.item.platform !== 'rex' || !s1Ids.has(baseManuscriptId(c.item.manuscriptId)));
   if (!changes.length) return;
+  await syncLang();
   const lines = changes.map((c) => {
     const it = c.item;
     const head = `${it.venue || it.platform} ${it.manuscriptId || ''}`.trim();
-    return c.type === 'new' ? `新稿件 ${head}：${it.status}` : `${head}：${c.from} → ${it.status}`;
+    return c.type === 'new' ? L(`新稿件 ${head}：${it.status}`, `New manuscript ${head}: ${it.status}`) : L(`${head}：${c.from} → ${it.status}`, `${head}: ${c.from} → ${it.status}`);
   });
+  const n = changes.length;
   chrome.notifications.create(`changes:${Date.now()}`, {
     type: 'basic',
     iconUrl: 'icons/128.png',
-    title: changes.length === 1 ? '投稿状态有变化' : `${changes.length} 篇投稿状态有变化`,
-    message: lines.slice(0, 4).join('\n') + (lines.length > 4 ? `\n……等 ${lines.length} 条` : ''),
+    title: n === 1 ? L('投稿状态有变化', 'Manuscript status changed') : L(`${n} 篇投稿状态有变化`, `${n} manuscripts changed status`),
+    message: lines.slice(0, 4).join('\n') + (lines.length > 4 ? L(`\n……等 ${lines.length} 条`, `\n…and ${lines.length - 4} more`) : ''),
     priority: 2,
   });
 }
 
 async function notifyAttention(adapter, e) {
   if (!(await getSettings()).notify) return;
+  await syncLang();
   const id = e.windowId ? `window:${e.windowId}` : `account:${familyOf(adapter.id).id}:${Date.now()}`;
   chrome.notifications.create(id, {
     type: 'basic',
     iconUrl: 'icons/128.png',
-    title: e.code === 'auth-rejected' ? `${ACCOUNT_LABEL[adapter.id]}的密码被拒绝了` : `${familyOf(adapter.id).name}的登录需要你处理`,
-    message: e.message + (e.windowId ? '\n点击打开那个窗口。' : '\n点击打开追踪面板处理。'),
+    title: e.code === 'auth-rejected' ? L(`${ACCOUNT_LABEL[adapter.id]}的密码被拒绝`, `${ACCOUNT_LABEL[adapter.id]}: password rejected`) : L(`${familyOf(adapter.id).name}登录需要处理`, `${familyOf(adapter.id).name}: sign-in needs attention`),
+    message: loc(e.message) + (e.windowId ? L('\n点击打开该窗口。', '\nClick to open the window.') : L('\n点击打开追踪面板处理。', '\nClick to open the dashboard.')),
     priority: 2,
     requireInteraction: !!e.windowId,
   });
@@ -391,8 +399,16 @@ async function saveCaptured(c) {
     await setCredential(id, c.username, c.password, 'captured');
     const label = { scholarone: 'ScholarOne', ieee: 'IEEE', paperplaza: 'PaperPlaza', tcct: 'TCCT' }[c.platform];
     await log('账号', `已记住 ${label}${id.includes(':') ? `（${c.site}）` : ''} 的账号（来自你的手动登录）`);
-    if ((await getSettings()).notify)
-      chrome.notifications.create(`captured:${Date.now()}`, { type: 'basic', iconUrl: 'icons/128.png', title: 'mituan 投稿追踪', message: `已记住 ${label} 的账号，之后会自动登录查询。`, priority: 0 });
+    if ((await getSettings()).notify) {
+      await syncLang();
+      chrome.notifications.create(`captured:${Date.now()}`, {
+        type: 'basic',
+        iconUrl: 'icons/128.png',
+        title: L('mituan 投稿追踪', 'mituan Manuscript Tracker'),
+        message: L(`已保存 ${label} 的账号，之后将自动登录查询。`, `Saved your ${label} account. It will be used to sign in automatically.`),
+        priority: 0,
+      });
+    }
   }
   // 这个密码刚刚登录成功：之前"被拒"的记录作废
   const adapterId = c.platform === 'ieee' ? 'rex' : c.platform;
@@ -530,7 +546,7 @@ async function onUiMessage(msg) {
       return { ok: true };
     case 'ui:saveCred': {
       const id = String(msg.id || '');
-      if (!/^(scholarone(:[\w-]+)?|ieee|paperplaza|tcct)$/.test(id) || !msg.username || !msg.password) return { ok: false, error: '参数不完整' };
+      if (!/^(scholarone(:[\w-]+)?|ieee|paperplaza|tcct)$/.test(id) || !msg.username || !msg.password) return { ok: false, error: L('参数不完整', 'Incomplete parameters') };
       await setCredential(id, msg.username.trim(), msg.password, 'manual');
       await log('账号', `已保存 ${id} 的账号`);
       const adapterId = id === 'ieee' ? 'rex' : id.split(':')[0];
@@ -562,7 +578,7 @@ async function onUiMessage(msg) {
     }
     case 'ui:webAdd': {
       const u = new URL(String(msg.url));
-      if (!/^https?:$/.test(u.protocol) || NATIVE_HOSTS.test(u.hostname)) return { ok: false, error: '这个网站不需要这样添加' };
+      if (!/^https?:$/.test(u.protocol) || NATIVE_HOSTS.test(u.hostname)) return { ok: false, error: L('这个网站不需要这样添加', 'This site does not need to be added this way') };
       const site = siteOf(u.href);
       const first = !(await getPlatformState('web')).pages?.[site];
       const page = await mergeWebRows(site, Array.isArray(msg.rows) ? msg.rows : [], { url: u.href.split('#')[0], journal: cut(msg.journal, 120), first });
@@ -627,6 +643,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
 chrome.storage.onChanged.addListener((changes) => {
   if (changes.items) updateBadge();
+  if (changes.settings) syncLang();
 });
 
 // 调试用：在扩展的 service worker 控制台里可以直接调用

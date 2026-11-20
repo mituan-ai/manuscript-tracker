@@ -1,8 +1,9 @@
 // 弹窗和追踪面板共用的工具。
 import { STAGES, stageOf, fmtDate } from '../lib/normalize.js';
 import { prepareItems, isActive, changedAt } from '../lib/view.js';
+import { L, loc, getLang } from '../lib/i18n.js';
 
-export { STAGES, stageOf, fmtDate };
+export { STAGES, stageOf, fmtDate, L, loc, getLang };
 export * from '../lib/view.js';
 
 export const send = (type, data = {}) => chrome.runtime.sendMessage({ type, ...data });
@@ -17,22 +18,31 @@ export const PLATFORM_LABEL = {
   paperplaza: 'PaperPlaza',
   tcct: 'TCCT',
   elsevier: 'Elsevier',
-  web: '其他投稿网站',
+  get web() {
+    return L('其他投稿网站', 'Other sites');
+  },
 };
 
-export const STATUS_TEXT = {
-  ok: '正常',
-  partial: '部分成功',
-  running: '查询中',
-  disabled: '未配置',
-  skipped: '已跳过',
-  'need-credential': '缺少账号',
-  'auth-rejected': '密码被拒',
-  'need-human': '需要你处理',
-  blocked: '被拦截',
-  'parse-error': '页面改版',
-  error: '出错',
+/** 每个键都是 getter，读取时按当前语言取。 */
+const bilingual = (table) => {
+  const o = {};
+  for (const [k, t] of Object.entries(table)) Object.defineProperty(o, k, { get: () => L(...t), enumerable: true });
+  return o;
 };
+
+export const STATUS_TEXT = bilingual({
+  ok: ['正常', 'OK'],
+  partial: ['部分成功', 'Partly OK'],
+  running: ['查询中', 'Checking'],
+  disabled: ['未配置', 'Not set up'],
+  skipped: ['已跳过', 'Skipped'],
+  'need-credential': ['缺少账号', 'No account'],
+  'auth-rejected': ['密码被拒', 'Password rejected'],
+  'need-human': ['需要处理', 'Needs attention'],
+  blocked: ['被拦截', 'Blocked'],
+  'parse-error': ['页面改版', 'Page changed'],
+  error: ['出错', 'Error'],
+});
 
 export function statusTone(p) {
   if (!p) return 'idle';
@@ -44,14 +54,16 @@ export function statusTone(p) {
 }
 
 export function ago(ms) {
-  if (!ms) return '从未';
+  if (!ms) return L('从未', 'never');
   const m = Math.round((Date.now() - ms) / 60000);
-  if (m < 1) return '刚刚';
-  if (m < 60) return `${m} 分钟前`;
+  if (m < 1) return L('刚刚', 'just now');
+  if (m < 60) return L(`${m} 分钟前`, `${m} min ago`);
   const h = Math.round(m / 60);
-  if (h < 48) return `${h} 小时前`;
-  return `${Math.round(h / 24)} 天前`;
+  if (h < 48) return L(`${h} 小时前`, `${h} h ago`);
+  return L(`${Math.round(h / 24)} 天前`, `${Math.round(h / 24)} d ago`);
 }
+
+export const untitled = () => L('（无标题）', '(Untitled)');
 
 export const days = (ms) => (ms ? Math.max(0, Math.floor((Date.now() - ms) / 86400000)) : null);
 
@@ -68,15 +80,15 @@ export function msRow(it, { interactive = false, compact = false } = {}) {
   const meta = [
     compact && it.manuscriptId && `<span class="mid">${esc(it.manuscriptId)}</span>`,
     esc(cleanStatus(it.status)),
-    it.resubmittedAs && `已重投为 ${esc(it.resubmittedAs)}`,
-    active && waited != null && `已投 ${waited} 天`,
-    !active && it.decidedAt && `${fmtDate(it.decidedAt)} 决定`,
-    ch && `<span class="${Date.now() - ch < 3 * DAY ? 'hot' : ''}">${ago(ch)}有变化</span>`,
+    it.resubmittedAs && L(`已重投为 ${esc(it.resubmittedAs)}`, `Resubmitted as ${esc(it.resubmittedAs)}`),
+    active && waited != null && L(`已投 ${waited} 天`, waited ? `Submitted ${waited} day${waited === 1 ? '' : 's'} ago` : 'Submitted today'),
+    !active && it.decidedAt && L(`${fmtDate(it.decidedAt)} 决定`, `Decided ${fmtDate(it.decidedAt)}`),
+    ch && `<span class="${Date.now() - ch < 3 * DAY ? 'hot' : ''}">${L(`${ago(ch)}有变化`, `Changed ${ago(ch)}`)}</span>`,
   ].filter(Boolean);
   const attrs = interactive ? ` tabindex="0" role="button" aria-expanded="false"` : '';
   return `<div class="ms${compact ? ' compact' : ''}${active ? '' : ' done'}${it.unseen ? ' unseen' : ''}" data-key="${esc(it.key)}"${attrs}>
     ${stageBadge(it.stage)}
-    <div class="t" title="${esc(it.title)}">${it.unseen ? '<span class="new">新</span>' : ''}${esc(it.title || '（无标题）')}</div>
+    <div class="t" title="${esc(it.title)}">${it.unseen ? `<span class="new">${L('新', 'New')}</span>` : ''}${esc(it.title || untitled())}</div>
     ${compact ? '' : `<span class="id">${esc(it.manuscriptId || '')}</span>`}
     <div class="meta">${meta.join(' · ')}</div>
   </div>`;
@@ -84,7 +96,8 @@ export function msRow(it, { interactive = false, compact = false } = {}) {
 
 /** 期刊卡片的头部：全名、缩写、稿件数。 */
 export function journalHead(g) {
-  const count = g.active ? `${g.active} 篇进行中` : `${g.items.length} 篇`;
+  const n = g.items.length;
+  const count = g.active ? L(`${g.active} 篇进行中`, `${g.active} in progress`) : L(`${n} 篇`, `${n} manuscript${n === 1 ? '' : 's'}`);
   return `<header><h3 title="${esc(g.name)}">${esc(g.name)}</h3>${g.abbr ? `<span class="abbr">${esc(g.abbr)}</span>` : ''}<span class="count">${count}</span></header>`;
 }
 
@@ -116,7 +129,8 @@ export function peopleText(it) {
 export function reviewText(it) {
   const r = it.extra?.reviewSummary;
   if (!r) return '';
-  return `审稿邀请 ${r.ReviewInvitationsSent ?? '?'} · 接受 ${r.ReviewInvitationsAccepted ?? '?'} · 完成 ${r.ReviewsCompleted ?? '?'}`;
+  const [sent, accepted, done] = [r.ReviewInvitationsSent, r.ReviewInvitationsAccepted, r.ReviewsCompleted].map((x) => x ?? '?');
+  return L(`审稿邀请 ${sent} · 接受 ${accepted} · 完成 ${done}`, `Reviewers invited ${sent} · accepted ${accepted} · completed ${done}`);
 }
 
 /** 导出成 投稿记录.md 的风格：按论文分组，每次投稿一个代码块。 */
@@ -129,16 +143,17 @@ export function toMarkdown(itemsObj) {
     if (!groups.has(k)) groups.set(k, []);
     groups.get(k).push(it);
   }
-  const out = [`<!-- mituan 投稿追踪导出 ${new Date().toLocaleString()} -->`, ''];
+  const out = [L(`<!-- mituan 投稿追踪导出 ${new Date().toLocaleString()} -->`, `<!-- mituan Manuscript Tracker export ${new Date().toLocaleString()} -->`), ''];
   for (const list of groups.values()) {
     list.sort((a, b) => (a.submittedAt || a.firstSeenAt) - (b.submittedAt || b.firstSeenAt));
-    out.push(`### ${list[0].title || '（无标题）'}`);
+    out.push(`### ${list[0].title || untitled()}`);
     list.forEach((it, i) => {
-      out.push(`#### ${i + 1}. ${it.venue || PLATFORM_LABEL[it.platform]}（${it.manuscriptId || '—'}）`, '```');
+      const venue = it.venue || PLATFORM_LABEL[it.platform];
+      out.push(L(`#### ${i + 1}. ${venue}（${it.manuscriptId || '—'}）`, `#### ${i + 1}. ${venue} (${it.manuscriptId || '—'})`), '```');
       if (it.people?.length) out.push(peopleText(it));
       if (it.submittedAt) out.push(`${fmtDate(it.submittedAt)}: Submitted`);
-      for (const h of it.history || []) out.push(`${fmtDate(h.at)}: ${h.status}${h.initial ? '（首次记录）' : ''}`);
-      if (it.decidedAt && !(it.history || []).some((h) => fmtDate(h.at) === fmtDate(it.decidedAt))) out.push(`${fmtDate(it.decidedAt)}: 决定日期`);
+      for (const h of it.history || []) out.push(`${fmtDate(h.at)}: ${h.status}${h.initial ? L('（首次记录）', ' (first recorded)') : ''}`);
+      if (it.decidedAt && !(it.history || []).some((h) => fmtDate(h.at) === fmtDate(it.decidedAt))) out.push(`${fmtDate(it.decidedAt)}: ${L('决定日期', 'Decision date')}`);
       const rv = reviewText(it);
       if (rv) out.push(rv);
       out.push('```');
@@ -152,14 +167,16 @@ export function toMarkdown(itemsObj) {
 
 export const BRAND = {
   name: 'mituan',
-  product: '投稿追踪',
+  get product() {
+    return L('投稿追踪', 'Manuscript Tracker');
+  },
   homepage: 'https://tracker.eonmaze.com/', // 产品官网（顶部 logo 链接）
   author: 'https://mituan-ai.github.io/', // mituan 个人主页
   github: 'https://github.com/mituan-ai/manuscript-tracker',
 };
 
 export const footerHtml = () =>
-  `Crafted with ♥ by <a href="${BRAND.author}" target="_blank"><b>mituan</b></a> · 免费使用 · <a href="${BRAND.homepage}" target="_blank">官网</a> · <a href="${BRAND.github}" target="_blank">GitHub</a> · <a href="${BRAND.github}/issues" target="_blank">反馈问题</a>`;
+  `© <a href="${BRAND.author}" target="_blank"><b>mituan</b></a> · <a href="${BRAND.homepage}" target="_blank">${L('官网', 'Website')}</a> · <a href="${BRAND.github}" target="_blank">GitHub</a> · <a href="${BRAND.github}/issues" target="_blank">${L('问题反馈', 'Report an issue')}</a>`;
 
 /** 阶段徽章：文字和边框用阶段色，背景是同色的淡色。 */
 export function stageBadge(stage) {
@@ -173,7 +190,7 @@ const THEME_ICONS = {
   dark: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
   light: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
 };
-const THEME_TITLE = { system: '跟随系统', dark: '暗色', light: '亮色' };
+const THEME_TITLE = bilingual({ system: ['跟随系统', 'Follow system'], dark: ['暗色', 'Dark'], light: ['亮色', 'Light'] });
 
 export function currentTheme() {
   try {
@@ -195,7 +212,7 @@ export function setTheme(t) {
 
 export function themeSwitchHtml() {
   const cur = currentTheme();
-  return `<span class="theme" role="group" aria-label="主题">${Object.keys(THEME_ICONS)
+  return `<span class="theme" role="group" aria-label="${L('主题', 'Theme')}">${Object.keys(THEME_ICONS)
     .map(
       (t) => `<button type="button" data-t="${t}" class="${t === cur ? 'on' : ''}" title="${THEME_TITLE[t]}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${THEME_ICONS[t]}</svg></button>`,
     )
@@ -206,6 +223,49 @@ export function bindThemeSwitch(root = document) {
   root.addEventListener('click', (e) => {
     const b = e.target.closest?.('.theme button');
     if (b) setTheme(b.dataset.t);
+  });
+}
+
+/** 静态 HTML 的属性（title、placeholder、aria-label）：中文写在属性里，英文写在 data-en-<属性>，英文界面时替换。 */
+export function localizeAttrs(root = document) {
+  if (getLang() !== 'en') return;
+  for (const el of root.querySelectorAll('*'))
+    for (const a of [...el.attributes]) if (a.name.startsWith('data-en-')) el.setAttribute(a.name.slice(8), a.value);
+}
+
+/* 语言：auto（跟随系统）/ zh / en，存在 localStorage mt-lang（ui/theme.js 在绘制前读取）和 settings.lang（后台通知用）。
+   地球图标来自 Lucide（ISC 许可）：globe */
+export function currentLangPref() {
+  try {
+    const v = localStorage.getItem('mt-lang');
+    return v === 'zh' || v === 'en' ? v : 'auto';
+  } catch {
+    return 'auto';
+  }
+}
+
+export function langSwitchHtml() {
+  const cur = currentLangPref();
+  const btn = (lg, title, inner) => `<button type="button" data-lg="${lg}" class="${lg === cur ? 'on' : ''}" title="${title}" aria-pressed="${lg === cur}">${inner}</button>`;
+  return `<span class="langsw" role="group" aria-label="Language">${[
+    btn('auto', L('跟随系统语言', 'Follow system language'), '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>'),
+    btn('zh', '中文', '<span class="glyph">中</span>'),
+    btn('en', 'English', '<span class="glyph">EN</span>'),
+  ].join('')}</span>`;
+}
+
+/** 切换语言：记下偏好，同步给后台，然后重新加载页面（静态文字和动态文字一起切换）。 */
+export function bindLangSwitch(root = document) {
+  root.addEventListener('click', async (e) => {
+    const b = e.target.closest?.('.langsw button');
+    if (!b || b.dataset.lg === currentLangPref()) return;
+    const lg = b.dataset.lg;
+    try {
+      if (lg === 'auto') localStorage.removeItem('mt-lang');
+      else localStorage.setItem('mt-lang', lg);
+    } catch {}
+    await send('ui:saveSettings', { patch: { lang: lg } }).catch(() => {});
+    location.reload();
   });
 }
 
