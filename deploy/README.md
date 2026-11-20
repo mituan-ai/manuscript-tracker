@@ -17,6 +17,6 @@
 
 1. 把扩展打包，放到 `download/manuscript-tracker.zip`（文件名不带版本号，用户更新时解压出来的文件夹名不变），另存一份 `manuscript-tracker-latest.zip` 兼容旧链接；
 2. 生成页面，把版本号和 zip 大小填进下载区；
-3. 上传到 `/var/www/manuscript-tracker.new`，整体替换线上目录，旧版本留在 `.old` 目录，可以直接改回来回滚。
+3. 上传到 `/var/www/manuscript-tracker.new`，整体替换线上目录，不保留旧版本。需要回滚时，用 git 检出旧版本后重新运行 `npm run deploy:site`。
 
 服务器和目录可以用环境变量 `SITE_HOST`、`SITE_DIR` 覆盖。
