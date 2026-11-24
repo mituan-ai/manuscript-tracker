@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-0.5.0-2b50c0" alt="版本 0.5.0">
+  <img src="https://img.shields.io/badge/version-0.5.1-2b50c0" alt="版本 0.5.1">
   <img src="https://img.shields.io/badge/Edge%20%7C%20Chrome-Manifest%20V3-9c7633" alt="Edge 和 Chrome，Manifest V3">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-596070" alt="许可证 PolyForm Noncommercial 1.0.0"></a>
 </p>
@@ -67,6 +67,7 @@ IEEE TAC、RA-L 等通过 PaperCept 投稿的 IEEE 期刊暂不包括。你的�
 
 - 「开发人员模式」要一直开着，关掉后浏览器会停用这个扩展。Edge 偶尔会弹出「关闭开发人员模式下的扩展」，请点「2 周后提醒」。
 - 更新：删除旧的 zip，下载新版后同样解压到原来的位置并替换文件，再在扩展页点「重新加载」。账号和记录都会保留。
+- 从 0.5.0 或更早版本升级到 0.5.1 需要重装一次：这一版固定了扩展 ID，旧版的数据带不过来。在扩展页点旧版卡片上的「移除」，按上面第 3 步重新选择文件夹，再连接一次账号。以后的更新照上一条操作即可，账号和记录会保留。
 
 ## 使用
 

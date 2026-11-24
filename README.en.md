@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-0.5.0-2b50c0" alt="Version 0.5.0">
+  <img src="https://img.shields.io/badge/version-0.5.1-2b50c0" alt="Version 0.5.1">
   <img src="https://img.shields.io/badge/Edge%20%7C%20Chrome-Manifest%20V3-9c7633" alt="Edge and Chrome, Manifest V3">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-596070" alt="License: PolyForm Noncommercial 1.0.0"></a>
 </p>
@@ -67,6 +67,7 @@ When the extension is installed, the browser opens a page that says it was insta
 
 - Keep "Developer mode" on. If you turn it off, the browser disables the extension. If Edge asks whether to turn off extensions in developer mode, choose to be reminded later.
 - To update, delete the old zip, download the new one, extract it to the same place and replace the files, then click "Reload" on the extensions page. Your accounts and records are kept.
+- Updating from 0.5.0 or earlier to 0.5.1 needs a one-time reinstall. This version fixes the extension ID, so data from the old version can't carry over. Click "Remove" on the old card on the extensions page, select the folder again as in step 3, and connect your accounts once more. Later updates work as described above and keep your accounts and records.
 
 ## Usage
 

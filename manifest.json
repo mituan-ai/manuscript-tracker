@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "__MSG_extName__",
   "short_name": "mituan",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApr0rAQI0/8DIMRX61aE1eBuI1Dg1kC8/QcO6QAKtuCVU/vP5MjN18KMoVTouaV6gfvm0skTydywh+Fd2/EwlIzKXsgDt+GJohNmr4nyClXzFPcerjovELFuJvIJ4KYP4jvJtLuruZBFXyCGUTP8s3QMaM241/lFlngx0ij2XCsbC5vbIJzCHr0tZZJPD70DXggD3TfFGYQAztrPqqmuSNJkdz25XT4ztx1tW/Alc3Oa25O9VbRzgzUmAHHne5Tl2Pk1Hd5HHb0mFjSNW8OeE4cbiMrNdEm8i5lAcM8mtD9ulFW6eojIOzcG//C5jDB9hrt1DX0Y9DaaPGhwp+WjucQIDAQAB",
   "homepage_url": "https://tracker.eonmaze.com/",
   "description": "__MSG_extDescription__",
