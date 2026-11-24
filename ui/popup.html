@@ -6,6 +6,8 @@
   <script src="theme.js"></script>
   <link rel="stylesheet" href="style.css">
   <style>
+    /* 弹窗宽度固定、内容靠左，滚动条出现时浏览器会把弹窗加宽，内容不会移动；这里不预留滚动条位置，免得右边总空着一条 */
+    html { scrollbar-gutter: auto; overflow-y: auto; }
     body { width: 460px; max-height: 600px; overflow-x: hidden; }
     /* 顶栏：与页面同一张纸，底部双细线（同追踪面板） */
     .top { display: flex; align-items: center; gap: 6px; padding: 12px 14px; position: sticky; top: 0; z-index: 2; border-bottom: 3px double var(--line-strong);

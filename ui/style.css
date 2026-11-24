@@ -67,6 +67,10 @@
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html, body { margin: 0; }
+/* 滚动条出现或消失时页面不左右跳：始终给竖向滚动条留出位置（Chrome / Edge 94+、Firefox 97+、Safari 18.2+）。
+   滚动条悬浮在内容上的系统（macOS 默认、手机）不占位，这条规则也就不起作用。不支持的旧浏览器退回到一直显示滚动条。 */
+html { scrollbar-gutter: stable; }
+@supports not (scrollbar-gutter: stable) { html { overflow-y: scroll; } }
 body {
   font: 14px/1.6 var(--sans);
   color: var(--text); background-color: var(--bg); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums;
