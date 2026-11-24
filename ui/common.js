@@ -8,6 +8,18 @@ export * from '../lib/view.js';
 
 export const send = (type, data = {}) => chrome.runtime.sendMessage({ type, ...data });
 
+/** 内容变了才替换 innerHTML。查询期间后台会频繁写存储，每次都把期刊卡片整块重建会让卡片闪烁（尤其是带 backdrop-filter 的卡片）。
+ *  同一个元素要一直用它来写，不要再直接赋 innerHTML，否则记下的内容会过期。 */
+const lastHtml = new WeakMap();
+export function setHtml(el, html) {
+  if (!el || lastHtml.get(el) === html) return;
+  el.innerHTML = html;
+  lastHtml.set(el, html);
+}
+
+/** 这次存储变化只有运行日志（查询的每一步都会写一条），不影响稿件和状态的显示。 */
+export const onlyLogs = (changes) => Object.keys(changes).every((k) => k === 'logs');
+
 export const esc = (s) =>
   String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 

@@ -1,5 +1,5 @@
 // 弹窗：一眼看到各期刊里进行中、以及 30 天内刚有结果的稿件。账号、全部稿件和设置在追踪面板里。
-import { send, esc, ago, prepareItems, isActive, isRecentResult, groupByJournal, problems, lastCheckedAt, msRow, journalHead, ICON, openPanel, BRAND, footerHtml, L, localizeAttrs } from './common.js';
+import { send, esc, ago, prepareItems, isActive, isRecentResult, groupByJournal, problems, lastCheckedAt, msRow, journalHead, ICON, openPanel, BRAND, footerHtml, L, localizeAttrs, setHtml, onlyLogs } from './common.js';
 import { scanPage, siteOf, originPattern, NATIVE_HOSTS } from '../lib/scan.js';
 
 const $ = (s) => document.querySelector(s);
@@ -19,34 +19,42 @@ async function render() {
   $('#refresh').disabled = running;
 
   // 只提示要你动手的；暂时失败的会自动重试，在追踪面板里能看到
-  $('#alerts').innerHTML = problems(s).filter((p) => p.level === 'action').map(alertHtml).join('');
+  setHtml($('#alerts'), problems(s).filter((p) => p.level === 'action').map(alertHtml).join(''));
 
   const all = prepareItems(s.items);
   const shown = all.filter((it) => isActive(it) || isRecentResult(it));
   const active = all.filter(isActive).length;
   const groups = groupByJournal(shown);
   const checked = lastCheckedAt(s);
-  $('#summary').innerHTML = all.length
+  setHtml(
+    $('#summary'),
+    all.length
     ? `<span>${L(`<b>${active}</b> 篇进行中${groups.length ? ` · ${groups.length} 本期刊` : ''}`, `<b>${active}</b> in progress${groups.length ? ` · ${groups.length} journal${groups.length === 1 ? '' : 's'}` : ''}`)}</span><span class="when">${running ? L('正在查询…', 'Checking…') : checked ? L(`${ago(checked)}查询`, `Checked ${ago(checked)}`) : ''}</span>`
-    : '';
+      : '',
+  );
 
   if (!all.length) {
     const connected = Object.keys(s.creds.creds).length || s.creds.elsevierCount || s.web.length;
-    $('#list').innerHTML = connected
+    setHtml(
+      $('#list'),
+      connected
       ? `<div class="card welcome"><b>${running ? L('正在查询你的稿件…', 'Checking your manuscripts…') : L('还没有查到稿件', 'No manuscripts found yet')}</b><p>${running ? L('首次查询通常需要几十秒。', 'The first check can take up to a minute.') : L('点右上角的刷新按钮立即查询。', 'Click the refresh button at the top right to check now.')}</p></div>`
       : `<div class="card welcome"><img src="logo.svg" alt=""><b>${L('所有投稿，一处追踪', 'All your submissions in one place')}</b>
           <p>${L('连接一次投稿账号，之后自动查询各期刊的审稿状态，有变化就通知你。', 'Connect your submission accounts once. Review status is then checked automatically and you are notified of changes.')}</p>
           <button class="primary" data-panel="#accounts">${L('连接投稿账号', 'Connect accounts')}</button>
-          <p class="small">${L('也可以直接去投稿网站正常登录一次，或在任一投稿网站的稿件列表页点这个图标添加。', 'You can also sign in on the submission website once, or click this icon on any manuscript list page to add it.')}</p></div>`;
+          <p class="small">${L('也可以直接去投稿网站正常登录一次，或在任一投稿网站的稿件列表页点这个图标添加。', 'You can also sign in on the submission website once, or click this icon on any manuscript list page to add it.')}</p></div>`,
+    );
     return;
   }
   if (!groups.length) {
-    $('#list').innerHTML = `<div class="card welcome"><b>${L('没有进行中的稿件', 'No manuscripts in progress')}</b><p>${L(`全部 ${all.length} 篇稿件可在追踪面板中查看。`, `All ${all.length} manuscript${all.length === 1 ? '' : 's'} can be viewed in the dashboard.`)}</p><button class="sm" data-panel="#all">${L('查看全部稿件', 'View all manuscripts')}</button></div>`;
+    setHtml($('#list'), `<div class="card welcome"><b>${L('没有进行中的稿件', 'No manuscripts in progress')}</b><p>${L(`全部 ${all.length} 篇稿件可在追踪面板中查看。`, `All ${all.length} manuscript${all.length === 1 ? '' : 's'} can be viewed in the dashboard.`)}</p><button class="sm" data-panel="#all">${L('查看全部稿件', 'View all manuscripts')}</button></div>`);
     return;
   }
-  $('#list').innerHTML =
+  setHtml(
+    $('#list'),
     groups.map((g) => `<section class="journal">${journalHead(g)}${g.items.map((it) => msRow(it, { compact: true })).join('')}</section>`).join('') +
-    `<div class="more"><a href="#" data-panel="#all">${L(`查看全部 ${all.length} 篇稿件`, `View all ${all.length} manuscript${all.length === 1 ? '' : 's'}`)}</a></div>`;
+    `<div class="more"><a href="#" data-panel="#all">${L(`查看全部 ${all.length} 篇稿件`, `View all ${all.length} manuscript${all.length === 1 ? '' : 's'}`)}</a></div>`,
+  );
 }
 
 // ───────── 当前页面：其他投稿网站的稿件列表、Elsevier 追踪页 ─────────
@@ -177,7 +185,8 @@ document.body.addEventListener('click', (e) => {
 });
 
 let timer;
-chrome.storage.onChanged.addListener(() => {
+chrome.storage.onChanged.addListener((changes) => {
+  if (onlyLogs(changes)) return; // 运行日志不影响弹窗的内容，见追踪面板里的说明
   clearTimeout(timer);
   timer = setTimeout(render, 300);
 });

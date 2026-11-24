@@ -2,7 +2,7 @@
 import {
   send, esc, ago, fmtDate, STAGES, stageOf, prepareItems, isActive, groupByJournal, FILTERS, FAMILIES, problems, lastCheckedAt,
   msRow, journalHead, cleanStatus, peopleText, reviewText, toMarkdown, ICON, BRAND, footerHtml, themeSwitchHtml, bindThemeSwitch, toast, diagnostics,
-  L, loc, langSwitchHtml, bindLangSwitch, currentLangPref, localizeAttrs,
+  L, loc, langSwitchHtml, bindLangSwitch, currentLangPref, localizeAttrs, setHtml, onlyLogs,
 } from './common.js';
 import { originPattern } from '../lib/scan.js';
 
@@ -92,17 +92,17 @@ function renderAlerts() {
     .join('');
   if (warn.length)
     html += `<div class="banner warn"><span class="ico">i</span><div class="grow"><b>${esc(warn.map((w) => w.title).join(L('；', '; ')))}</b><div class="small">${L('稍后将自动重试，通常无需处理。', 'It will be retried automatically; usually no action is needed.')}</div></div><button class="sm ghost" data-goto="#accounts/${esc(warn[0].family)}">${L('查看', 'View')}</button></div>`;
-  $('#alerts').innerHTML = html;
+  setHtml($('#alerts'), html);
 }
 
 function renderTiles(items) {
   const searching = !!$('#search').value.trim();
-  $('#tiles').innerHTML = Object.entries(FILTERS)
+  setHtml($('#tiles'), Object.entries(FILTERS)
     .map(([k, f]) => {
       const n = items.filter(f.test).length;
       return `<button type="button" class="tile${k === filter && !searching ? ' on' : ''}${n ? ' has' : ''}" data-filter="${k}" aria-pressed="${k === filter && !searching}"><b>${n}</b><span>${f.label}</span></button>`;
     })
-    .join('');
+    .join(''));
 }
 
 function timelineHtml(it) {
@@ -145,7 +145,7 @@ function renderManuscripts() {
   $('#dash').hidden = fresh;
   renderAlerts();
   if (fresh) {
-    $('#journals').innerHTML = '';
+    setHtml($('#journals'), '');
     return;
   }
   renderTiles(all);
@@ -162,10 +162,10 @@ function renderManuscripts() {
       : !all.length
         ? state.running.length ? L('正在查询稿件，首次查询通常需要几十秒…', 'Checking manuscripts. The first check can take up to a minute…') : L('尚未查到稿件，可点击右上角「立即查询」', 'No manuscripts found yet. Click Check now at the top right.')
         : { active: L('没有进行中的稿件', 'No manuscripts in progress'), revision: L('没有需要修改的稿件', 'No manuscripts awaiting revision'), results: L('最近 30 天没有新的结果', 'No decisions in the last 30 days'), all: '' }[filter];
-    $('#journals').innerHTML = `<div class="card empty">${esc(why)}</div>`;
+    setHtml($('#journals'), `<div class="card empty">${esc(why)}</div>`);
     return;
   }
-  $('#journals').innerHTML = groupByJournal(items)
+  setHtml($('#journals'), groupByJournal(items)
     .map(
       (g) =>
         `<section class="journal">${journalHead(g)}${g.items
@@ -175,7 +175,7 @@ function renderManuscripts() {
           })
           .join('')}</section>`,
     )
-    .join('');
+    .join(''));
 }
 
 function toggleRow(row) {
@@ -602,8 +602,16 @@ $('#clearAll').addEventListener('click', async () => {
 /** 语言偏好以本页的 localStorage 为准（theme.js 绘制前读它），同步给后台用于通知。 */
 const syncLangSetting = () => send('ui:saveSettings', { patch: { lang: currentLangPref() } });
 
-let timer;
-chrome.storage.onChanged.addListener(() => {
+let timer, logTimer;
+chrome.storage.onChanged.addListener((changes) => {
+  // 查询的每一步都会写一条运行日志：这种变化只刷新展开着的日志，不重绘整个面板（否则查询期间每秒重建一两次期刊卡片，会闪）
+  if (onlyLogs(changes)) {
+    if (!$('#view-settings').hidden && $('#logsBox').open) {
+      clearTimeout(logTimer);
+      logTimer = setTimeout(renderLogs, 400);
+    }
+    return;
+  }
   clearTimeout(timer);
   timer = setTimeout(render, 400);
 });
