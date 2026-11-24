@@ -9,6 +9,8 @@ mkdir -p "$OUT/download"
 cp -r "$ROOT/site/." "$OUT/"
 cp "$ROOT/ui/style.css" "$OUT/base.css"
 cp "$ROOT/ui/theme.js" "$OUT/theme.js"
+# base.css 里的 @font-face 用相对路径 fonts/，字体放在站点根目录的 fonts/ 下
+cp -r "$ROOT/ui/fonts" "$OUT/fonts"
 cp "$ROOT/ui/logo.svg" "$OUT/logo.svg"
 cp "$ROOT/icons/128.png" "$OUT/icon-128.png"
 ZIP="$(bash "$ROOT/scripts/package.sh")"

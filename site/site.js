@@ -1,4 +1,4 @@
-// 官网交互：主题和语言切换（与扩展共用 mt-theme、mt-lang）、按访问者的浏览器选好安装说明、复制扩展页地址。
+// 官网交互：主题和语言切换（与扩展共用 mt-theme、mt-lang）、按访问者的浏览器选好安装说明、复制扩展页地址、滚动浮现。
 // 静态的双语文字写在 index.html 里（data-l="zh" / data-l="en"），这里只处理标题、按钮、图片等需要脚本填写的部分。
 (() => {
   const $ = (s, el = document) => el.querySelector(s);
@@ -223,4 +223,22 @@
   }
   browser = detected;
   applyLang();
+
+  // 滚动到时浮现：章节标题、卡片依次淡入上移。不支持 IntersectionObserver 或要求减少动效时什么都不做，内容直接显示
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    html.classList.add('js-reveal');
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    }, { rootMargin: '0px 0px -6% 0px' });
+    $$('.head, .feat, .pub, .systab-wrap, .legend, .secure, .browsers, .panel, .faq').forEach((el) => {
+      // 同一行的卡片错开一点出现
+      if (el.matches('.feat, .pub')) el.style.setProperty('--i', [...el.parentElement.children].indexOf(el));
+      el.classList.add('reveal');
+      io.observe(el);
+    });
+  }
 })();
