@@ -172,6 +172,4 @@ npm run deploy:site  # 发布官网到服务器，首次部署见 deploy/README.
 
 本项目采用 [PolyForm Noncommercial 1.0.0](LICENSE) 许可。个人学习和研究，以及高校、科研机构、公益组织等非商业用途，都可以免费使用、修改和分发，分发时需要保留许可证和版权声明。不允许任何商业用途。
 
-这个许可限制了商业使用，所以不属于 OSI 定义的开源许可证，我们称之为「源码公开」。
-
 <p align="center"><sub>由 <a href="https://mituan-ai.github.io/">谜团 mituan</a> 出品 · <a href="https://tracker.eonmaze.com/">tracker.eonmaze.com</a></sub></p>

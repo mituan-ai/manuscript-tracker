@@ -172,6 +172,4 @@ Parser tests that use real pages read them from `test/fixtures.local/`. Those pa
 
 This project is licensed under [PolyForm Noncommercial 1.0.0](LICENSE). Personal study and research, and noncommercial use by universities, research institutions, charities and similar organizations, may use, modify and distribute it for free; distributions must keep the license and copyright notice. Commercial use of any kind is not permitted.
 
-Because it restricts commercial use, this license is not an open source license as defined by the OSI; we call the project "source-available".
-
 <p align="center"><sub>Made by <a href="https://mituan-ai.github.io/">mituan</a> · <a href="https://tracker.eonmaze.com/">tracker.eonmaze.com</a></sub></p>
