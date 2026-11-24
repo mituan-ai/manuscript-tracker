@@ -20,3 +20,9 @@
 3. 上传到 `/var/www/manuscript-tracker.new`，整体替换线上目录，不保留旧版本。需要回滚时，用 git 检出旧版本后重新运行 `npm run deploy:site`。
 
 服务器和目录可以用环境变量 `SITE_HOST`、`SITE_DIR` 覆盖。
+
+## 扩展 ID 和商店包
+
+`manifest.json` 里的 `key` 固定了手动安装时的扩展 ID（`dohmncmimffpejlgnfellofohdnngppm`），与解压到哪个文件夹无关。用户更新时，账号和记录都存在这个 ID 下，所以 `key` 不能改，也不能删。对应的私钥不在仓库里，由维护者另行保管，只有签名 CRX 时才用得到。
+
+扩展商店不接受带 `key` 的包，商店会自己分配 ID。上架或更新 Edge 加载项时运行 `npm run package:store`，上传生成的 `dist/manuscript-tracker-<版本>-store.zip`。从商店安装的扩展和手动安装的是两个不同的扩展，数据不互通。
