@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="76" height="24" viewBox="0 0 76 24" role="img" aria-label="待验证">
 <title>待验证</title>
-<rect width="76" height="24" rx="12" fill="#b45309"/>
+<rect width="76" height="24" rx="12" fill="#b7791f"/>
 <circle cx="13" cy="12" r="3.5" fill="#fff" fill-opacity=".9"/>
 <text x="49.0" y="16.5" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif" font-size="13" font-weight="700" fill="#fff">待验证</text>
 </svg>
