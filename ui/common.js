@@ -190,10 +190,10 @@ export const BRAND = {
 export const footerHtml = () =>
   `© <a href="${BRAND.author}" target="_blank"><b>mituan</b></a> · <a href="${BRAND.homepage}" target="_blank">${L('官网', 'Website')}</a> · <a href="${BRAND.github}" target="_blank">GitHub</a> · <a href="${BRAND.github}/issues" target="_blank">${L('问题反馈', 'Report an issue')}</a>`;
 
-/** 阶段徽章：文字和边框用阶段色，背景是同色的淡色。 */
+/** 阶段徽章：只传阶段色，文字、底色和边框的深浅由 style.css 按亮暗主题混出来。 */
 export function stageBadge(stage) {
   const st = STAGES[stage] || STAGES.unknown;
-  return `<span class="stage" style="color:${st.color};background:${st.color}1f;border-color:${st.color}55">${st.label}</span>`;
+  return `<span class="stage" style="--sc:${st.color}">${st.label}</span>`;
 }
 
 /* 主题：system / dark / light，与 mituan 控制台共用 mt-theme。图标来自 Lucide（ISC 许可）：monitor / moon / sun */

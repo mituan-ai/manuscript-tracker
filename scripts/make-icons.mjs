@@ -5,7 +5,8 @@ import { writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const OUT = fileURLToPath(new URL('../icons/', import.meta.url));
-const STOPS = [[0, [0x1d, 0x4e, 0xd8]], [0.6, [0x0e, 0xa5, 0xe9]], [1, [0x22, 0xd3, 0xee]]];
+const STOPS = [[0, [0x2f, 0x64, 0x94]], [0.55, [0x1f, 0x4e, 0x79]], [1, [0x17, 0x3b, 0x5e]]];
+const INK = [0xff, 0xfd, 0xf8], GILT = [0xd9, 0xb4, 0x6c];
 const M = [[15, 46], [15, 19], [23.5, 19], [32, 31.5], [40.5, 19], [49, 19], [49, 46]];
 const LEGS = [[[24, 46], [24, 37]], [[40, 46], [40, 37]]];
 
@@ -29,12 +30,12 @@ function inRoundRect(x, y, s, r) {
 function shade(x, y) {
   if (!inRoundRect(x, y, 64, 16)) return [0, 0, 0, 0];
   let c = grad((x + y) / 128);
-  const over = (a) => (c = c.map((v) => v + (255 - v) * a));
+  const over = (a, to = INK) => (c = c.map((v, k) => v + (to[k] - v) * a));
   let dm = Infinity;
   for (let i = 1; i < M.length; i++) dm = Math.min(dm, segDist(x, y, M[i - 1], M[i]));
   if (dm <= 2.5) over(1);
-  else if (LEGS.some(([a, b]) => segDist(x, y, a, b) <= 1.6)) over(0.55);
-  if (Math.hypot(x - 32, y - 44.5) <= 3.4) over(1);
+  else if (LEGS.some(([a, b]) => segDist(x, y, a, b) <= 1.6)) over(0.5);
+  if (Math.hypot(x - 32, y - 44.5) <= 3.4) over(1, GILT);
   return [...c, 1];
 }
 

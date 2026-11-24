@@ -191,5 +191,9 @@ chrome.storage.onChanged.addListener((changes) => {
   timer = setTimeout(render, 300);
 });
 
-render().then(() => setTimeout(() => send('ui:markSeen'), 2500));
+render().then(() => {
+  // 入场动画只在打开时播放一次；之后内容更新时卡片不再重新浮现
+  setTimeout(() => document.documentElement.classList.add('settled'), 700);
+  setTimeout(() => send('ui:markSeen'), 2500);
+});
 send('ui:state').then((s) => s && detectHere(s)).catch(() => {});

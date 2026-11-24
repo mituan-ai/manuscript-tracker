@@ -622,6 +622,8 @@ addEventListener('hashchange', route);
   if (state && (state.settings.lang || 'auto') !== currentLangPref()) syncLangSetting();
   for (const it of Object.values(state?.items || {})) if (it.unseen) seenThisVisit.add(it.key);
   route();
+  // 入场动画只在打开面板时播放一次；之后内容更新、切换页签时卡片不再重新浮现
+  setTimeout(() => document.documentElement.classList.add('settled'), 1000);
   // 看过面板就清掉工具栏图标上的数字；这次浏览期间"新"的标记保留
   if (seenThisVisit.size) setTimeout(() => send('ui:markSeen'), 3000);
 })();
