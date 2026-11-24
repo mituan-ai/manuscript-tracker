@@ -1,4 +1,4 @@
-/* mituan design system —— 学术纸张主题：暖纸白、墨色正文、学院蓝强调、古金点缀。
+/* mituan design system —— 学术纸张主题：暖纸白、墨色正文、靛蓝强调、古金点缀。
    默认按系统深浅色显示；没有偏好时是亮色（写在 :root），暗色是炭灰配象牙白。
    扩展的弹窗、追踪面板和官网共用这一份（官网构建时复制为 base.css，字体复制到 fonts/）。 */
 
@@ -11,12 +11,14 @@
   --bg: #f5f2ea; --card: #fffdf8; --card-solid: #fffdf8; --raise: #ffffff;
   --line: rgba(84, 66, 38, .14); --line-strong: rgba(84, 66, 38, .28);
   --text: #1c2330; --muted: #596070; --faint: #8b8d94;
-  --accent-rgb: 31, 78, 121; --accent-text: #1f4e79; --accent-ink: #fbf8f1; --brand1: #1f4e79;
-  --gilt: #9c7633; --gilt-rgb: 156, 118, 51;
-  /* 主按钮：学院蓝，带一点凸版印刷似的竖向光泽 */
-  --grad: linear-gradient(180deg, #2c5f90, #1f4e79 55%, #1a4469);
+  --accent-rgb: 43, 80, 192; --accent-text: #2b50c0;
+  /* 品牌色（主按钮、logo、开关）：靛蓝纯色，亮暗两种主题都是“蓝底白字”，暗色下略提亮。悬停加深、按下再深一级 */
+  --brand: #2b50c0; --brand-hover: #2443a8; --brand-active: #1f3a91; --brand-rgb: 43, 80, 192; --on-brand: #fff;
+  --gilt: #9c7633; --gilt-rgb: 156, 118, 51; --on-gilt: #fbf8f1;
+  /* 按钮的立体感只留一道顶部高光和一层很浅的投影 */
+  --btn-hi: inset 0 1px 0 rgba(255, 255, 255, .6); --btn-drop: 0 1px 2px rgba(40, 32, 18, .07);
   --ok: #2f7d5b; --warn: #b7791f; --bad: #a94442; --idle: #8a8f98;
-  --track: rgba(84, 66, 38, .1); --soft: rgba(84, 66, 38, .045); --hover: rgba(31, 78, 121, .045);
+  --track: rgba(84, 66, 38, .1); --soft: rgba(84, 66, 38, .045); --hover: rgba(43, 80, 192, .05);
   --radius: 12px;
   --shadow: inset 0 1px 0 rgba(255, 255, 255, .7), 0 1px 2px rgba(60, 45, 20, .05), 0 10px 26px -14px rgba(60, 45, 20, .2);
   --shadow-lift: inset 0 1px 0 rgba(255, 255, 255, .7), 0 2px 4px rgba(60, 45, 20, .06), 0 22px 44px -20px rgba(60, 45, 20, .34);
@@ -32,15 +34,16 @@
   --bg: #141619; --card: #1b1e22; --card-solid: #1b1e22; --raise: #23272c;
   --line: rgba(236, 226, 206, .1); --line-strong: rgba(236, 226, 206, .2);
   --text: #ebe6dc; --muted: #a8a397; --faint: #7a776f;
-  --accent-rgb: 143, 179, 222; --accent-text: #a9c6ea; --accent-ink: #0f1a28; --brand1: #8fb3de;
-  --gilt: #c9a96b; --gilt-rgb: 201, 169, 107;
-  --grad: linear-gradient(180deg, #a6c4e7, #8fb3de 55%, #7da3d1);
+  --accent-rgb: 138, 163, 245; --accent-text: #9fb3f6;
+  --brand: #3d5fd6; --brand-hover: #4b6ce0; --brand-active: #3554c2; --brand-rgb: 61, 95, 214; --on-brand: #fff;
+  --gilt: #c9a96b; --gilt-rgb: 201, 169, 107; --on-gilt: #141619;
+  --btn-hi: inset 0 1px 0 rgba(255, 255, 255, .05); --btn-drop: 0 1px 2px rgba(0, 0, 0, .35);
   --ok: #7cc4a0; --warn: #dcaa5f; --bad: #e0908b; --idle: #8a8780;
-  --track: rgba(236, 226, 206, .12); --soft: rgba(236, 226, 206, .04); --hover: rgba(143, 179, 222, .07);
+  --track: rgba(236, 226, 206, .12); --soft: rgba(236, 226, 206, .04); --hover: rgba(138, 163, 245, .07);
   --shadow: inset 0 1px 0 rgba(255, 255, 255, .035), 0 1px 2px rgba(0, 0, 0, .3), 0 12px 30px -16px rgba(0, 0, 0, .7);
   --shadow-lift: inset 0 1px 0 rgba(255, 255, 255, .05), 0 2px 4px rgba(0, 0, 0, .3), 0 24px 48px -20px rgba(0, 0, 0, .8);
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .92 0 0 0 0 .88 0 0 0 0 .8 0 0 0 .045 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  --lamp: radial-gradient(1100px 560px at 12% -10%, rgba(201, 169, 107, .075), transparent 62%), radial-gradient(900px 520px at 100% 0%, rgba(143, 179, 222, .05), transparent 60%);
+  --lamp: radial-gradient(1100px 560px at 12% -10%, rgba(201, 169, 107, .075), transparent 62%), radial-gradient(900px 520px at 100% 0%, rgba(138, 163, 245, .05), transparent 60%);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -48,15 +51,16 @@
     --bg: #141619; --card: #1b1e22; --card-solid: #1b1e22; --raise: #23272c;
     --line: rgba(236, 226, 206, .1); --line-strong: rgba(236, 226, 206, .2);
     --text: #ebe6dc; --muted: #a8a397; --faint: #7a776f;
-    --accent-rgb: 143, 179, 222; --accent-text: #a9c6ea; --accent-ink: #0f1a28; --brand1: #8fb3de;
-    --gilt: #c9a96b; --gilt-rgb: 201, 169, 107;
-    --grad: linear-gradient(180deg, #a6c4e7, #8fb3de 55%, #7da3d1);
+    --accent-rgb: 138, 163, 245; --accent-text: #9fb3f6;
+    --brand: #3d5fd6; --brand-hover: #4b6ce0; --brand-active: #3554c2; --brand-rgb: 61, 95, 214; --on-brand: #fff;
+    --gilt: #c9a96b; --gilt-rgb: 201, 169, 107; --on-gilt: #141619;
+    --btn-hi: inset 0 1px 0 rgba(255, 255, 255, .05); --btn-drop: 0 1px 2px rgba(0, 0, 0, .35);
     --ok: #7cc4a0; --warn: #dcaa5f; --bad: #e0908b; --idle: #8a8780;
-    --track: rgba(236, 226, 206, .12); --soft: rgba(236, 226, 206, .04); --hover: rgba(143, 179, 222, .07);
+    --track: rgba(236, 226, 206, .12); --soft: rgba(236, 226, 206, .04); --hover: rgba(138, 163, 245, .07);
     --shadow: inset 0 1px 0 rgba(255, 255, 255, .035), 0 1px 2px rgba(0, 0, 0, .3), 0 12px 30px -16px rgba(0, 0, 0, .7);
     --shadow-lift: inset 0 1px 0 rgba(255, 255, 255, .05), 0 2px 4px rgba(0, 0, 0, .3), 0 24px 48px -20px rgba(0, 0, 0, .8);
     --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .92 0 0 0 0 .88 0 0 0 0 .8 0 0 0 .045 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    --lamp: radial-gradient(1100px 560px at 12% -10%, rgba(201, 169, 107, .075), transparent 62%), radial-gradient(900px 520px at 100% 0%, rgba(143, 179, 222, .05), transparent 60%);
+    --lamp: radial-gradient(1100px 560px at 12% -10%, rgba(201, 169, 107, .075), transparent 62%), radial-gradient(900px 520px at 100% 0%, rgba(138, 163, 245, .05), transparent 60%);
   }
 }
 
@@ -85,7 +89,7 @@ code { font-family: var(--mono); font-size: 12px; padding: 1px 6px; border-radiu
    会比 logo 和汉字显得偏低，所以整体上移一点做视觉居中。字标用衬线体，像出版社的社标。 */
 .brand { display: inline-flex; align-items: center; gap: 10px; line-height: 1; text-decoration: none !important; color: inherit; flex: none; }
 .brand img { display: block; width: 32px; height: 32px; flex: none; border-radius: 8px;
-             box-shadow: 0 1px 2px rgba(20, 30, 50, .18), 0 8px 16px -8px rgba(20, 40, 80, .45); }
+             box-shadow: 0 1px 2px rgba(var(--brand-rgb), .25), 0 4px 10px -4px rgba(var(--brand-rgb), .35); }
 .wordmark { display: block; font-family: var(--serif); font-weight: 650; font-size: 23px; line-height: 1; letter-spacing: -.012em; padding: .1em 0;
             color: var(--text); transform: translateY(-.07em); }
 .brand .product { display: flex; align-items: center; gap: 10px; font-size: 14.5px; font-weight: 600; line-height: 1; color: var(--muted); letter-spacing: .1em; white-space: nowrap; }
@@ -113,13 +117,15 @@ html[data-lang="zh"] .empty { font-style: normal; }
 button, .button { appearance: none; border: 1px solid var(--line-strong); background: var(--card-solid); color: var(--text);
        border-radius: 8px; padding: 7px 14px; font: inherit; font-size: 13.5px; line-height: 1.4; cursor: pointer; display: inline-flex;
        align-items: center; justify-content: center; gap: 6px; white-space: nowrap; text-decoration: none !important;
-       box-shadow: inset 0 1px 0 rgba(255, 255, 255, .55), 0 1px 1px rgba(60, 45, 20, .05);
-       transition: transform .12s, border-color .18s, background .18s, box-shadow .18s, color .18s, filter .18s; }
+       box-shadow: var(--btn-hi), var(--btn-drop);
+       transition: transform .12s, border-color .18s, background .18s, box-shadow .18s, color .18s; }
 button:hover, .button:hover { border-color: rgba(var(--accent-rgb), .55); }
 button:active { transform: translateY(1px); }
-button.primary, .button.primary { background: var(--grad); border: 1px solid rgba(var(--accent-rgb), .9); color: var(--accent-ink); font-weight: 600; letter-spacing: .02em;
-       box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 1px 2px rgba(20, 40, 70, .2), 0 8px 18px -10px rgba(var(--accent-rgb), .75); }
-button.primary:hover, .button.primary:hover { filter: brightness(1.07); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22), 0 1px 2px rgba(20, 40, 70, .2), 0 12px 24px -12px rgba(var(--accent-rgb), .85); }
+/* 主按钮：品牌色纯色、白字，不用渐变和彩色光晕；亮暗两种主题是同一种样子 */
+button.primary, .button.primary { background: var(--brand); border-color: transparent; color: var(--on-brand); font-weight: 600; letter-spacing: .02em;
+       box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12), 0 1px 2px rgba(var(--brand-rgb), .3); }
+button.primary:hover, .button.primary:hover { background: var(--brand-hover); border-color: transparent; }
+button.primary:active, .button.primary:active { background: var(--brand-active); }
 button.ghost { background: none; border-color: transparent; box-shadow: none; color: var(--muted); }
 button.ghost:hover { color: var(--text); background: var(--hover); border-color: transparent; }
 button.danger { color: var(--bad); }
@@ -128,7 +134,7 @@ button.sm, .button.sm { padding: 4px 11px; font-size: 12.5px; border-radius: 7px
 button.icon { width: 34px; height: 34px; padding: 0; }
 button.icon svg, button svg, .button svg { width: 16px; height: 16px; flex: none; }
 .button.sm svg, button.sm svg { width: 14px; height: 14px; }
-button:disabled { opacity: .55; cursor: not-allowed; transform: none; filter: none; }
+button:disabled { opacity: .55; cursor: not-allowed; transform: none; }
 button.spin svg { animation: spin 1.1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 input, textarea, select { font: inherit; font-size: 13.5px; color: var(--text); background: var(--card-solid); border: 1px solid var(--line-strong);
@@ -136,7 +142,7 @@ input, textarea, select { font: inherit; font-size: 13.5px; color: var(--text); 
 select { width: auto; padding-right: 30px; cursor: pointer; }
 input:focus, textarea:focus, select:focus { border-color: rgba(var(--accent-rgb), .6); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .13); }
 input::placeholder { color: var(--faint); }
-input[type=checkbox] { width: auto; accent-color: var(--brand1); box-shadow: none; }
+input[type=checkbox] { width: auto; accent-color: var(--brand); box-shadow: none; }
 details summary { cursor: pointer; color: var(--muted); font-size: 12.5px; }
 
 /* 开关：<label class="switch"><input type="checkbox"><i></i></label> */
@@ -145,7 +151,7 @@ details summary { cursor: pointer; color: var(--muted); font-size: 12.5px; }
 .switch i { width: 100%; height: 100%; border-radius: 99px; background: var(--track); border: 1px solid var(--line); transition: background .2s, border-color .2s; }
 .switch i::after { content: ""; position: absolute; top: 3px; left: 3px; width: 17px; height: 17px; border-radius: 50%; background: #fffdf8;
                    box-shadow: 0 1px 3px rgba(40, 30, 10, .3); transition: transform .22s cubic-bezier(.3, .7, .2, 1.2); }
-.switch input:checked + i { background: var(--brand1); border-color: transparent; }
+.switch input:checked + i { background: var(--brand); border-color: transparent; }
 .switch input:checked + i::after { transform: translateX(17px); }
 .switch input:focus-visible + i { outline: 2px solid rgba(var(--accent-rgb), .6); outline-offset: 2px; }
 
@@ -212,7 +218,7 @@ details summary { cursor: pointer; color: var(--muted); font-size: 12.5px; }
 .ms.compact .t { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.4; }
 .ms.done .t { color: var(--muted); font-weight: 500; }
 .ms.unseen::before { content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 2px; border-radius: 0 2px 2px 0; background: var(--gilt); }
-.ms .new { font: 700 10px/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink); background: var(--gilt);
+.ms .new { font: 700 10px/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--on-gilt); background: var(--gilt);
            border-radius: 3px; padding: 3px 5px; margin-right: 7px; vertical-align: 2px; }
 html[data-lang="zh"] .ms .new { font-size: 10.5px; letter-spacing: .04em; }
 
@@ -226,7 +232,7 @@ html[data-lang="zh"] .ms .new { font-size: 10.5px; letter-spacing: .04em; }
 
 /* 主题切换和语言切换（同一种分段图标按钮；语言用单独的类名，切主题时不会改到它） */
 .theme, .langsw { display: inline-flex; padding: 3px; gap: 2px; border: 1px solid var(--line); border-radius: 9px; background: var(--card-solid);
-                  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5); }
+                  box-shadow: var(--btn-hi); }
 .theme button, .langsw button { border: 0; background: none; box-shadow: none; color: var(--faint); width: 30px; height: 28px; padding: 0;
                 display: grid; place-items: center; border-radius: 6px; }
 .theme button:hover, .langsw button:hover { color: var(--text); }

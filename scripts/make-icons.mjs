@@ -5,10 +5,10 @@ import { writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const OUT = fileURLToPath(new URL('../icons/', import.meta.url));
-const STOPS = [[0, [0x2f, 0x64, 0x94]], [0.55, [0x1f, 0x4e, 0x79]], [1, [0x17, 0x3b, 0x5e]]];
-const INK = [0xff, 0xfd, 0xf8], GILT = [0xd9, 0xb4, 0x6c];
-const M = [[15, 46], [15, 19], [23.5, 19], [32, 31.5], [40.5, 19], [49, 19], [49, 46]];
-const LEGS = [[[24, 46], [24, 37]], [[40, 46], [40, 37]]];
+const STOPS = [[0, [0x3a, 0x60, 0xd6]], [1, [0x26, 0x47, 0xb4]]];
+const INK = [0xff, 0xff, 0xff], GILT = [0xe6, 0xb8, 0x5c];
+// M 是一笔折线（圆头圆角，线宽 5.8），下面一颗金色圆点
+const M = [[18, 44.5], [18, 20.5], [32, 35.5], [46, 20.5], [46, 44.5]];
 
 function grad(t) {
   for (let i = 1; i < STOPS.length; i++) {
@@ -28,14 +28,13 @@ function inRoundRect(x, y, s, r) {
 }
 /** 在 64×64 的 SVG 坐标里取一个点的颜色（预乘前的 rgb + alpha）。 */
 function shade(x, y) {
-  if (!inRoundRect(x, y, 64, 16)) return [0, 0, 0, 0];
+  if (!inRoundRect(x, y, 64, 15)) return [0, 0, 0, 0];
   let c = grad((x + y) / 128);
   const over = (a, to = INK) => (c = c.map((v, k) => v + (to[k] - v) * a));
   let dm = Infinity;
   for (let i = 1; i < M.length; i++) dm = Math.min(dm, segDist(x, y, M[i - 1], M[i]));
-  if (dm <= 2.5) over(1);
-  else if (LEGS.some(([a, b]) => segDist(x, y, a, b) <= 1.6)) over(0.5);
-  if (Math.hypot(x - 32, y - 44.5) <= 3.4) over(1, GILT);
+  if (dm <= 2.9) over(1);
+  if (Math.hypot(x - 32, y - 45) <= 3.7) over(1, GILT);
   return [...c, 1];
 }
 

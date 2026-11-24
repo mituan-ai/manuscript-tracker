@@ -235,7 +235,7 @@ async function updateBadge() {
   const { items = {}, platforms = {} } = await chrome.storage.local.get(['items', 'platforms']);
   const unseen = hideDuplicates(Object.values(items)).filter((i) => i.unseen).length;
   const attention = Object.values(platforms).some((p) => ['auth-rejected', 'need-human', 'parse-error'].includes(p.status));
-  await chrome.action.setBadgeBackgroundColor({ color: attention && !unseen ? '#dc2626' : '#2563eb' });
+  await chrome.action.setBadgeBackgroundColor({ color: attention && !unseen ? '#dc2626' : '#2b50c0' });
   await chrome.action.setBadgeText({ text: unseen ? String(unseen) : attention ? '!' : '' });
 }
 

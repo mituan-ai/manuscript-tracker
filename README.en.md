@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-0.5.0-1f4e79" alt="Version 0.5.0">
+  <img src="https://img.shields.io/badge/version-0.5.0-2b50c0" alt="Version 0.5.0">
   <img src="https://img.shields.io/badge/Edge%20%7C%20Chrome-Manifest%20V3-9c7633" alt="Edge and Chrome, Manifest V3">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-596070" alt="License: PolyForm Noncommercial 1.0.0"></a>
 </p>
