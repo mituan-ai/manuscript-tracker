@@ -35,13 +35,17 @@
 `npm run publish:stores` 从 `~/.config/mituan/stores.env`（权限 600，不在仓库里）读取：
 
 ```ini
+# Edge：Partner Center → Microsoft Edge → 发布 API → 创建 API 凭据。API key 有到期日，到期前在同一页续期
 EDGE_PRODUCT_ID=15ef34d6-806d-4673-a2c5-2f250d106974
-EDGE_CLIENT_ID=        # Partner Center → Microsoft Edge → Publish API → Create API credentials
-EDGE_API_KEY=          # 同上；API key 有到期日，到期前在同一页续期
-CHROME_PUBLISHER_ID=   # Chrome 开发者后台 → Publisher → Settings
-CHROME_ITEM_ID=        # 扩展的 32 位 ID
+EDGE_CLIENT_ID=
+EDGE_API_KEY=
+# Chrome：开发者后台账号页的发布者 ID、扩展 ID、服务账号 JSON 密钥的路径
+CHROME_PUBLISHER_ID=
+CHROME_ITEM_ID=cgegoafnapldoacegnnapjbhpfnmjijo
 CHROME_SERVICE_ACCOUNT=~/.config/mituan/chrome-service-account.json
 ```
+
+注释只能单独占一行，不能写在值的后面。
 
 Chrome 用服务账号：在 Google Cloud Console 新建项目，启用 Chrome Web Store API，创建一个不分配任何角色的服务账号，给它添加 JSON 密钥并下载；再在 Chrome 开发者后台的 Account 页把服务账号的邮箱加进去。
 
