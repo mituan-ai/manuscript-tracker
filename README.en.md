@@ -61,8 +61,9 @@ IEEE journals that use PaperCept, such as IEEE TAC and RA-L, are not supported y
 Install from your browser's extension store. Updates are automatic. Both store listings are still under review, so the links below won't open until they go live.
 
 - **Edge**: open [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/hkljgniplahnifceaoaehfkefbcilmpd), click "Get", then "Add extension".
-- **Chrome**: open the [Chrome Web Store](https://chromewebstore.google.com/detail/cgegoafnapldoacegnnapjbhpfnmjijo), click "Add to Chrome", then "Add extension".
-- Chromium-based browsers such as Brave and Vivaldi can usually install from the Chrome Web Store too.
+- **Chrome**: open the [Chrome Web Store](https://chromewebstore.google.com/detail/cgegoafnapldoacegnnapjbhpfnmjijo), click "Add to Chrome", then "Add extension". The Chrome Web Store usually doesn't open in mainland China; install with Edge there instead.
+- **Brave, Vivaldi**: can usually install straight from the Chrome Web Store.
+- **Opera**: first add the official "Install Chrome Extensions" extension, then install from the Chrome Web Store.
 
 When the extension is installed, the browser opens a page that says it was installed successfully. Choose your journal types and connect your accounts there.
 

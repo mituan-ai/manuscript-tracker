@@ -360,3 +360,4 @@ footer { border-top: 3px double var(--line-strong); padding: 26px 0 36px; }
   .navin .langsw button { width: 26px; }
   .navin .btn.sm { padding: 7px 10px; }
 }
+.store .cn-note { font-size: 13.5px; color: var(--muted); margin: 10px 0 0; }

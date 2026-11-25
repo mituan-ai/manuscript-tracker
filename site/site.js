@@ -84,7 +84,7 @@
   const storeUrl = (id) => $(`a[data-store="${id}"]`)?.getAttribute('href') || '';
   $$('a[data-store]').forEach((a) => {
     if (a.getAttribute('href')) return;
-    a.parentElement.querySelectorAll('.do, .tip').forEach((el) => el.remove());
+    a.parentElement.querySelectorAll('.do, .tip, .cn-note').forEach((el) => el.remove());
     const p = document.createElement('p');
     p.className = 'tip pending';
     p.innerHTML = a.dataset.store === 'edge'
@@ -117,8 +117,12 @@
     : /Chrome\//.test(ua) ? 'chrome'
     : /Safari\//.test(ua) ? 'safari' : 'edge';
   $('#mobileNote').hidden = !mobile;
-  // 首屏按钮：在 Edge / Chrome 里直接打开对应的商店页面（一键安装），其他情况跳到安装区
-  const heroStore = !mobile && (detected === 'edge' || detected === 'chrome') && storeUrl(detected) ? detected : null;
+  // 中国大陆一般打不开 Chrome 应用商店：按时区判断（港澳台时区不同），只给大陆用户看改用 Edge 的提示
+  const mainland = /^(Asia\/(Shanghai|Chongqing|Chungking|Harbin|Urumqi|Kashgar)|PRC)$/.test(Intl.DateTimeFormat().resolvedOptions().timeZone || '');
+  const cnNote = $('.cn-note');
+  if (cnNote) cnNote.hidden = !mainland;
+  // 首屏按钮：在 Edge / Chrome 里直接打开对应的商店页面（一键安装）；其他情况，以及大陆的 Chrome 用户，跳到安装区
+  const heroStore = !mobile && (detected === 'edge' || (detected === 'chrome' && !mainland)) && storeUrl(detected) ? detected : null;
   if (heroStore) {
     const cta = $('#heroCta');
     cta.href = storeUrl(heroStore);
