@@ -188,142 +188,61 @@
     </div>
   </section>
 
-  <!-- 安装：[data-dev] 等占位由 site.js 按浏览器和所在的语言填写 -->
+  <!-- 安装：只从浏览器的扩展商店安装。__EDGE_URL__、__CHROME_URL__ 由 scripts/build-site.sh 填入；还没上架的商店留空，site.js 会显示“审核中” -->
   <section class="wrap" id="install">
     <div class="head"><h2><span data-l="zh">安装</span><span data-l="en">Install</span></h2>
-      <p><span data-l="zh">共 3 步，约 2 分钟，每一步都附有截图。</span><span data-l="en">3 steps, about 2 minutes, each with a screenshot.</span></p></div>
+      <p><span data-l="zh">从浏览器的扩展商店安装，点一下就好，之后自动更新。</span><span data-l="en">Install from your browser’s extension store in one click. Updates are automatic.</span></p></div>
     <div class="mobile-note card" id="mobileNote" hidden><span data-l="zh">手机浏览器不支持扩展，请在电脑上访问 <b>tracker.eonmaze.com</b> 安装。</span><span data-l="en">Mobile browsers do not support extensions. Open <b>tracker.eonmaze.com</b> on a computer to install.</span></div>
     <div class="browsers" role="tablist" aria-label="Choose your browser">
       <button type="button" role="tab" data-b="edge"><span class="bi bi-edge"></span>Edge<small><span data-l="zh">推荐</span><span data-l="en">Recommended</span></small></button>
       <button type="button" role="tab" data-b="chrome"><span class="bi bi-chrome"></span>Chrome<small>Google</small></button>
-      <button type="button" role="tab" data-b="chromium"><span class="bi bi-other"></span><span data-l="zh">其他 Chromium</span><span data-l="en">Other Chromium</span><small><span data-l="zh">360、QQ、Brave…</span><span data-l="en">Brave, Opera, 360…</span></small></button>
+      <button type="button" role="tab" data-b="chromium"><span class="bi bi-other"></span><span data-l="zh">其他 Chromium</span><span data-l="en">Other Chromium</span><small><span data-l="zh">Brave、Vivaldi…</span><span data-l="en">Brave, Vivaldi…</span></small></button>
       <button type="button" role="tab" data-b="firefox"><span class="bi bi-firefox"></span>Firefox<small><span data-l="zh">暂不支持</span><span data-l="en">Not supported</span></small></button>
       <button type="button" role="tab" data-b="safari"><span class="bi bi-safari"></span>Safari<small><span data-l="zh">暂不支持</span><span data-l="en">Not supported</span></small></button>
     </div>
 
     <div class="card panel" data-for="edge chrome chromium">
-      <p class="why-manual"><span data-l="zh"><b>为什么需要手动安装？</b>扩展尚未上架浏览器扩展商店，需要手动安装一次，安装后的使用方式与商店扩展相同。</span><span data-l="en"><b>Why a manual install?</b>The extension is not yet in a browser extension store, so it has to be installed manually once. After that it works like any store extension.</span></p>
-      <p class="why-manual" data-only="chromium"><span data-l="zh">360、QQ 等浏览器的扩展页面各不相同，以下按 Chrome 界面说明，未逐一测试。</span><span data-l="en">Extension pages differ between Chromium-based browsers such as Brave, Opera and 360. The steps below follow Chrome and have not been tested on each browser.</span></p>
-      <ol class="stepper" aria-label="Installation steps">
-        <li><a href="#ins-1"><i>1</i><span data-l="zh">下载并解压</span><span data-l="en">Download and extract</span></a></li>
-        <li><a href="#ins-2"><i>2</i><span data-l="zh">打开开关</span><span data-l="en">Turn on the switch</span></a></li>
-        <li><a href="#ins-3"><i>3</i><span data-l="zh">选择文件夹</span><span data-l="en">Select the folder</span></a></li>
-        <li><a href="#ins-4"><i>✓</i><span data-l="zh">完成</span><span data-l="en">Done</span></a></li>
-      </ol>
-
-      <section class="istep" id="ins-1">
+      <div class="store">
         <div class="itxt">
-          <h3><i>1</i><span data-l="zh">下载并解压</span><span data-l="en">Download and extract</span></h3>
-          <a class="btn primary lg" href="download/manuscript-tracker.zip" download id="dlBtn"><span data-l="zh">下载扩展</span><span data-l="en">Download extension</span></a>
-          <span class="small faint dlmeta">manuscript-tracker.zip · v__VERSION__ · __SIZE_KB__ KB</span>
-          <ol class="do">
-            <li><span data-l="zh">下载完成后，点击浏览器右上角下载提示中的<b>文件夹图标</b>（「在文件夹中显示」），系统会打开「下载」文件夹并选中 <code>manuscript-tracker.zip</code>。</span><span data-l="en">When the download finishes, click the <b>folder icon</b> (“Show in folder”) in the browser’s download panel at the top right. The Downloads folder opens with <code>manuscript-tracker.zip</code> selected.</span></li>
-            <li><span data-l="zh"><b>右键</b>点击该文件，选择<b>「全部解压缩」</b>，在弹出的窗口中直接点击<b>「提取」</b>。</span><span data-l="en"><b>Right-click</b> the file, choose <b>“Extract All…”</b>, then click <b>“Extract”</b> in the dialog.</span></li>
-            <li><span data-l="zh">旁边会出现 <b>manuscript-tracker</b> 文件夹，即扩展本身。<b>安装后请勿删除或移动该文件夹</b>，否则扩展将无法使用。</span><span data-l="en">A <b>manuscript-tracker</b> folder appears next to it. This folder is the extension. <b>Do not delete or move it after installing</b>, or the extension will stop working.</span></li>
-          </ol>
-          <p class="tip"><span data-l="zh">如果装有 WinRAR、360 压缩、Bandizip 等软件，也可以在右键菜单中选择「解压到 manuscript-tracker」。Mac 上双击 zip 文件即可解压。</span><span data-l="en">With 7-Zip, WinRAR or Bandizip installed, you can also choose “Extract to manuscript-tracker” from the right-click menu. On a Mac, double-click the zip file to extract it.</span></p>
+          <div data-only="edge">
+            <h3><span class="bi bi-edge"></span><span data-l="zh">Microsoft Edge 加载项</span><span data-l="en">Microsoft Edge Add-ons</span></h3>
+            <a class="btn primary lg" href="__EDGE_URL__" target="_blank" rel="noopener" data-store="edge"><span data-l="zh">从 Edge 加载项获取</span><span data-l="en">Get it from Edge Add-ons</span></a>
+            <ol class="do">
+              <li><span data-l="zh">点上面的按钮，打开「mituan 投稿追踪」的商店页面。</span><span data-l="en">Click the button above to open the “mituan Manuscript Tracker” store page.</span></li>
+              <li><span data-l="zh">点<b>「获取」</b>，在弹出的窗口中点<b>「添加扩展」</b>。</span><span data-l="en">Click <b>“Get”</b>, then <b>“Add extension”</b> in the dialog.</span></li>
+              <li><span data-l="zh">浏览器会自动打开「安装成功」页面。在那里选择期刊类型、连接账号，扩展就开始在后台查询。</span><span data-l="en">The browser opens a welcome page. Choose your journal types and connect your accounts there; checks then run in the background.</span></li>
+            </ol>
+            <p class="tip"><span data-l="zh">建议把图标固定到工具栏：点浏览器右上角的<b>拼图图标</b>，再点「mituan 投稿追踪」旁的<b>眼睛图标</b>。</span><span data-l="en">Pin the icon to the toolbar: click the <b>puzzle icon</b> at the top right of the browser, then the <b>eye icon</b> next to “mituan Manuscript Tracker”.</span></p>
+          </div>
+          <div data-only="chrome chromium">
+            <h3><span class="bi bi-chrome"></span><span data-l="zh">Chrome 应用商店</span><span data-l="en">Chrome Web Store</span></h3>
+            <a class="btn primary lg" href="__CHROME_URL__" target="_blank" rel="noopener" data-store="chrome"><span data-l="zh">从 Chrome 应用商店添加</span><span data-l="en">Add from Chrome Web Store</span></a>
+            <ol class="do">
+              <li><span data-l="zh">点上面的按钮，打开「mituan 投稿追踪」的商店页面。</span><span data-l="en">Click the button above to open the “mituan Manuscript Tracker” store page.</span></li>
+              <li><span data-l="zh">点<b>「添加至 Chrome」</b>，在弹出的窗口中点<b>「添加扩展程序」</b>。</span><span data-l="en">Click <b>“Add to Chrome”</b>, then <b>“Add extension”</b> in the dialog.</span></li>
+              <li><span data-l="zh">浏览器会自动打开「安装成功」页面。在那里选择期刊类型、连接账号，扩展就开始在后台查询。</span><span data-l="en">The browser opens a welcome page. Choose your journal types and connect your accounts there; checks then run in the background.</span></li>
+            </ol>
+            <p class="tip" data-only="chrome"><span data-l="zh">建议把图标固定到工具栏：点浏览器右上角的<b>拼图图标</b>，再点「mituan 投稿追踪」旁的<b>图钉图标</b>。</span><span data-l="en">Pin the icon to the toolbar: click the <b>puzzle icon</b> at the top right of the browser, then the <b>pin icon</b> next to “mituan Manuscript Tracker”.</span></p>
+            <p class="tip" data-only="chromium"><span data-l="zh">Brave、Vivaldi 等 Chromium 内核浏览器一般可以直接从 Chrome 应用商店安装，按钮名称可能不同；Opera 需要先安装官方的「Install Chrome Extensions」扩展。各浏览器未逐一测试。</span><span data-l="en">Chromium-based browsers such as Brave and Vivaldi can usually install from the Chrome Web Store, though the button names may differ. Opera first needs its official “Install Chrome Extensions” add-on. Not every browser has been tested.</span></p>
+          </div>
         </div>
-        <div class="ivis mock-zip" aria-hidden="true">
-          <div class="mk-file"><span class="ic-zip"></span>manuscript-tracker.zip</div>
-          <ul class="mk-menu">
-            <li><span data-l="zh">打开</span><span data-l="en">Open</span></li>
-            <li class="hl"><span data-l="zh">全部解压缩…</span><span data-l="en">Extract All…</span></li>
-            <li><span data-l="zh">复制</span><span data-l="en">Copy</span></li>
-            <li><span data-l="zh">属性</span><span data-l="en">Properties</span></li></ul>
-          <span class="mk-arrow">↓</span>
-          <div class="mk-dlg"><b><span data-l="zh">提取压缩(Zipped)文件夹</span><span data-l="en">Extract Compressed (Zipped) Folders</span></b><span><span data-l="zh">选择一个目标并提取文件</span><span data-l="en">Select a Destination and Extract Files</span></span><code><span data-l="zh">C:\Users\你\Downloads\manuscript-tracker</span><span data-l="en">C:\Users\you\Downloads\manuscript-tracker</span></code><button type="button" tabindex="-1" class="hl"><span data-l="zh">提取(E)</span><span data-l="en">Extract</span></button></div>
-          <span class="mk-arrow">↓</span>
-          <div class="mk-file"><span class="ic-folder"></span><b>manuscript-tracker</b><em><span data-l="zh">这就是扩展</span><span data-l="en">This is the extension</span></em></div>
-        </div>
-      </section>
-
-      <section class="istep" id="ins-2">
-        <div class="itxt">
-          <h3><i>2</i><span data-l="zh">打开扩展管理页，打开「<span data-dev>开发人员模式</span>」</span><span data-l="en">Open the extensions page and turn on “<span data-dev>Developer mode</span>”</span></h3>
-          <ol class="do">
-            <li><span data-l="zh">复制下面的地址，按 <kbd>Ctrl</kbd>+<kbd>T</kbd> 新建标签页，在地址栏中按 <kbd>Ctrl</kbd>+<kbd>V</kbd> 粘贴并回车。</span><span data-l="en">Copy the address below, press <kbd>Ctrl</kbd>+<kbd>T</kbd> to open a new tab, paste it into the address bar with <kbd>Ctrl</kbd>+<kbd>V</kbd> and press Enter.</span>
-              <span class="copyline"><code id="extUrl" data-url>edge://extensions</code><button type="button" class="sm primary" id="copyUrl">Copy address</button></span></li>
-            <li><span data-l="zh">在页面<b data-devwhere>左下角</b>找到「<span data-dev>开发人员模式</span>」，打开右侧的开关。</span><span data-l="en">Find “<span data-dev>Developer mode</span>” at the <b data-devwhere>bottom left</b> of the page and turn on its switch.</span></li>
-          </ol>
-          <p class="tip" data-only="edge"><span data-l="zh">找不到开关时，请先将浏览器窗口最大化（双击窗口顶部空白处）。窗口较窄时，左侧栏会收起到页面左上角的 ☰ 按钮中。</span><span data-l="en">If you can’t find the switch, maximize the browser window (double-click the empty area at the top of the window). In a narrow window, the left sidebar collapses into the ☰ button at the top left.</span></p>
-          <p class="tip"><span data-l="zh">该开关用于允许安装扩展商店以外的扩展。安装后请<b>保持开启</b>，关闭后浏览器会停用本扩展。</span><span data-l="en">This switch allows extensions from outside the store. <b>Keep it on</b> after installing; if you turn it off, the browser disables the extension.</span></p>
-        </div>
-        <figure class="ivis ishot" data-n="1" style="--x:3.1%;--y:90%;--w:20.3%;--h:5.3%">
-          <img data-shot="1" src="img/install/edge-1.webp" width="1280" height="760" loading="lazy" alt="">
-          <span class="ring"></span>
-          <figcaption><span data-l="zh">真实截图：<span data-name>Microsoft Edge</span> 的扩展页面</span><span data-l="en">Screenshot: the <span data-name>Microsoft Edge</span> extensions page</span></figcaption>
+        <figure class="ishot">
+          <img id="welcomeShot" src="img/install/welcome.webp" width="1040" height="520" loading="lazy" alt="">
+          <figcaption><span data-l="zh">装好后自动打开的页面</span><span data-l="en">The page that opens after installing</span></figcaption>
         </figure>
-      </section>
-
-      <section class="istep" id="ins-3">
-        <div class="itxt">
-          <h3><i>3</i><span data-l="zh">点「<span data-load>加载解压缩的扩展</span>」，选中 manuscript-tracker 文件夹</span><span data-l="en">Click “<span data-load>Load unpacked</span>” and select the manuscript-tracker folder</span></h3>
-          <ol class="do">
-            <li><span data-l="zh">开关打开后，页面<b data-loadwhere>右上方</b>会出现几个按钮，点击<b>「<span data-load>加载解压缩的扩展</span>」</b>。</span><span data-l="en">Once the switch is on, several buttons appear at the <b data-loadwhere>top right</b>. Click <b>“<span data-load>Load unpacked</span>”</b>.</span></li>
-            <li><span data-l="zh">在弹出窗口左侧点击<b>「下载」</b>，在右侧选中 <b>manuscript-tracker 文件夹</b>（不是 zip 文件），再点击右下角的<b>「选择文件夹」</b>。</span><span data-l="en">In the dialog, click <b>“Downloads”</b> on the left, select the <b>manuscript-tracker folder</b> (not the zip file) on the right, then click <b>“Select Folder”</b> at the bottom right.</span></li>
-          </ol>
-          <p class="tip"><span data-l="zh">如果已双击进入该文件夹，直接点击「选择文件夹」即可。Mac 上选中文件夹后点击右下角的确认按钮。</span><span data-l="en">If you have already opened the folder by double-clicking it, just click “Select Folder”. On a Mac, select the folder and click the confirm button at the bottom right.</span></p>
-        </div>
-        <div class="ivis istack">
-          <figure class="ishot" data-n="2" style="--x:66.1%;--y:13.3%;--w:12.5%;--h:5.5%">
-            <img data-shot="2" src="img/install/edge-2.webp" width="1280" height="760" loading="lazy" alt="">
-            <span class="ring"></span>
-            <figcaption><span data-l="zh">真实截图：打开开关后出现的按钮</span><span data-l="en">Screenshot: buttons that appear after turning on the switch</span></figcaption>
-          </figure>
-          <figure class="mock-pick" aria-hidden="true">
-            <div class="mk-title"><span data-l="zh">选择文件夹的窗口（示意）</span><span data-l="en">Folder picker (illustration)</span></div>
-            <div class="mk-cols">
-              <ul class="mk-nav">
-                <li><span data-l="zh">桌面</span><span data-l="en">Desktop</span></li>
-                <li class="hl"><span data-l="zh">下载</span><span data-l="en">Downloads</span></li>
-                <li><span data-l="zh">文档</span><span data-l="en">Documents</span></li>
-                <li><span data-l="zh">图片</span><span data-l="en">Pictures</span></li></ul>
-              <div class="mk-list"><div class="sel"><span class="ic-folder"></span>manuscript-tracker</div><div class="dim"><span class="ic-zip"></span>manuscript-tracker.zip<em><span data-l="zh">不要选它</span><span data-l="en">Not this one</span></em></div></div>
-            </div>
-            <div class="mk-foot"><span><span data-l="zh">文件夹：</span><span data-l="en">Folder: </span>manuscript-tracker</span><button type="button" tabindex="-1" class="hl"><span data-l="zh">选择文件夹</span><span data-l="en">Select Folder</span></button><button type="button" tabindex="-1"><span data-l="zh">取消</span><span data-l="en">Cancel</span></button></div>
-          </figure>
-        </div>
-      </section>
-
-      <section class="istep done" id="ins-4">
-        <div class="itxt">
-          <h3><i>✓</i><span data-l="zh">安装完成</span><span data-l="en">Done</span></h3>
-          <p data-l="zh">扩展页面中出现「mituan 投稿追踪」，浏览器同时自动打开<b>「安装成功」</b>页面，即表示安装完成。在该页面选择投稿的期刊类型并连接账号，扩展随即开始后台查询。</p>
-          <p data-l="en">The installation is complete when “mituan Manuscript Tracker” appears on the extensions page and the browser opens a <b>welcome page</b> on its own. On that page, choose your journal types and connect your accounts; checks then start in the background.</p>
-          <p class="tip"><span data-l="zh">建议将图标固定到工具栏：点击浏览器右上角的<b>拼图图标</b>，再点击「mituan 投稿追踪」旁的<b data-pin>眼睛图标</b>。之后点击该图标即可查看所有稿件。</span><span data-l="en">Pin the icon to the toolbar: click the <b>puzzle icon</b> at the top right of the browser, then click the <b data-pin>eye icon</b> next to “mituan Manuscript Tracker”. Click the icon any time to see all your manuscripts.</span></p>
-        </div>
-        <div class="ivis istack">
-          <figure class="ishot" data-n="3" style="--x:29.7%;--y:57%;--w:63.4%;--h:21.1%">
-            <img data-shot="3" src="img/install/edge-3.webp" width="1280" height="760" loading="lazy" alt="">
-            <span class="ring"></span>
-            <figcaption><span data-l="zh">真实截图：装好后的扩展页面</span><span data-l="en">Screenshot: the extensions page after installing</span></figcaption>
-          </figure>
-          <figure class="ishot plain">
-            <img id="welcomeShot" src="img/install/welcome.webp" width="1040" height="520" loading="lazy" alt="">
-            <figcaption><span data-l="zh">装好后自动打开的页面</span><span data-l="en">The page that opens after installing</span></figcaption>
-          </figure>
-        </div>
-      </section>
+      </div>
 
       <div class="trouble">
-        <h3><span data-l="zh">常见安装问题</span><span data-l="en">Installation issues</span></h3>
-        <details><summary><span data-l="zh">提示「<span data-err>清单文件丢失或不可读取</span>」</span><span data-l="en">The message “<span data-err>Manifest file is missing or unreadable</span>”</span></summary>
-          <p data-l="zh">所选的不是解压后的扩展文件夹。请重新点击「<span data-load>加载解压缩的扩展</span>」并选择 manuscript-tracker 文件夹，其中应直接包含 manifest.json 等文件；如果里面还有一层 manuscript-tracker 文件夹，请选择内层的那个。</p>
-          <p data-l="en">The selected folder is not the extracted extension folder. Click “<span data-load>Load unpacked</span>” again and select the manuscript-tracker folder, which should directly contain manifest.json and other files. If it contains another manuscript-tracker folder, select the inner one.</p></details>
-        <details><summary><span data-l="zh">选择窗口中只有 zip 文件，没有文件夹</span><span data-l="en">The dialog shows only the zip file, no folder</span></summary>
-          <p data-l="zh">zip 文件尚未解压。请回到第 1 步，右键点击 manuscript-tracker.zip，选择「全部解压缩」→「提取」。</p>
-          <p data-l="en">The zip file has not been extracted yet. Go back to step 1, right-click manuscript-tracker.zip and choose “Extract All…” → “Extract”.</p></details>
-        <details data-only="edge"><summary><span data-l="zh">Edge 弹出「关闭开发人员模式下的扩展」</span><span data-l="en">Edge shows “Turn off extensions in developer mode”</span></summary>
-          <p data-l="zh">这是 Edge 对所有手动安装扩展的定期提醒，请选择<b>「2 周后提醒」</b>，不要选择「关闭扩展」。如已关闭，在扩展页面重新打开「开发人员模式」和「mituan 投稿追踪」卡片上的开关即可，账号和记录不受影响。</p>
-          <p data-l="en">Edge shows this reminder periodically for every manually installed extension. Choose <b>“Remind in 2 weeks”</b>, not “Turn off extensions”. If the extension was turned off, turn “Developer mode” and the switch on the “mituan Manuscript Tracker” card back on; your accounts and records are kept.</p></details>
+        <h3><span data-l="zh">安装后的常见问题</span><span data-l="en">After installing</span></h3>
         <details><summary><span data-l="zh">工具栏上找不到 mituan 图标</span><span data-l="en">The mituan icon is not on the toolbar</span></summary>
-          <p data-l="zh">点击浏览器右上角的拼图图标，再点击「mituan 投稿追踪」旁的<span data-pin>眼睛图标</span>，将其固定到工具栏。</p>
-          <p data-l="en">Click the puzzle icon at the top right of the browser, then click the <span data-pin>eye icon</span> next to “mituan Manuscript Tracker” to pin it to the toolbar.</p></details>
-        <details><summary><span data-l="zh">如何更新到新版本？</span><span data-l="en">How do I update to a new version?</span></summary>
-          <p data-l="zh">删除「下载」文件夹中旧的 manuscript-tracker.zip（保留同名文件夹），下载新版后同样「全部解压缩」→「提取」，遇到同名文件时选择替换。最后在扩展页面点击「mituan 投稿追踪」卡片上的<span data-reload>「重新加载」</span>。账号和记录会保留。</p>
-          <p data-l="en">Delete the old manuscript-tracker.zip from your Downloads folder (keep the folder), download the new version and extract it the same way (“Extract All…” → “Extract”), choosing to replace the files when asked. Then click <span data-reload>“Reload”</span> on the “mituan Manuscript Tracker” card on the extensions page. Your accounts and records are kept.</p>
-          <p data-l="zh">从 0.5.0 或更早版本升级到 0.5.1 需要重装一次：这一版固定了扩展 ID，旧版的数据带不过来。在扩展页面点旧版卡片上的「移除」，按上面的第 3 步重新选择文件夹，再连接一次账号。以后的更新照上面的方法操作即可。</p>
-          <p data-l="en">Updating from 0.5.0 or earlier to 0.5.1 needs a one-time reinstall. This version fixes the extension ID, so data from the old version can't carry over. Click “Remove” on the old card on the extensions page, select the folder again as in step 3, and connect your accounts once more. Later updates work as described above.</p></details>
+          <p data-l="zh">点浏览器右上角的拼图图标，再点「mituan 投稿追踪」旁的固定按钮（Edge 是眼睛图标，Chrome 是图钉图标），把它固定到工具栏。</p>
+          <p data-l="en">Click the puzzle icon at the top right of the browser, then the pin button next to “mituan Manuscript Tracker” (an eye icon in Edge, a pin icon in Chrome) to keep it on the toolbar.</p></details>
+        <details><summary><span data-l="zh">怎么更新到新版本？</span><span data-l="en">How do I update?</span></summary>
+          <p data-l="zh">不用操作。商店会自动更新扩展，账号和记录都会保留。</p>
+          <p data-l="en">You don’t need to do anything. The store updates the extension automatically, and your accounts and records are kept.</p></details>
+        <details><summary><span data-l="zh">以前用 zip 手动安装过，怎么换成商店版？</span><span data-l="en">I installed the zip manually before. How do I switch to the store version?</span></summary>
+          <p data-l="zh">在扩展页面（Edge 是 <code>edge://extensions</code>，Chrome 是 <code>chrome://extensions</code>）点旧版卡片上的「移除」，再用上面的按钮安装，然后重新连接一次账号。商店版和手动安装的版本是两个不同的扩展，数据不互通；手动安装的版本以后不再更新。移除后可以关掉「开发人员模式」开关。</p>
+          <p data-l="en">On the extensions page (<code>edge://extensions</code> in Edge, <code>chrome://extensions</code> in Chrome), click “Remove” on the old card, install with the button above, and connect your accounts again. The store version and the manually installed one are separate extensions that don’t share data, and the manual version no longer gets updates. Afterwards you can turn off “Developer mode”.</p></details>
       </div>
     </div>
 
@@ -336,7 +255,7 @@
     <div class="card panel soon" data-for="safari">
       <span class="bi bi-safari big"></span>
       <div><h3><span data-l="zh">Safari 暂不支持</span><span data-l="en">Safari is not supported</span></h3>
-        <p><span data-l="zh">Safari 扩展需以 Mac App 形式通过 App Store 发布，暂无上架计划。Mac 上可使用 Edge 或 Chrome，安装步骤相同。</span><span data-l="en">Safari extensions must be distributed as a Mac app through the App Store, which is not planned. On a Mac, use Edge or Chrome; the steps are the same.</span></p>
+        <p><span data-l="zh">Safari 扩展需以 Mac App 形式通过 App Store 发布，暂无上架计划。Mac 上可以使用 Edge 或 Chrome，从对应的扩展商店安装。</span><span data-l="en">Safari extensions must be distributed as a Mac app through the App Store, which is not planned. On a Mac, use Edge or Chrome and install from its extension store.</span></p>
         <div class="row"><a class="btn" href="https://www.microsoft.com/edge/download" target="_blank" rel="noopener"><span data-l="zh">下载 Microsoft Edge</span><span data-l="en">Download Microsoft Edge</span></a><a class="btn" href="https://www.google.com/chrome/" target="_blank" rel="noopener"><span data-l="zh">下载 Google Chrome</span><span data-l="en">Download Google Chrome</span></a></div></div>
     </div>
   </section>
@@ -357,9 +276,6 @@
       <details><summary><span data-l="zh">需要一直开着投稿网站或浏览器吗？</span><span data-l="en">Do the submission sites or the browser need to stay open?</span></summary>
         <p data-l="zh">不需要开着投稿网站，登录和查询都在后台完成。关闭所有浏览器窗口后，只要浏览器仍在后台运行就会继续查询：Edge 默认如此；Chrome 需在「设置 → 系统」中开启「关闭 Google Chrome 后继续运行后台应用」。完全退出浏览器或关机期间不会查询，下次打开浏览器后会立即补查。</p>
         <p data-l="en">Submission sites don’t need to be open; logins and checks run in the background. After you close all browser windows, checks continue as long as the browser keeps running in the background. Edge does this by default; in Chrome, turn on “Continue running background apps when Google Chrome is closed” under Settings → System. No checks run while the browser is fully closed or the computer is off; a check runs as soon as the browser starts again.</p></details>
-      <details><summary><span data-l="zh">为什么要保持「开发人员模式」开启？</span><span data-l="en">Why must “Developer mode” stay on?</span></summary>
-        <p data-l="zh">扩展尚未上架扩展商店，浏览器只允许在开发人员模式下运行商店以外的扩展，关闭后本扩展会被停用。该开关不影响浏览器的其他设置。</p>
-        <p data-l="en">The extension is not yet in an extension store, and browsers only run extensions from outside the store in developer mode. Turning it off disables the extension. The switch does not change any other browser settings.</p></details>
       <details><summary><span data-l="zh">为什么偶尔会弹出一个小窗口？</span><span data-l="en">Why does a small window sometimes appear?</span></summary>
         <p data-l="zh">部分登录页必须在真实页面中完成（例如 IEEE 账号页有防火墙）。扩展会在最小化窗口中自动登录，完成后自动关闭；遇到验证码时窗口会保留，并通知你处理。</p>
         <p data-l="en">Some logins must be completed in a real page (for example, the IEEE account page is behind a firewall). The extension signs in within a minimized window and closes it when done. If a CAPTCHA appears, the window stays open and you are notified.</p></details>

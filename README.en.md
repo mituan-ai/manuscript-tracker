@@ -8,7 +8,8 @@
 
 <p align="center">
   <a href="https://tracker.eonmaze.com/">Website</a> ·
-  <a href="https://tracker.eonmaze.com/download/manuscript-tracker.zip">Download</a> ·
+  <a href="https://microsoftedge.microsoft.com/addons/detail/hkljgniplahnifceaoaehfkefbcilmpd">Edge Add-ons</a> ·
+  <a href="https://chromewebstore.google.com/detail/cgegoafnapldoacegnnapjbhpfnmjijo">Chrome Web Store</a> ·
   <a href="#install">Install</a> ·
   <a href="#supported-platforms">Supported platforms</a> ·
   <a href="https://github.com/mituan-ai/manuscript-tracker/issues">Report an issue</a>
@@ -57,17 +58,15 @@ IEEE journals that use PaperCept, such as IEEE TAC and RA-L, are not supported y
 
 ## Install
 
-The extension isn't in an extension store yet, so you install it manually once. It takes about two minutes. The [website](https://tracker.eonmaze.com/#install) shows every step with screenshots.
+Install from your browser's extension store. Updates are automatic. Both store listings are still under review, so the links below won't open until they go live.
 
-1. **Download and extract**: download [manuscript-tracker.zip](https://tracker.eonmaze.com/download/manuscript-tracker.zip), right-click it, and choose "Extract All…" → "Extract". You get a `manuscript-tracker` folder. Don't delete or move it afterwards.
-2. **Turn on the switch**: open `edge://extensions` (in Chrome, `chrome://extensions`) and turn on "Developer mode". In Edge the switch is at the bottom left; in Chrome it is at the top right.
-3. **Select the folder**: click "Load unpacked", select the `manuscript-tracker` folder, and click "Select Folder".
+- **Edge**: open [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/hkljgniplahnifceaoaehfkefbcilmpd), click "Get", then "Add extension".
+- **Chrome**: open the [Chrome Web Store](https://chromewebstore.google.com/detail/cgegoafnapldoacegnnapjbhpfnmjijo), click "Add to Chrome", then "Add extension".
+- Chromium-based browsers such as Brave and Vivaldi can usually install from the Chrome Web Store too.
 
 When the extension is installed, the browser opens a page that says it was installed successfully. Choose your journal types and connect your accounts there.
 
-- Keep "Developer mode" on. If you turn it off, the browser disables the extension. If Edge asks whether to turn off extensions in developer mode, choose to be reminded later.
-- To update, delete the old zip, download the new one, extract it to the same place and replace the files, then click "Reload" on the extensions page. Your accounts and records are kept.
-- Updating from 0.5.0 or earlier to 0.5.1 needs a one-time reinstall. This version fixes the extension ID, so data from the old version can't carry over. Click "Remove" on the old card on the extensions page, select the folder again as in step 3, and connect your accounts once more. Later updates work as described above and keep your accounts and records.
+If you installed the zip manually before: on the extensions page (`edge://extensions` or `chrome://extensions`), click "Remove" on the old card, install from the store, and connect your accounts again. The manually installed version no longer gets updates.
 
 ## Usage
 
@@ -162,8 +161,8 @@ deploy/              website nginx config and deployment steps
 npm install          # installs linkedom, used only by the tests
 npm test             # parsers, generic recognition, status classification, merging, RSA encryption
 npm run deploy       # for development: copies to a Windows folder (under WSL); then click "Reload"
-npm run package      # packs dist/manuscript-tracker-<version>.zip
-npm run build:site   # builds the website into dist/site/ (including the download zip)
+npm run package      # packs dist/manuscript-tracker-<version>.zip for the extension stores (without the manifest key)
+npm run build:site   # builds the website into dist/site/
 npm run deploy:site  # publishes the website to the server; see deploy/README.md for first-time setup
 ```
 

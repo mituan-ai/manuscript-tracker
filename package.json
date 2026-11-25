@@ -7,9 +7,9 @@
     "test": "node --test test/*.test.mjs",
     "deploy": "bash scripts/deploy.sh",
     "package": "bash scripts/package.sh",
-    "package:store": "bash scripts/package.sh --store",
     "build:site": "bash scripts/build-site.sh",
-    "deploy:site": "bash scripts/deploy-site.sh"
+    "deploy:site": "bash scripts/deploy-site.sh",
+    "publish:stores": "node scripts/publish-stores.mjs"
   },
   "devDependencies": {
     "linkedom": "^0.18.0"

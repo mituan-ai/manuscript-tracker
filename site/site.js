@@ -1,4 +1,4 @@
-// 官网交互：主题和语言切换（与扩展共用 mt-theme、mt-lang）、按访问者的浏览器选好安装说明、复制扩展页地址、滚动浮现。
+// 官网交互：主题和语言切换（与扩展共用 mt-theme、mt-lang）、按访问者的浏览器选好扩展商店、滚动浮现。
 // 静态的双语文字写在 index.html 里（data-l="zh" / data-l="en"），这里只处理标题、按钮、图片等需要脚本填写的部分。
 (() => {
   const $ = (s, el = document) => el.querySelector(s);
@@ -79,44 +79,22 @@
     applyLang();
   }));
 
-  // ===== 安装截图与圈的位置：按（语言，浏览器）分开，换截图时只改这里 =====
-  // 文件都在 img/install/ 下：第 n 张截图是 `${file}-${n}.webp`（1280×760），welcome 是装好后自动打开的页面（1040×520）。
-  // ring 是截图上要圈出的位置，单位为百分比 [左, 上, 宽, 高]，依次对应第 2 步、第 3 步和完成。
-  // 「其他 Chromium」用 chrome 的截图和坐标。
-  const SHOTS = {
-    zh: {
-      welcome: 'welcome.webp',
-      edge: { file: 'edge', ring: [[3.1, 90.0, 20.3, 5.3], [66.1, 13.3, 12.5, 5.5], [29.7, 57.0, 63.4, 21.1]] },
-      chrome: { file: 'chrome', ring: [[89.8, 1.1, 9.8, 5.3], [1.4, 7.9, 13.8, 6.3], [26.4, 25.9, 32.2, 28.9]] },
-    },
-    en: {
-      welcome: 'en/welcome.webp',
-      edge: { file: 'en/edge', ring: [[3.3, 90.0, 19.9, 5.3], [63.8, 13.3, 11.3, 5.5], [29.7, 23.8, 63.4, 21.6]] },
-      chrome: { file: 'en/chrome', ring: [[87.3, 1.2, 12.4, 5.0], [1.4, 7.9, 10.5, 6.3], [26.4, 25.9, 32.2, 28.9]] },
-    },
-  };
-
-  // 安装说明里各浏览器的按钮名称和位置，取自 Edge 157 与 Chromium 的中、英文界面
-  const EXT_URL = { edge: 'edge://extensions', chrome: 'chrome://extensions', chromium: 'chrome://extensions' };
-  const CHROME_TXT = {
-    zh: { dev: '开发者模式', devwhere: '右上角', load: '加载未打包的扩展程序', loadwhere: '左上方', err: '清单文件缺失或不可读取', pin: '图钉图标', reload: ' ↻ 图标' },
-    en: { dev: 'Developer mode', devwhere: 'top right', load: 'Load unpacked', loadwhere: 'top left', err: 'Manifest file is missing or unreadable', pin: 'pin icon', reload: 'the ↻ icon' },
-  };
-  const TXT = {
-    zh: {
-      edge: { name: 'Microsoft Edge', dev: '开发人员模式', devwhere: '左下角', load: '加载解压缩的扩展', loadwhere: '右上方', err: '清单文件丢失或不可读取', pin: '眼睛图标', reload: '「重新加载」' },
-      chrome: { ...CHROME_TXT.zh, name: 'Google Chrome' },
-      chromium: { ...CHROME_TXT.zh, name: 'Chrome（示意，你的浏览器可能不同）' },
-    },
-    en: {
-      edge: { name: 'Microsoft Edge', dev: 'Developer mode', devwhere: 'bottom left', load: 'Load unpacked', loadwhere: 'top right', err: 'Manifest file is missing or unreadable', pin: 'eye icon', reload: '“Reload”' },
-      chrome: { ...CHROME_TXT.en, name: 'Google Chrome' },
-      chromium: { ...CHROME_TXT.en, name: 'Chrome (for reference; your browser may differ)' },
-    },
-  };
+  // ===== 安装：只从扩展商店装。Edge 用 Edge 加载项，Chrome 和其他 Chromium 浏览器用 Chrome 应用商店 =====
+  // 商店地址由 build-site.sh 写进按钮的 href；还没上架的商店留空，按钮换成“审核中”的说明，安装步骤和提示一并去掉。
+  const storeUrl = (id) => $(`a[data-store="${id}"]`)?.getAttribute('href') || '';
+  $$('a[data-store]').forEach((a) => {
+    if (a.getAttribute('href')) return;
+    a.parentElement.querySelectorAll('.do, .tip').forEach((el) => el.remove());
+    const p = document.createElement('p');
+    p.className = 'tip pending';
+    p.innerHTML = a.dataset.store === 'edge'
+      ? '<span data-l="zh">Edge 加载项正在审核，上线后就能在这里安装。</span><span data-l="en">The Edge Add-ons listing is under review. You can install it here once it is live.</span>'
+      : '<span data-l="zh">Chrome 应用商店正在审核，上线后就能在这里安装。</span><span data-l="en">The Chrome Web Store listing is under review. You can install it here once it is live.</span>';
+    a.replaceWith(p);
+  });
   const ALT = {
-    zh: { 1: '扩展页面上的开发者模式开关', 2: '打开开关后出现的加载扩展按钮', 3: '扩展页面上出现 mituan 投稿追踪', welcome: '装好后自动打开的安装成功页面，下面是选择期刊类型、连接账号' },
-    en: { 1: 'Developer mode switch on the extensions page', 2: 'Load unpacked button that appears after turning on the switch', 3: 'mituan Manuscript Tracker listed on the extensions page', welcome: 'Welcome page that opens after installing, with journal type selection and account connection below' },
+    zh: '装好后自动打开的安装成功页面，下面是选择期刊类型、连接账号',
+    en: 'Welcome page that opens after installing, with journal type selection and account connection below',
   };
 
   let browser = 'edge';
@@ -128,25 +106,6 @@
     });
     $$('.panel').forEach((p) => (p.hidden = !p.dataset.for.split(' ').includes(id)));
     $$('[data-only]').forEach((el) => (el.hidden = !el.dataset.only.split(' ').includes(id)));
-    if (!EXT_URL[id]) return;
-    $$('[data-url]').forEach((el) => (el.textContent = EXT_URL[id]));
-    // 两种语言的文字各填各的，切换语言时不用再填
-    for (const k of ['name', 'dev', 'devwhere', 'load', 'loadwhere', 'err', 'pin', 'reload']) {
-      $$(`[data-${k}]`).forEach((el) => (el.textContent = TXT[el.closest('[data-l]')?.dataset.l || lang][id][k]));
-    }
-    const shots = SHOTS[lang][id === 'edge' ? 'edge' : 'chrome'];
-    $$('img[data-shot]').forEach((img) => {
-      const n = +img.dataset.shot;
-      const src = `img/install/${shots.file}-${n}.webp`;
-      if (img.getAttribute('src') !== src) img.src = src;
-      img.alt = `${TXT[lang][id].name}${L('：', ': ')}${ALT[lang][n]}`;
-      const [x, y, w, h] = shots.ring[n - 1];
-      const fig = img.parentElement.style;
-      fig.setProperty('--x', `${x}%`);
-      fig.setProperty('--y', `${y}%`);
-      fig.setProperty('--w', `${w}%`);
-      fig.setProperty('--h', `${h}%`);
-    });
   };
   $$('.browsers button').forEach((el) => el.addEventListener('click', () => pick(el.dataset.b)));
 
@@ -158,35 +117,19 @@
     : /Chrome\//.test(ua) ? 'chrome'
     : /Safari\//.test(ua) ? 'safari' : 'edge';
   $('#mobileNote').hidden = !mobile;
+  // 首屏按钮：在 Edge / Chrome 里直接打开对应的商店页面（一键安装），其他情况跳到安装区
+  const heroStore = !mobile && (detected === 'edge' || detected === 'chrome') && storeUrl(detected) ? detected : null;
+  if (heroStore) {
+    const cta = $('#heroCta');
+    cta.href = storeUrl(heroStore);
+    cta.target = '_blank';
+    cta.rel = 'noopener';
+  }
   const ctaText = () => {
-    if (!mobile && (detected === 'edge' || detected === 'chrome')) {
-      const name = detected === 'edge' ? 'Edge' : 'Chrome';
-      return L(`安装到 ${name}`, `Install for ${name}`);
-    }
+    if (heroStore) return L(`安装到 ${heroStore === 'edge' ? 'Edge' : 'Chrome'}`, `Add to ${heroStore === 'edge' ? 'Edge' : 'Chrome'}`);
     if (detected === 'firefox' || detected === 'safari') return L('查看浏览器支持', 'See browser support');
     return L('安装扩展', 'Install extension');
   };
-
-  // 网页不能直接打开 edge:// 地址，只能复制后让用户粘贴
-  const COPY = { idle: ['复制地址', 'Copy address'], ok: ['已复制，去地址栏粘贴', 'Copied. Paste it into the address bar'], manual: ['请按 Ctrl+C 复制', 'Press Ctrl+C to copy'] };
-  let copyState = 'idle';
-  let copyTimer;
-  const showCopy = (state) => {
-    copyState = state;
-    $('#copyUrl').textContent = L(...COPY[state]);
-  };
-  $('#copyUrl').addEventListener('click', async () => {
-    const code = $('#extUrl');
-    try {
-      await navigator.clipboard.writeText(code.textContent);
-      showCopy('ok');
-    } catch {
-      getSelection().selectAllChildren(code);
-      showCopy('manual');
-    }
-    clearTimeout(copyTimer);
-    copyTimer = setTimeout(() => showCopy('idle'), 3000);
-  });
 
   // 切换语言：静态文字由 CSS 按 <html data-lang> 显示，其余在这里刷新
   const ARIA = [
@@ -194,7 +137,6 @@
     ['.theme', '主题', 'Theme'],
     ['.langsw', '语言', 'Language'],
     ['.browsers', '选择浏览器', 'Choose your browser'],
-    ['.stepper', '安装步骤', 'Installation steps'],
   ];
   function applyLang() {
     html.dataset.lang = lang;
@@ -214,11 +156,10 @@
     auto.setAttribute('aria-label', auto.title);
     $$('.langsw button').forEach((b) => b.classList.toggle('on', b.dataset.lg === langPref));
     $('#heroCta').textContent = ctaText();
-    showCopy(copyState);
     const welcome = $('#welcomeShot');
-    const src = `img/install/${SHOTS[lang].welcome}`;
+    const src = `img/install/${lang === 'en' ? 'en/' : ''}welcome.webp`;
     if (welcome.getAttribute('src') !== src) welcome.src = src;
-    welcome.alt = ALT[lang].welcome;
+    welcome.alt = ALT[lang];
     pick(browser);
   }
   browser = detected;

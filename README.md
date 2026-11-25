@@ -8,7 +8,8 @@
 
 <p align="center">
   <a href="https://tracker.eonmaze.com/">官网</a> ·
-  <a href="https://tracker.eonmaze.com/download/manuscript-tracker.zip">下载扩展</a> ·
+  <a href="https://microsoftedge.microsoft.com/addons/detail/hkljgniplahnifceaoaehfkefbcilmpd">Edge 加载项</a> ·
+  <a href="https://chromewebstore.google.com/detail/cgegoafnapldoacegnnapjbhpfnmjijo">Chrome 应用商店</a> ·
   <a href="#安装">安装</a> ·
   <a href="#支持范围">支持范围</a> ·
   <a href="https://github.com/mituan-ai/manuscript-tracker/issues">反馈问题</a>
@@ -57,17 +58,15 @@ IEEE TAC、RA-L 等通过 PaperCept 投稿的 IEEE 期刊暂不包括。你的�
 
 ## 安装
 
-还没有上架扩展商店，需要手动装一次，大约 2 分钟。[官网](https://tracker.eonmaze.com/#install)上每一步都有截图。
+从浏览器的扩展商店安装，之后会自动更新。两个商店都在审核中，上线前下面的链接还打不开。
 
-1. **下载并解压**：下载 [manuscript-tracker.zip](https://tracker.eonmaze.com/download/manuscript-tracker.zip)，右键点它，选「全部解压缩」→「提取」，得到 `manuscript-tracker` 文件夹。以后不要删除或移动这个文件夹。
-2. **打开开关**：在地址栏打开 `edge://extensions`（Chrome 是 `chrome://extensions`），打开「开发人员模式」开关，Edge 在页面左下角，Chrome 叫「开发者模式」，在右上角。
-3. **选择文件夹**：点「加载解压缩的扩展」（Chrome 是「加载未打包的扩展程序」），选中 `manuscript-tracker` 文件夹，点「选择文件夹」。
+- **Edge**：打开 [Microsoft Edge 加载项](https://microsoftedge.microsoft.com/addons/detail/hkljgniplahnifceaoaehfkefbcilmpd)，点「获取」→「添加扩展」。
+- **Chrome**：打开 [Chrome 应用商店](https://chromewebstore.google.com/detail/cgegoafnapldoacegnnapjbhpfnmjijo)，点「添加至 Chrome」→「添加扩展程序」。
+- Brave、Vivaldi 等 Chromium 内核浏览器一般也能从 Chrome 应用商店安装。
 
 装好后浏览器会自动打开写着「安装成功」的页面，在那里选择期刊类型、连接账号。
 
-- 「开发人员模式」要一直开着，关掉后浏览器会停用这个扩展。Edge 偶尔会弹出「关闭开发人员模式下的扩展」，请点「2 周后提醒」。
-- 更新：删除旧的 zip，下载新版后同样解压到原来的位置并替换文件，再在扩展页点「重新加载」。账号和记录都会保留。
-- 从 0.5.0 或更早版本升级到 0.5.1 需要重装一次：这一版固定了扩展 ID，旧版的数据带不过来。在扩展页点旧版卡片上的「移除」，按上面第 3 步重新选择文件夹，再连接一次账号。以后的更新照上一条操作即可，账号和记录会保留。
+以前用 zip 手动安装过的：先在扩展页（`edge://extensions` 或 `chrome://extensions`）点旧版卡片上的「移除」，再从商店安装，然后重新连接一次账号。手动安装的版本以后不再更新。
 
 ## 使用
 
@@ -162,8 +161,8 @@ deploy/              官网的 nginx 配置与部署步骤
 npm install          # 只为测试安装 linkedom
 npm test             # 解析器、通用识别、状态归类、合并逻辑、RSA 加密
 npm run deploy       # 开发用：复制到 Windows 目录（WSL 下），在扩展页点「重新加载」
-npm run package      # 打包成 dist/manuscript-tracker-<版本>.zip
-npm run build:site   # 生成官网到 dist/site/（含下载用的 zip）
+npm run package      # 打包成上传到扩展商店的 dist/manuscript-tracker-<版本>.zip（去掉 manifest 里的 key）
+npm run build:site   # 生成官网到 dist/site/
 npm run deploy:site  # 发布官网到服务器，首次部署见 deploy/README.md
 ```
 
