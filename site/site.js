@@ -22,7 +22,6 @@
     bell: '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
     moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
     clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
-    lock: '<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
     out: '<path d="M7 7h10v10"/><path d="M7 17 17 7"/>', // 商店按钮上的“在新页面打开”
     // 浏览器工具栏上的按钮，与扩展 ui/common.js 里的相同：扩展（拼图）、Edge 的眼睛、Chrome 的图钉
     puzzle: '<path d="M5 7h3V5.25a2.25 2.25 0 0 1 4.5 0V7h3a2 2 0 0 1 2 2v2.75h1.75a2.25 2.25 0 0 1 0 4.5H17.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z"/>',
@@ -30,7 +29,6 @@
     pin: '<path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>',
   };
   for (const k of ['list', 'bell', 'moon', 'clock']) $$(`.fi-${k}`).forEach((el) => (el.innerHTML = svg(ICONS[k])));
-  $$('.lk').forEach((el) => (el.innerHTML = svg(ICONS.lock)));
 
   // 语言：偏好 auto（默认，不存）/ zh / en 存在 mt-lang；auto 时的判断与 theme.js 相同
   let langPref = read('mt-lang', 'auto');
