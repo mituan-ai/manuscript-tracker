@@ -149,6 +149,15 @@ input::placeholder { color: var(--faint); }
 input[type=checkbox] { width: auto; accent-color: var(--brand); box-shadow: none; }
 details summary { cursor: pointer; color: var(--muted); font-size: 12.5px; }
 
+/* 句子里的浏览器按钮（拼图、眼睛、图钉）：画成工具栏上的小按钮，照着找就行。官网也用。
+   方块里放一个零宽字符、行高等于方块内高，方块就按周围文字的字体度量居中，字号变了也跟着走；
+   再上移 .06em 是按页面字体实测的修正：汉字的视觉中心比西文字体的中线略高 */
+.ki { display: inline-block; position: relative; width: 1.6em; height: 1.6em; line-height: calc(1.6em - 2px); margin: 0 .2em; vertical-align: .06em;
+      border-radius: 6px; border: 1px solid var(--line-strong); background: var(--raise); color: var(--text); box-shadow: var(--btn-drop); }
+.ki::before { content: "\200b"; }
+.ki svg { position: absolute; inset: 0; margin: auto; width: 1.05em; height: 1.05em; }
+.nb { white-space: nowrap; } /* 图标和前后的字连在一起换行，不单独掉到下一行 */
+
 /* 开关：<label class="switch"><input type="checkbox"><i></i></label> */
 .switch { position: relative; display: inline-flex; flex: none; width: 40px; height: 23px; cursor: pointer; }
 .switch input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }

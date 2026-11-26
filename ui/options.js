@@ -512,6 +512,16 @@ $('#refreshAll').innerHTML = `${ICON.refresh}${L('立即查询', 'Check now')}`;
 $('#export').innerHTML = `${ICON.download}${L('导出', 'Export')}`;
 $('#searchIcon').outerHTML = ICON.search;
 $('#lockIcon').innerHTML = ICON.lock;
+// 安装成功提示里的按钮：扩展菜单里，Edge 用眼睛「在工具栏中显示」，Chrome 和其他 Chromium 浏览器用图钉「固定」
+const KI = {
+  puzzle: [ICON.puzzle, L('扩展', 'Extensions')],
+  toolbar: /Edg\//.test(navigator.userAgent) ? [ICON.eye, L('在工具栏中显示', 'Show in toolbar')] : [ICON.pin, L('固定', 'Pin')],
+};
+$$('.ki').forEach((el) => {
+  [el.innerHTML, el.title] = KI[el.dataset.ki];
+  el.setAttribute('role', 'img');
+  el.setAttribute('aria-label', el.title);
+});
 $('#themeSlot').innerHTML = themeSwitchHtml();
 $('#langSlot').innerHTML = langSwitchHtml();
 $('#footer').innerHTML = footerHtml();
