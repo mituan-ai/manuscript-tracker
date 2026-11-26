@@ -214,6 +214,7 @@ html[data-lang="zh"] .systab thead th { font: 600 13px var(--sans); font-style: 
 .browsers { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
 .browsers button { display: grid; justify-items: center; gap: 6px; padding: 14px 8px 12px; border-radius: var(--radius); font-size: 14.5px; font-weight: 600; line-height: 1.3; white-space: normal; }
 .browsers button small { font-size: 11.5px; font-weight: 400; color: var(--faint); }
+.browsers button small.rec { padding: 0 8px; border-radius: 99px; font-weight: 600; color: var(--ok); background: color-mix(in srgb, var(--ok) 11%, transparent); }
 .browsers button.on { border-color: rgba(var(--accent-rgb), .6); background: color-mix(in srgb, var(--accent-text) 6%, var(--card-solid)); box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), .4), 0 10px 20px -14px rgba(var(--accent-rgb), .6); }
 .bi { width: 30px; height: 30px; border-radius: 50%; display: block; position: relative; }
 .bi.big { width: 52px; height: 52px; flex: none; }
@@ -228,14 +229,21 @@ html[data-lang="zh"] .systab thead th { font: 600 13px var(--sans); font-style: 
 .bi-safari::after { content: ""; position: absolute; left: 47%; top: 12%; width: 6%; height: 76%; background: linear-gradient(#ff3b30 50%, #fff 50%); transform: rotate(45deg); border-radius: 2px; }
 .panel { padding: 30px 32px; }
 .panel[hidden] { display: none; }
-/* 商店安装：左边商店按钮和三步说明，右边是装好后自动打开的页面 */
+/* 商店安装：左边商店按钮和几步说明，右边是装好后自动打开的页面。两边顶端对齐，切换页签时示意图不跟着上下跳 */
 .panel [hidden] { display: none !important; }
-.store { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 40px; align-items: center; padding: 6px 0 30px; }
-.store h3 { display: flex; align-items: center; gap: 12px; font: 600 22px/1.4 var(--serif); margin-bottom: 18px; }
-.store h3 .bi { width: 26px; height: 26px; }
-.store .btn { margin-bottom: 6px; }
-.store .pending { margin: 0 0 6px; }
-.do { list-style: none; counter-reset: do; padding: 0; margin: 16px 0; }
+.store { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 40px; align-items: start; padding: 6px 0 30px; }
+/* 商店按钮：品牌色的浅底和细边，亮暗主题下各自协调；首屏的实心按钮仍是全页最醒目的一个 */
+.btn.get { padding: 10px 18px; letter-spacing: .01em; color: var(--accent-text); background: rgba(var(--accent-rgb), .07);
+           border-color: rgba(var(--accent-rgb), .3); box-shadow: none; }
+.btn.get:hover { background: rgba(var(--accent-rgb), .12); border-color: rgba(var(--accent-rgb), .55); box-shadow: none; }
+.btn.get svg { width: 16px; height: 16px; margin-right: -2px; }
+/* 还没上架的商店：同样高度的虚线占位 */
+.btn.get.off { color: var(--faint); background: none; border: 1px dashed var(--line-strong); pointer-events: none; }
+.btn.get.off small { padding: 1px 8px; border-radius: 99px; font-size: 12px; color: var(--muted); background: rgba(127, 127, 127, .12); }
+.store .or { margin: 18px 0 10px; font-size: 14px; color: var(--muted); }
+.store .alt { font-size: 13.5px; color: var(--muted); margin: 14px 0 0; }
+.store .cn-note { font-size: 13.5px; color: var(--muted); margin: 10px 0 0; }
+.do { list-style: none; counter-reset: do; padding: 0; margin: 14px 0 12px; }
 .do li { counter-increment: do; position: relative; padding-left: 30px; margin-bottom: 12px; color: var(--muted); }
 .do li::before { content: counter(do); position: absolute; left: 0; top: 2px; width: 21px; height: 21px; border-radius: 50%; display: grid; place-items: center;
                  font: 600 12.5px/1 var(--serif); color: var(--accent-text); border: 1px solid rgba(var(--accent-rgb), .4); }
@@ -343,7 +351,6 @@ footer { border-top: 3px double var(--line-strong); padding: 26px 0 36px; }
   .navin #themeSlot { display: none; }
   .navin #langSlot { margin-left: auto; }
   .panel { padding: 22px 18px; }
-  .store h3 { font-size: 19px; }
   .soon { flex-direction: column; }
   .notice { right: 0; }
   .lockchip { display: none; }
@@ -360,4 +367,3 @@ footer { border-top: 3px double var(--line-strong); padding: 26px 0 36px; }
   .navin .langsw button { width: 26px; }
   .navin .btn.sm { padding: 7px 10px; }
 }
-.store .cn-note { font-size: 13.5px; color: var(--muted); margin: 10px 0 0; }

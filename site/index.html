@@ -188,15 +188,16 @@
     </div>
   </section>
 
-  <!-- 安装：只从浏览器的扩展商店安装。__EDGE_URL__、__CHROME_URL__ 由 scripts/build-site.sh 填入；还没上架的商店留空，site.js 会显示“审核中” -->
+  <!-- 安装：只从浏览器的扩展商店安装。__EDGE_URL__、__CHROME_URL__ 由 scripts/build-site.sh 填入，还没上架的商店留空。
+       Edge 优先用 Edge 加载项，还没上架时改用 Chrome 应用商店（Edge 可以直接安装那里的扩展），由 site.js 选择 -->
   <section class="wrap" id="install">
     <div class="head"><h2><span data-l="zh">安装</span><span data-l="en">Install</span></h2>
       <p><span data-l="zh">从浏览器的扩展商店安装，点一下就好，之后自动更新。</span><span data-l="en">Install from your browser’s extension store in one click. Updates are automatic.</span></p></div>
     <div class="mobile-note card" id="mobileNote" hidden><span data-l="zh">手机浏览器不支持扩展，请在电脑上访问 <b>tracker.eonmaze.com</b> 安装。</span><span data-l="en">Mobile browsers do not support extensions. Open <b>tracker.eonmaze.com</b> on a computer to install.</span></div>
     <div class="browsers" role="tablist" aria-label="Choose your browser">
-      <button type="button" role="tab" data-b="edge"><span class="bi bi-edge"></span>Edge<small><span data-l="zh">推荐</span><span data-l="en">Recommended</span></small></button>
-      <button type="button" role="tab" data-b="chrome"><span class="bi bi-chrome"></span>Chrome<small>Google</small></button>
-      <button type="button" role="tab" data-b="chromium"><span class="bi bi-other"></span><span data-l="zh">其他 Chromium</span><span data-l="en">Other Chromium</span><small><span data-l="zh">Brave、Vivaldi…</span><span data-l="en">Brave, Vivaldi…</span></small></button>
+      <button type="button" role="tab" data-b="edge"><span class="bi bi-edge"></span>Edge<small class="rec"><span data-l="zh">推荐</span><span data-l="en">Recommended</span></small></button>
+      <button type="button" role="tab" data-b="chrome"><span class="bi bi-chrome"></span>Chrome<small class="rec"><span data-l="zh">推荐</span><span data-l="en">Recommended</span></small></button>
+      <button type="button" role="tab" data-b="chromium"><span class="bi bi-other"></span><span data-l="zh">其他 Chromium</span><span data-l="en">Other Chromium</span><small><span data-l="zh">Brave、Vivaldi、Opera</span><span data-l="en">Brave, Vivaldi, Opera</span></small></button>
       <button type="button" role="tab" data-b="firefox"><span class="bi bi-firefox"></span>Firefox<small><span data-l="zh">暂不支持</span><span data-l="en">Not supported</span></small></button>
       <button type="button" role="tab" data-b="safari"><span class="bi bi-safari"></span>Safari<small><span data-l="zh">暂不支持</span><span data-l="en">Not supported</span></small></button>
     </div>
@@ -204,40 +205,41 @@
     <div class="card panel" data-for="edge chrome chromium">
       <div class="store">
         <div class="itxt">
-          <div data-only="edge">
-            <h3><span class="bi bi-edge"></span><span data-l="zh">Microsoft Edge 加载项</span><span data-l="en">Microsoft Edge Add-ons</span></h3>
-            <a class="btn primary lg" href="__EDGE_URL__" target="_blank" rel="noopener" data-store="edge"><span data-l="zh">从 Edge 加载项获取</span><span data-l="en">Get it from Edge Add-ons</span></a>
+          <!-- 每个商店一块：按钮写好商店地址，build-site.sh 填入；还没上架的留空，site.js 换成“审核中”占位 -->
+          <div data-only="edge" data-via="edge">
+            <a class="btn get" href="__EDGE_URL__" target="_blank" rel="noopener" data-store="edge"><span data-l="zh">前往 Edge 加载项</span><span data-l="en">Open Edge Add-ons</span></a>
             <ol class="do">
-              <li><span data-l="zh">点上面的按钮，打开「mituan 投稿追踪」的商店页面。</span><span data-l="en">Click the button above to open the “mituan Manuscript Tracker” store page.</span></li>
               <li><span data-l="zh">点<b>「获取」</b>，在弹出的窗口中点<b>「添加扩展」</b>。</span><span data-l="en">Click <b>“Get”</b>, then <b>“Add extension”</b> in the dialog.</span></li>
-              <li><span data-l="zh">浏览器会自动打开「安装成功」页面。在那里选择期刊类型、连接账号，扩展就开始在后台查询。</span><span data-l="en">The browser opens a welcome page. Choose your journal types and connect your accounts there; checks then run in the background.</span></li>
+              <li><span data-l="zh">装好后会自动打开「安装成功」页面，按提示连接账号即可。</span><span data-l="en">A welcome page opens after installing. Follow it to connect your accounts.</span></li>
             </ol>
-            <p class="tip"><span data-l="zh">建议把图标固定到工具栏：点浏览器右上角的<b>拼图图标</b>，再点「mituan 投稿追踪」旁的<b>眼睛图标</b>。</span><span data-l="en">Pin the icon to the toolbar: click the <b>puzzle icon</b> at the top right of the browser, then the <b>eye icon</b> next to “mituan Manuscript Tracker”.</span></p>
           </div>
-          <div data-only="chrome chromium">
-            <h3><span class="bi bi-chrome"></span><span data-l="zh">Chrome 应用商店</span><span data-l="en">Chrome Web Store</span></h3>
-            <a class="btn primary lg" href="__CHROME_URL__" target="_blank" rel="noopener" data-store="chrome"><span data-l="zh">从 Chrome 应用商店添加</span><span data-l="en">Add from Chrome Web Store</span></a>
-            <p class="cn-note" hidden><span data-l="zh">中国大陆通常打不开 Chrome 应用商店，可以改用 Edge 打开本页安装。</span><span data-l="en">The Chrome Web Store usually doesn’t open in mainland China. Open this page in Edge and install from there instead.</span></p>
+          <!-- Edge 页签里只在 Edge 加载项还没上架时出现，见 site.js -->
+          <div data-only="edge chrome chromium" data-via="chrome">
+            <p class="or" data-only="edge"><span data-l="zh">现在可以先从 Chrome 应用商店安装：</span><span data-l="en">For now, you can install it from the Chrome Web Store:</span></p>
+            <a class="btn get" href="__CHROME_URL__" target="_blank" rel="noopener" data-store="chrome"><span data-l="zh">前往 Chrome 应用商店</span><span data-l="en">Open Chrome Web Store</span></a>
+            <p class="cn-note" data-edge="live" hidden><span data-l="zh">中国大陆通常打不开 Chrome 应用商店，可以改用 Edge 打开本页安装。</span><span data-l="en">The Chrome Web Store usually doesn’t open in mainland China. Open this page in Edge and install from there instead.</span></p>
+            <p class="cn-note" data-edge="pending" hidden><span data-l="zh">中国大陆通常打不开 Chrome 应用商店，可以等 Edge 加载项上线后用 Edge 安装。</span><span data-l="en">The Chrome Web Store usually doesn’t open in mainland China. You can install with Edge once the Edge Add-ons listing is live.</span></p>
             <ol class="do">
-              <li><span data-l="zh">点上面的按钮，打开「mituan 投稿追踪」的商店页面。</span><span data-l="en">Click the button above to open the “mituan Manuscript Tracker” store page.</span></li>
-              <li><span data-l="zh">点<b>「添加至 Chrome」</b>，在弹出的窗口中点<b>「添加扩展程序」</b>。</span><span data-l="en">Click <b>“Add to Chrome”</b>, then <b>“Add extension”</b> in the dialog.</span></li>
-              <li><span data-l="zh">浏览器会自动打开「安装成功」页面。在那里选择期刊类型、连接账号，扩展就开始在后台查询。</span><span data-l="en">The browser opens a welcome page. Choose your journal types and connect your accounts there; checks then run in the background.</span></li>
+              <li data-only="edge"><span data-l="zh">首次安装时，点页面顶部的<b>「允许来自其他应用商店的扩展」</b>，再点<b>「允许」</b>。</span><span data-l="en">The first time, click <b>“Allow extensions from other stores”</b> at the top of the page, then <b>“Allow”</b>.</span></li>
+              <li data-only="edge"><span data-l="zh">点<b>「添加至 Chrome」</b>，在弹出的窗口中点<b>「添加扩展」</b>。</span><span data-l="en">Click <b>“Add to Chrome”</b>, then <b>“Add extension”</b> in the dialog.</span></li>
+              <li data-only="chrome"><span data-l="zh">点<b>「添加至 Chrome」</b>，在弹出的窗口中点<b>「添加扩展程序」</b>。</span><span data-l="en">Click <b>“Add to Chrome”</b>, then <b>“Add extension”</b> in the dialog.</span></li>
+              <li data-only="chromium"><span data-l="zh">点<b>「添加至 Chrome」</b>，再确认添加。</span><span data-l="en">Click <b>“Add to Chrome”</b> and confirm.</span></li>
+              <li><span data-l="zh">装好后会自动打开「安装成功」页面，按提示连接账号即可。</span><span data-l="en">A welcome page opens after installing. Follow it to connect your accounts.</span></li>
             </ol>
-            <p class="tip" data-only="chrome"><span data-l="zh">建议把图标固定到工具栏：点浏览器右上角的<b>拼图图标</b>，再点「mituan 投稿追踪」旁的<b>图钉图标</b>。</span><span data-l="en">Pin the icon to the toolbar: click the <b>puzzle icon</b> at the top right of the browser, then the <b>pin icon</b> next to “mituan Manuscript Tracker”.</span></p>
-            <p class="tip" data-only="chromium"><span data-l="zh">Brave、Vivaldi 一般可以直接从 Chrome 应用商店安装，按钮名称可能不同。Opera 要先安装官方的「Install Chrome Extensions」扩展，再从 Chrome 应用商店安装。各浏览器未逐一测试。</span><span data-l="en">Brave and Vivaldi can usually install straight from the Chrome Web Store, though the button names may differ. In Opera, first add its official “Install Chrome Extensions” extension, then install from the Chrome Web Store. Not every browser has been tested.</span></p>
           </div>
+          <p class="tip pin" data-only="edge chrome"><span data-l="zh"><b>固定到工具栏</b>：点<span class="nb">右上角<span class="ki" data-ki="puzzle"></span>，</span>再点 mituan 投稿追踪<span class="nb">旁的<span class="ki" data-ki="toolbar"></span>。</span></span><span data-l="en"><b>Pin it to the toolbar:</b> <span class="nb">click <span class="ki" data-ki="puzzle"></span></span> at the top right, <span class="nb">then <span class="ki" data-ki="toolbar"></span></span> next to mituan Manuscript Tracker.</span></p>
+          <p class="tip" data-only="chromium" data-needs="chrome"><span data-l="zh">Brave、Vivaldi 的按钮名称可能略有不同；Opera 要先安装官方的「Install Chrome Extensions」扩展。</span><span data-l="en">Button names may differ slightly in Brave and Vivaldi. Opera needs its official “Install Chrome Extensions” extension first.</span></p>
+          <!-- Edge 加载项上架后，Chrome 应用商店在 Edge 页签里退到这一行 -->
+          <p class="alt" data-only="edge"><span data-l="zh">也可以从 <a href="__CHROME_URL__" target="_blank" rel="noopener">Chrome 应用商店</a>安装。</span><span data-l="en">You can also install it from the <a href="__CHROME_URL__" target="_blank" rel="noopener">Chrome Web Store</a>.</span></p>
         </div>
         <figure class="ishot">
-          <img id="welcomeShot" src="img/install/welcome.webp" width="1040" height="520" loading="lazy" alt="">
+          <img id="welcomeShot" src="img/install/welcome-edge.webp" width="1040" height="520" loading="lazy" alt="">
           <figcaption><span data-l="zh">装好后自动打开的页面</span><span data-l="en">The page that opens after installing</span></figcaption>
         </figure>
       </div>
 
       <div class="trouble">
         <h3><span data-l="zh">安装后的常见问题</span><span data-l="en">After installing</span></h3>
-        <details><summary><span data-l="zh">工具栏上找不到 mituan 图标</span><span data-l="en">The mituan icon is not on the toolbar</span></summary>
-          <p data-l="zh">点浏览器右上角的拼图图标，再点「mituan 投稿追踪」旁的固定按钮（Edge 是眼睛图标，Chrome 是图钉图标），把它固定到工具栏。</p>
-          <p data-l="en">Click the puzzle icon at the top right of the browser, then the pin button next to “mituan Manuscript Tracker” (an eye icon in Edge, a pin icon in Chrome) to keep it on the toolbar.</p></details>
         <details><summary><span data-l="zh">怎么更新到新版本？</span><span data-l="en">How do I update?</span></summary>
           <p data-l="zh">不用操作。商店会自动更新扩展，账号和记录都会保留。</p>
           <p data-l="en">You don’t need to do anything. The store updates the extension automatically, and your accounts and records are kept.</p></details>
