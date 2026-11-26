@@ -104,7 +104,7 @@
     block.querySelectorAll('.do, .cn-note, .or').forEach((el) => el.remove());
     const [zh, en] = STORE_NAME[a.dataset.store];
     const ph = document.createElement('span');
-    ph.className = 'btn get off';
+    ph.className = 'btn off';
     ph.innerHTML = `<span data-l="zh">${zh}</span><span data-l="en">${en}</span><small><span data-l="zh">审核中</span><span data-l="en">In review</span></small>`;
     a.replaceWith(ph);
   });
