@@ -12,8 +12,14 @@
   --line: rgba(84, 66, 38, .14); --line-strong: rgba(84, 66, 38, .28);
   --text: #1c2330; --muted: #596070; --faint: #8b8d94;
   --accent-rgb: 43, 80, 192; --accent-text: #2b50c0;
-  /* 品牌色（主按钮、logo、开关）：靛蓝纯色，亮暗两种主题都是“蓝底白字”，暗色下略提亮。悬停加深、按下再深一级 */
-  --brand: #2b50c0; --brand-hover: #2443a8; --brand-active: #1f3a91; --brand-rgb: 43, 80, 192; --on-brand: #fff;
+  /* 品牌色（logo、开关、复选框）：靛蓝，暗色下略提亮。按钮不用它填色 */
+  --brand: #2b50c0; --brand-rgb: 43, 80, 192;
+  /* 主按钮（扩展的 button.primary、官网的 .btn.primary）：按钮底色里调进一点品牌色，配品牌色文字和细边。
+     由 --accent-* 和 --raise 算出，暗色主题只要改这几个基础色，这里不用重写；直接叠半透明会在米色底上发灰 */
+  --pri-bg: color-mix(in srgb, var(--accent-text) 7%, var(--raise));
+  --pri-bg-hover: color-mix(in srgb, var(--accent-text) 12%, var(--raise));
+  --pri-bg-active: color-mix(in srgb, var(--accent-text) 16%, var(--raise));
+  --pri-line: rgba(var(--accent-rgb), .32); --pri-line-hover: rgba(var(--accent-rgb), .55);
   --gilt: #9c7633; --gilt-rgb: 156, 118, 51; --on-gilt: #fbf8f1;
   /* 按钮的立体感只留一道顶部高光和一层很浅的投影 */
   --btn-hi: inset 0 1px 0 rgba(255, 255, 255, .6); --btn-drop: 0 1px 2px rgba(40, 32, 18, .07);
@@ -35,7 +41,7 @@
   --line: rgba(236, 226, 206, .1); --line-strong: rgba(236, 226, 206, .2);
   --text: #ebe6dc; --muted: #a8a397; --faint: #7a776f;
   --accent-rgb: 138, 163, 245; --accent-text: #9fb3f6;
-  --brand: #3d5fd6; --brand-hover: #4b6ce0; --brand-active: #3554c2; --brand-rgb: 61, 95, 214; --on-brand: #fff;
+  --brand: #3d5fd6; --brand-rgb: 61, 95, 214;
   --gilt: #c9a96b; --gilt-rgb: 201, 169, 107; --on-gilt: #141619;
   --btn-hi: inset 0 1px 0 rgba(255, 255, 255, .05); --btn-drop: 0 1px 2px rgba(0, 0, 0, .35);
   --ok: #7cc4a0; --warn: #dcaa5f; --bad: #e0908b; --idle: #8a8780;
@@ -52,7 +58,7 @@
     --line: rgba(236, 226, 206, .1); --line-strong: rgba(236, 226, 206, .2);
     --text: #ebe6dc; --muted: #a8a397; --faint: #7a776f;
     --accent-rgb: 138, 163, 245; --accent-text: #9fb3f6;
-    --brand: #3d5fd6; --brand-hover: #4b6ce0; --brand-active: #3554c2; --brand-rgb: 61, 95, 214; --on-brand: #fff;
+    --brand: #3d5fd6; --brand-rgb: 61, 95, 214;
     --gilt: #c9a96b; --gilt-rgb: 201, 169, 107; --on-gilt: #141619;
     --btn-hi: inset 0 1px 0 rgba(255, 255, 255, .05); --btn-drop: 0 1px 2px rgba(0, 0, 0, .35);
     --ok: #7cc4a0; --warn: #dcaa5f; --bad: #e0908b; --idle: #8a8780;
@@ -125,11 +131,11 @@ button, .button { appearance: none; border: 1px solid var(--line-strong); backgr
        transition: transform .12s, border-color .18s, background .18s, box-shadow .18s, color .18s; }
 button:hover, .button:hover { border-color: rgba(var(--accent-rgb), .55); }
 button:active { transform: translateY(1px); }
-/* 主按钮：品牌色纯色、白字，不用渐变和彩色光晕；亮暗两种主题是同一种样子 */
-button.primary, .button.primary { background: var(--brand); border-color: transparent; color: var(--on-brand); font-weight: 600; letter-spacing: .02em;
-       box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12), 0 1px 2px rgba(var(--brand-rgb), .3); }
-button.primary:hover, .button.primary:hover { background: var(--brand-hover); border-color: transparent; }
-button.primary:active, .button.primary:active { background: var(--brand-active); }
+/* 主按钮：浅品牌色底、品牌色文字和细边，不用实心色块，颜色见 --pri-* */
+button.primary, .button.primary { background: var(--pri-bg); border-color: var(--pri-line); color: var(--accent-text); font-weight: 600; letter-spacing: .01em;
+       box-shadow: var(--btn-hi), 0 1px 2px rgba(var(--accent-rgb), .14); }
+button.primary:hover, .button.primary:hover { background: var(--pri-bg-hover); border-color: var(--pri-line-hover); }
+button.primary:active, .button.primary:active { background: var(--pri-bg-active); }
 button.ghost { background: none; border-color: transparent; box-shadow: none; color: var(--muted); }
 button.ghost:hover { color: var(--text); background: var(--hover); border-color: transparent; }
 button.danger { color: var(--bad); }
