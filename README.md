@@ -58,10 +58,10 @@ IEEE TAC、RA-L 等通过 PaperCept 投稿的 IEEE 期刊暂不包括。你的�
 
 ## 安装
 
-从浏览器的扩展商店安装，之后会自动更新。两个商店都在审核中，上线前下面的链接还打不开。
+从浏览器的扩展商店安装，之后会自动更新。
 
-- **Edge**：打开 [Microsoft Edge 加载项](https://microsoftedge.microsoft.com/addons/detail/hkljgniplahnifceaoaehfkefbcilmpd)，点「获取」→「添加扩展」。
-- **Chrome**：打开 [Chrome 应用商店](https://chromewebstore.google.com/detail/cgegoafnapldoacegnnapjbhpfnmjijo)，点「添加至 Chrome」→「添加扩展程序」。中国大陆通常打不开 Chrome 应用商店，可以改用 Edge 安装。
+- **Edge**：打开 [Chrome 应用商店](https://chromewebstore.google.com/detail/cgegoafnapldoacegnnapjbhpfnmjijo)，首次使用时点页面顶部的「允许来自其他应用商店的扩展」→「允许」，再点「添加至 Chrome」→「添加扩展」。[Microsoft Edge 加载项](https://microsoftedge.microsoft.com/addons/detail/hkljgniplahnifceaoaehfkefbcilmpd)还在审核，上线后也可以从那里安装。
+- **Chrome**：打开 [Chrome 应用商店](https://chromewebstore.google.com/detail/cgegoafnapldoacegnnapjbhpfnmjijo)，点「添加至 Chrome」→「添加扩展程序」。中国大陆通常打不开 Chrome 应用商店，Edge 加载项上线后可以改用 Edge 安装。
 - **Brave、Vivaldi**：一般可以直接从 Chrome 应用商店安装。
 - **Opera**：先安装官方的「Install Chrome Extensions」扩展，再从 Chrome 应用商店安装。
 
