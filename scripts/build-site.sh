@@ -19,12 +19,16 @@ case "$CHROME_FINAL" in
 esac
 echo "Edge 加载项：${EDGE_URL:-审核中}"
 echo "Chrome 应用商店：${CHROME_URL:-审核中}"
+# 标题用的中文衬线字体是按页面上的字截取的子集，标题里出现新字时提醒重新生成
+python3 -I "$ROOT/scripts/make-font-sc.py" --check
 OUT="$ROOT/dist/site"
 rm -rf "$OUT"
 mkdir -p "$OUT"
 cp -r "$ROOT/site/." "$OUT/"
+rm "$OUT/font/chars.txt" # 只给 make-font-sc.py --check 用，不发布
 cp "$ROOT/ui/style.css" "$OUT/base.css"
 cp "$ROOT/ui/theme.js" "$OUT/theme.js"
+cp "$ROOT/ui/dropdown.js" "$OUT/dropdown.js"
 # base.css 里的 @font-face 用相对路径 fonts/，字体放在站点根目录的 fonts/ 下
 cp -r "$ROOT/ui/fonts" "$OUT/fonts"
 cp "$ROOT/ui/logo.svg" "$OUT/logo.svg"

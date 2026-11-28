@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="site.css">
 </head>
 <body>
+<!-- 浏览器标志：Simple Icons（CC0），单色，颜色跟随文字 -->
 <header class="nav">
   <div class="wrap navin">
     <a class="brand" href="#top" aria-label="mituan Manuscript Tracker"><img src="logo.svg" alt=""><span class="wordmark">mituan</span><span class="product"><span data-l="zh">投稿追踪</span><span data-l="en">Manuscript Tracker</span></span></a>
@@ -27,48 +28,39 @@
       <a href="#faq"><span data-l="zh">常见问题</span><span data-l="en">FAQ</span></a>
       <a href="https://github.com/mituan-ai/manuscript-tracker" target="_blank" rel="noopener">GitHub</a>
     </nav>
-    <span id="themeSlot"></span>
-    <span id="langSlot"></span>
-    <a class="btn primary sm" href="#install"><span data-l="zh">安装</span><span data-l="en">Install</span></a>
+    <div class="tools">
+      <a class="btn primary sm" href="#install"><span data-l="zh">安装</span><span data-l="en">Install</span></a>
+      <span id="themeSlot"></span>
+      <span id="langSlot"></span>
+    </div>
   </div>
 </header>
 
 <main id="top">
-  <!-- 首屏 -->
+  <!-- 首屏：左边一句话和安装按钮，右边是弹窗示意。打开页面后示意里的 TPAMI 稿件从“审稿中”变成“需修改”，随后弹出桌面通知（site.js 加 .playing 播放；不运行脚本或要求减少动效时直接显示变化后的样子） -->
   <section class="wrap hero">
     <div class="pitch">
-      <span class="eyebrow"><span data-l="zh">Edge / Chrome 浏览器扩展</span><span data-l="en">Browser extension for Edge / Chrome</span></span>
-      <h1 data-l="zh">自动追踪<br><span class="grad">期刊投稿状态<svg class="swash" viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M1.5 9.6C48 2.6 128 .9 198.5 4.6 132 3.9 62 6.3 3 11.4c-1.3.2-2.4-1.5-1.5-1.8Z"/></svg></span></h1>
-      <h1 data-l="en">Track submissions<br><span class="grad">automatically<svg class="swash" viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M1.5 9.6C48 2.6 128 .9 198.5 4.6 132 3.9 62 6.3 3 11.4c-1.3.2-2.4-1.5-1.5-1.8Z"/></svg></span></h1>
-      <p class="lead" data-l="zh">在后台定时查询 IEEE、Elsevier 等投稿系统，把所有稿件的审稿状态按期刊汇总，<b>状态变化时发送桌面通知</b>，不必再逐个登录投稿网站查看。</p>
-      <p class="lead" data-l="en">Checks IEEE, Elsevier and other journal submission systems in the background, groups the review status of all your manuscripts by journal, and <b>sends a desktop notification when a status changes</b>. No more signing in to each site to check.</p>
+      <h1 data-l="zh">自动追踪<br>期刊投稿状态</h1>
+      <h1 data-l="en">Track journal submissions automatically</h1>
+      <p class="lead" data-l="zh">不必逐个登录投稿系统。扩展定时查询你在 IEEE、Elsevier 等期刊的投稿状态，有变化即发桌面通知。</p>
+      <p class="lead" data-l="en">No more signing in to each submission system. The extension checks your IEEE, Elsevier and other submissions on a schedule and sends a desktop notification when a status changes.</p>
       <div class="cta">
         <a class="btn primary lg" href="#install" id="heroCta"><span data-l="zh">安装扩展</span><span data-l="en">Install extension</span></a>
-        <a class="btn lg" href="#support"><span data-l="zh">查看支持的期刊</span><span data-l="en">Supported journals</span></a>
+        <a class="more" href="#support"><span data-l="zh">查看支持的期刊</span><span data-l="en">Supported journals</span></a>
       </div>
-      <ul class="ticks">
-        <li><span data-l="zh">免费，源码公开</span><span data-l="en">Free, source available</span></li>
-        <li><span data-l="zh">无需注册</span><span data-l="en">No sign-up</span></li>
-        <li><span data-l="zh">账号加密保存在本机</span><span data-l="en">Credentials encrypted on your device</span></li>
-      </ul>
+      <p class="facts"><span><span data-l="zh">免费，源码公开</span><span data-l="en">Free, source available</span></span><span><span data-l="zh">无需注册</span><span data-l="en">No sign-up</span></span><span><span data-l="zh">适用于 Edge 和 Chrome</span><span data-l="en">For Edge and Chrome</span></span></p>
     </div>
 
     <div class="shot" aria-hidden="true">
-      <svg class="seal" viewBox="0 0 300 300" aria-hidden="true">
-        <defs><path id="sealPath" d="M150 150m-127 0a127 127 0 1 1 254 0a127 127 0 1 1-254 0"/></defs>
-        <circle cx="150" cy="150" r="146" stroke-width="1.3"/><circle cx="150" cy="150" r="140" stroke-width=".6"/><circle cx="150" cy="150" r="113" stroke-width=".6"/><circle cx="150" cy="150" r="108" stroke-width="1"/>
-        <text><textPath href="#sealPath" textLength="790" lengthAdjust="spacing">MITUAN · MANUSCRIPT TRACKER · EST. MMXXVI · MITUAN · MANUSCRIPT TRACKER · EST. MMXXVI ·</textPath></text>
-        <g class="rose"><ellipse cx="150" cy="150" rx="98" ry="34" transform="rotate(0 150 150)"/><ellipse cx="150" cy="150" rx="98" ry="34" transform="rotate(10 150 150)"/><ellipse cx="150" cy="150" rx="98" ry="34" transform="rotate(20 150 150)"/><ellipse cx="150" cy="150" rx="98" ry="34" transform="rotate(30 150 150)"/><ellipse cx="150" cy="150" rx="98" ry="34" transform="rotate(40 150 150)"/><ellipse cx="150" cy="150" rx="98" ry="34" transform="rotate(50 150 150)"/><ellipse cx="150" cy="150" rx="98" ry="34" transform="rotate(60 150 150)"/><ellipse cx="150" cy="150" rx="98" ry="34" transform="rotate(70 150 150)"/><ellipse cx="150" cy="150" rx="98" ry="34" transform="rotate(80 150 150)"/><ellipse cx="150" cy="150" rx="98" ry="34" transform="rotate(90 150 150)"/><ellipse cx="150" cy="150" rx="98" ry="34" transform="rotate(100 150 150)"/><ellipse cx="150" cy="150" rx="98" ry="34" transform="rotate(110 150 150)"/><ellipse cx="150" cy="150" rx="98" ry="34" transform="rotate(120 150 150)"/><ellipse cx="150" cy="150" rx="98" ry="34" transform="rotate(130 150 150)"/><ellipse cx="150" cy="150" rx="98" ry="34" transform="rotate(140 150 150)"/><ellipse cx="150" cy="150" rx="98" ry="34" transform="rotate(150 150 150)"/><ellipse cx="150" cy="150" rx="98" ry="34" transform="rotate(160 150 150)"/><ellipse cx="150" cy="150" rx="98" ry="34" transform="rotate(170 150 150)"/></g>
-      </svg>
       <div class="mock">
         <div class="mock-top">
           <span class="brand"><img src="logo.svg" alt=""><span class="wordmark">mituan</span><span class="product"><span data-l="zh">投稿追踪</span><span data-l="en">Manuscript Tracker</span></span></span>
           <span class="fakebtn"><span data-l="zh">追踪面板</span><span data-l="en">Dashboard</span></span>
         </div>
-        <div class="mock-sum"><b>4</b> <span data-l="zh">篇进行中 · 3 本期刊</span><span data-l="en">in progress · 3 journals</span><span class="when"><span data-l="zh">3 分钟前查询</span><span data-l="en">Checked 3 min ago</span></span></div>
+        <div class="mock-sum"><b>4</b> <span data-l="zh">篇进行中 · 3 本期刊</span><span data-l="en">in progress · 3 journals</span><span class="when"><span data-l="zh">刚刚查询</span><span data-l="en">Checked just now</span></span></div>
         <section class="journal">
           <header><h3>IEEE Transactions on Pattern Analysis and Machine Intelligence</h3><span class="abbr">TPAMI</span></header>
-          <div class="ms compact unseen"><span class="stage" style="--sc:#b7791f"><span data-l="zh">需修改</span><span data-l="en">Revision</span></span><div class="t"><span class="new"><span data-l="zh">新</span><span data-l="en">New</span></span>Self-Supervised Scene Graphs for Long-Horizon Video Reasoning</div><div class="meta"><span class="mid">TPAMI-2026-03-0412</span> · Major Revision · <span class="hot"><span data-l="zh">2 小时前有变化</span><span data-l="en">Changed 2 h ago</span></span></div></div>
+          <div class="ms compact unseen flip"><span class="stagebox"><span class="stage now" style="--sc:#b7791f"><span data-l="zh">需修改</span><span data-l="en">Revision</span></span><span class="stage was" style="--sc:#3b6ea5"><span data-l="zh">审稿中</span><span data-l="en">In review</span></span></span><div class="t"><span class="new"><span data-l="zh">新</span><span data-l="en">New</span></span>Self-Supervised Scene Graphs for Long-Horizon Video Reasoning</div><div class="meta"><span class="mid">TPAMI-2026-03-0412</span> · <span class="now">Major Revision · <span class="hot"><span data-l="zh">刚刚有变化</span><span data-l="en">Changed just now</span></span></span><span class="was">Under Review · <span data-l="zh">已投 41 天</span><span data-l="en">Submitted 41 days ago</span></span></div></div>
           <div class="ms compact"><span class="stage" style="--sc:#3b6ea5"><span data-l="zh">审稿中</span><span data-l="en">In review</span></span><div class="t">Uncertainty-Aware Diffusion Models for Open-World Detection</div><div class="meta"><span class="mid">TPAMI-2026-05-1188</span> · Under Review · <span data-l="zh">已投 34 天</span><span data-l="en">Submitted 34 days ago</span></div></div>
         </section>
         <section class="journal">
@@ -88,48 +80,48 @@
   </section>
 
   <!-- 功能 -->
-  <section class="wrap" id="features">
+  <section class="wrap sec" id="features">
     <div class="head"><h2><span data-l="zh">功能</span><span data-l="en">Features</span></h2></div>
     <div class="feats">
-      <div class="card feat"><span class="fi fi-moon"></span>
+      <div class="feat">
         <h3><span data-l="zh">后台定时查询</span><span data-l="en">Background checks</span></h3>
-        <p data-l="zh">默认 IEEE 期刊每 2 小时、其他系统每 6 小时查询一次，频率可调。无需打开投稿网站，登录过期后自动重新登录。</p>
-        <p data-l="en">By default, IEEE journals are checked every 2 hours and other systems every 6 hours; the frequency is adjustable. Submission sites don't need to be open, and expired logins are renewed automatically.</p></div>
-      <div class="card feat"><span class="fi fi-bell"></span>
+        <p data-l="zh">IEEE 期刊每 2 小时、其他系统每 6 小时查询一次，最快可调到每小时。无需打开投稿网站，登录过期会自动重新登录。</p>
+        <p data-l="en">IEEE journals every 2 hours, other systems every 6 hours, or as often as hourly. The sites don’t need to be open, and expired logins are renewed automatically.</p></div>
+      <div class="feat">
         <h3><span data-l="zh">状态变化通知</span><span data-l="en">Status change notifications</span></h3>
-        <p data-l="zh">稿件进入审稿、收到修改意见或最终决定时发送桌面通知。首次查询只记录当前状态，不发通知。</p>
-        <p data-l="en">A desktop notification when a manuscript goes under review, receives a revision request or gets a final decision. The first check only records the current status.</p></div>
-      <div class="card feat"><span class="fi fi-list"></span>
+        <p data-l="zh">送审、要求修改、给出最终结果时发桌面通知。</p>
+        <p data-l="en">A desktop notification when a manuscript goes under review, needs revision or gets a decision.</p></div>
+      <div class="feat">
         <h3><span data-l="zh">按期刊汇总</span><span data-l="en">Grouped by journal</span></h3>
-        <p data-l="zh">稿件按期刊分组，审稿阶段以颜色区分。同一篇 IEEE 稿件在 ScholarOne 和 Author Portal 中只显示一次。</p>
-        <p data-l="en">Manuscripts are grouped by journal with color-coded review stages. An IEEE manuscript listed in both ScholarOne and Author Portal appears only once.</p></div>
-      <div class="card feat"><span class="fi fi-clock"></span>
+        <p data-l="zh">稿件按期刊分组，审稿阶段用颜色区分。同一篇稿件在 ScholarOne 和 Author Portal 中只显示一次。</p>
+        <p data-l="en">Manuscripts grouped by journal, with a color for each review stage. A paper listed in both ScholarOne and Author Portal appears once.</p></div>
+      <div class="feat">
         <h3><span data-l="zh">状态历史与导出</span><span data-l="en">Status history and export</span></h3>
-        <p data-l="zh">保存每篇稿件的状态变化及时间，可导出为 Markdown，便于整理投稿记录。</p>
-        <p data-l="en">Every status change is recorded with its date and can be exported as Markdown for your records.</p></div>
+        <p data-l="zh">记录每次状态变化的日期，可导出为 Markdown。</p>
+        <p data-l="en">Every status change is kept with its date and can be exported as Markdown.</p></div>
     </div>
   </section>
 
   <!-- 支持范围 -->
-  <section class="wrap" id="support">
+  <section class="wrap sec" id="support">
     <div class="head"><h2><span data-l="zh">支持范围</span><span data-l="en">Supported systems</span></h2>
-      <p><span data-l="zh">按投稿系统接入，同一系统下的期刊均可使用。</span><span data-l="en">Support is per submission system: every journal on a supported system works.</span></p></div>
+      <p><span data-l="zh">下列期刊仅为示例，使用同一投稿系统的期刊都能追踪。</span><span data-l="en">The journals below are examples. Any journal on a supported submission system works.</span></p></div>
     <div class="pubs">
-      <article class="card pub main">
+      <article class="pub">
         <header><h3>IEEE</h3><span class="pill ok"><span data-l="zh">已实测</span><span data-l="en">Verified</span></span></header>
-        <p data-l="zh">ScholarOne Manuscripts 与 IEEE Author Portal。填写一次账号，之后自动登录查询。</p>
-        <p data-l="en">ScholarOne Manuscripts and IEEE Author Portal. Enter your account once; the extension then signs in and checks automatically.</p>
-        <div class="jchips"><span>TPAMI<small><span data-l="zh">人工智能</span><span data-l="en">AI</span></small></span><span>TNNLS<small><span data-l="zh">机器学习</span><span data-l="en">Machine learning</span></small></span><span>TII<small><span data-l="zh">工业信息</span><span data-l="en">Industrial informatics</span></small></span><span>TMI<small><span data-l="zh">医学影像</span><span data-l="en">Medical imaging</span></small></span><span>TPWRS<small><span data-l="zh">电力系统</span><span data-l="en">Power systems</span></small></span><span>T-ASE<small><span data-l="zh">自动化</span><span data-l="en">Automation</span></small></span></div>
+        <p data-l="zh">支持 ScholarOne Manuscripts 和 IEEE Author Portal，填写一次账号即可自动查询。</p>
+        <p data-l="en">ScholarOne Manuscripts and IEEE Author Portal. Enter your account once and checks run automatically.</p>
+        <ul class="jlist"><li><span class="jn">TPAMI</span><span class="js"><span data-l="zh">人工智能</span><span data-l="en">AI</span></span></li><li><span class="jn">TNNLS</span><span class="js"><span data-l="zh">机器学习</span><span data-l="en">Machine learning</span></span></li><li><span class="jn">TII</span><span class="js"><span data-l="zh">工业信息</span><span data-l="en">Industrial informatics</span></span></li><li><span class="jn">TMI</span><span class="js"><span data-l="zh">医学影像</span><span data-l="en">Medical imaging</span></span></li><li><span class="jn">TPWRS</span><span class="js"><span data-l="zh">电力系统</span><span data-l="en">Power systems</span></span></li><li><span class="jn">T-ASE</span><span class="js"><span data-l="zh">自动化</span><span data-l="en">Automation</span></span></li></ul>
         <p class="fine"><span data-l="zh">不含使用 PaperCept 投稿的期刊，如 IEEE TAC、RA-L。</span><span data-l="en">Journals that use PaperCept, such as IEEE TAC and RA-L, are not included.</span></p>
       </article>
-      <article class="card pub main">
+      <article class="pub">
         <header><h3>Elsevier</h3><span class="pill warn"><span data-l="zh">待验证</span><span data-l="en">Pending verification</span></span></header>
-        <p data-l="zh">通过投稿确认邮件中的「Track your submission」链接查询，无需登录。打开追踪页后点击扩展图标即可添加。</p>
-        <p data-l="en">Uses the “Track your submission” link in the submission confirmation email; no sign-in needed. Open the tracking page and click the extension icon to add it.</p>
-        <div class="jchips"><span>Pattern Recognition<small><span data-l="zh">模式识别</span><span data-l="en">AI</span></small></span><span>Medical Image Analysis<small><span data-l="zh">医学影像</span><span data-l="en">Medical imaging</span></small></span><span>Applied Energy<small><span data-l="zh">能源</span><span data-l="en">Energy</span></small></span><span>Water Research<small><span data-l="zh">环境</span><span data-l="en">Environment</span></small></span><span>Neural Networks<small><span data-l="zh">神经网络</span><span data-l="en">Neural networks</span></small></span></div>
+        <p data-l="zh">无需登录。打开投稿确认邮件中的「Track your submission」链接，点击扩展图标即可添加。</p>
+        <p data-l="en">No sign-in needed. Open the “Track your submission” link from your confirmation email and click the extension icon to add it.</p>
+        <ul class="jlist"><li><span class="jn">Pattern Recognition</span><span class="js"><span data-l="zh">模式识别</span><span data-l="en">AI</span></span></li><li><span class="jn">Medical Image Analysis</span><span class="js"><span data-l="zh">医学影像</span><span data-l="en">Medical imaging</span></span></li><li><span class="jn">Applied Energy</span><span class="js"><span data-l="zh">能源</span><span data-l="en">Energy</span></span></li><li><span class="jn">Water Research</span><span class="js"><span data-l="zh">环境</span><span data-l="en">Environment</span></span></li><li><span class="jn">Neural Networks</span><span class="js"><span data-l="zh">神经网络</span><span data-l="en">Neural networks</span></span></li></ul>
       </article>
     </div>
-    <div class="card systab-wrap">
+    <div class="systab-wrap">
       <table class="systab">
         <thead><tr>
           <th><span data-l="zh">投稿系统</span><span data-l="en">System</span></th>
@@ -137,68 +129,67 @@
           <th><span data-l="zh">接入方式</span><span data-l="en">How to connect</span></th>
           <th><span data-l="zh">状态</span><span data-l="en">Status</span></th></tr></thead>
         <tbody>
-          <tr><th>IFAC PaperPlaza</th>
+          <tr><th scope="row">IFAC PaperPlaza</th>
             <td><span data-l="zh">Automatica、IFAC 世界大会等</span><span data-l="en">Automatica, IFAC World Congress and others</span></td>
             <td><span data-l="zh">填写账号</span><span data-l="en">Enter your account</span></td>
             <td><span class="pill ok"><span data-l="zh">已实测</span><span data-l="en">Verified</span></span></td></tr>
-          <tr><th><span data-l="zh">TCCT 会议系统</span><span data-l="en">TCCT conference system</span></th>
+          <tr><th scope="row"><span data-l="zh">TCCT 会议系统</span><span data-l="en">TCCT conference system</span></th>
             <td>CCDC<span data-l="zh">、</span><span data-l="en">, </span>CCC</td>
             <td><span data-l="zh">填写账号</span><span data-l="en">Enter your account</span></td>
             <td><span class="pill ok"><span data-l="zh">已实测</span><span data-l="en">Verified</span></span></td></tr>
-          <tr><th>Springer Nature</th>
+          <tr><th scope="row">Springer Nature</th>
             <td><span data-l="zh">Nature 系列、Springer 期刊</span><span data-l="en">Nature journals, Springer journals</span></td>
-            <td><span data-l="zh">在稿件列表页点击扩展图标</span><span data-l="en">Click the extension icon on the manuscript list page</span></td>
+            <td><span data-l="zh">在稿件列表页点扩展图标</span><span data-l="en">Click the extension icon on the manuscript list page</span></td>
             <td><span class="pill idle"><span data-l="zh">未实测</span><span data-l="en">Not yet tested</span></span></td></tr>
-          <tr><th><span data-l="zh">其他投稿系统</span><span data-l="en">Other systems</span></th>
+          <tr><th scope="row"><span data-l="zh">其他投稿系统</span><span data-l="en">Other systems</span></th>
             <td><span data-l="zh">Wiley、Taylor &amp; Francis 等使用 ScholarOne、Editorial Manager 的期刊</span><span data-l="en">Wiley, Taylor &amp; Francis and other journals on ScholarOne or Editorial Manager</span></td>
-            <td><span data-l="zh">在稿件列表页点击扩展图标</span><span data-l="en">Click the extension icon on the manuscript list page</span></td>
+            <td><span data-l="zh">在稿件列表页点扩展图标</span><span data-l="en">Click the extension icon on the manuscript list page</span></td>
             <td><span class="pill idle"><span data-l="zh">未实测</span><span data-l="en">Not yet tested</span></span></td></tr>
         </tbody>
       </table>
     </div>
     <p class="legend">
       <span><i class="pill ok"><span data-l="zh">已实测</span><span data-l="en">Verified</span></i><span data-l="zh">已用真实稿件验证</span><span data-l="en">Tested with real manuscripts</span></span>
-      <span><i class="pill warn"><span data-l="zh">待验证</span><span data-l="en">Pending verification</span></i><span data-l="zh">已接入，尚未用真实稿件验证</span><span data-l="en">Integrated, not yet tested with a real manuscript</span></span>
-      <span><i class="pill idle"><span data-l="zh">未实测</span><span data-l="en">Not yet tested</span></i><span data-l="zh">通用识别，未针对具体期刊测试</span><span data-l="en">Generic recognition, not tested on specific journals</span></span></p>
+      <span><i class="pill warn"><span data-l="zh">待验证</span><span data-l="en">Pending verification</span></i><span data-l="zh">已支持，尚未用真实稿件验证</span><span data-l="en">Supported, not yet tested with a real manuscript</span></span>
+      <span><i class="pill idle"><span data-l="zh">未实测</span><span data-l="en">Not yet tested</span></i><span data-l="zh">自动识别稿件列表，未逐一验证</span><span data-l="en">Reads the manuscript list automatically; not tested journal by journal</span></span></p>
   </section>
 
-  <!-- 数据与隐私 -->
-  <section class="wrap" id="security">
-    <div class="secure card">
-      <div class="secure-txt">
-        <span class="eyebrow"><span data-l="zh">数据与隐私</span><span data-l="en">Privacy</span></span>
+  <!-- 数据与隐私：整页唯一的深色通栏，上下各一道古金细线 -->
+  <section class="band" id="security">
+    <div class="wrap">
+      <div class="band-head">
         <h2><span data-l="zh">没有服务器，无需注册</span><span data-l="en">No server, no sign-up</span></h2>
-        <p class="muted"><span data-l="zh">扩展只在你的浏览器与投稿网站之间通信，本网站仅提供下载，不收集任何数据。</span><span data-l="en">The extension only communicates between your browser and the submission sites. This website only hosts the download and collects no data.</span></p>
-        <ul class="points">
-          <li><b><span data-l="zh">本地加密存储</span><span data-l="en">Encrypted local storage</span></b><span data-l="zh">账号密码以 AES-GCM 加密保存在浏览器中，密钥由浏览器生成且不可导出。卸载扩展时一并删除。</span><span data-l="en">Credentials are encrypted with AES-GCM and stored in the browser, with a non-exportable key generated by the browser. Uninstalling the extension deletes them.</span></li>
-          <li><b><span data-l="zh">限定发送地址</span><span data-l="en">Restricted destinations</span></b><span data-l="zh">每个账号只会提交到所属投稿系统的登录地址，域名白名单写在代码中。</span><span data-l="en">Each account is only sent to the login address of its own submission system, enforced by a domain allowlist in the code.</span></li>
-          <li><b><span data-l="zh">只读访问</span><span data-l="en">Read-only access</span></b><span data-l="zh">只打开查看状态的页面，不提交、修改或撤回稿件。</span><span data-l="en">The extension only opens status pages. It never submits, edits or withdraws a manuscript.</span></li>
-          <li><b><span data-l="zh">源码公开</span><span data-l="en">Source available</span></b><span data-l="zh">全部代码公开于 <a href="https://github.com/mituan-ai/manuscript-tracker" target="_blank" rel="noopener">GitHub</a>，可自行审查。</span><span data-l="en">All code is published on <a href="https://github.com/mituan-ai/manuscript-tracker" target="_blank" rel="noopener">GitHub</a> for anyone to review.</span></li>
-        </ul>
-        <p class="policy-link"><a href="privacy.html"><span data-l="zh">阅读完整的隐私政策 →</span><span data-l="en">Read the full privacy policy →</span></a></p>
+        <p><span data-l="zh">扩展只与投稿网站通信。我们没有服务器，接触不到你的账号和稿件。</span><span data-l="en">The extension talks only to the submission sites. We have no server, so your accounts and manuscripts never reach us.</span></p>
       </div>
       <div class="flow" aria-hidden="true">
-        <div class="node me"><img src="logo.svg" alt=""><b><span data-l="zh">你的浏览器</span><span data-l="en">Your browser</span></b><span><span data-l="zh">账号加密保存</span><span data-l="en">Credentials encrypted</span></span></div>
-        <div class="link ok"><i></i><span><span data-l="zh">仅发往对应投稿系统</span><span data-l="en">Only to the matching system</span></span></div>
-        <div class="node sites"><b><span data-l="zh">投稿网站</span><span data-l="en">Submission sites</span></b><span>IEEE · Elsevier · Springer · …</span></div>
-        <div class="link no"><i></i><span><span data-l="zh">不经过第三方</span><span data-l="en">No third party</span></span></div>
-        <div class="node cloud"><b><span data-l="zh">第三方服务器</span><span data-l="en">Third-party server</span></b><span><span data-l="zh">无</span><span data-l="en">None</span></span></div>
+        <div class="node me"><img src="logo.svg" alt=""><span><strong><span data-l="zh">你的浏览器</span><span data-l="en">Your browser</span></strong><span><span data-l="zh">账号加密保存</span><span data-l="en">Credentials encrypted</span></span></span></div>
+        <div class="link ok"><span><span data-l="zh">仅发往对应投稿系统</span><span data-l="en">Only to the matching system</span></span></div>
+        <div class="node"><span><strong><span data-l="zh">投稿网站</span><span data-l="en">Submission sites</span></strong><span><span data-l="zh">IEEE、Elsevier、Springer 等</span><span data-l="en">IEEE, Elsevier, Springer…</span></span></span></div>
+        <div class="link no"><span><span data-l="zh">不经过第三方</span><span data-l="en">No third party</span></span></div>
+        <div class="node cloud"><span><strong><span data-l="zh">第三方服务器</span><span data-l="en">Third-party server</span></strong><span><span data-l="zh">无</span><span data-l="en">None</span></span></span></div>
       </div>
+      <dl class="points">
+        <div><dt><span data-l="zh">本地加密存储</span><span data-l="en">Encrypted local storage</span></dt><dd><span data-l="zh">密码经 AES-GCM 加密后保存在浏览器中，密钥不可导出，卸载时一并删除。</span><span data-l="en">Passwords are encrypted with AES-GCM in your browser with a non-exportable key, and removed on uninstall.</span></dd></div>
+        <div><dt><span data-l="zh">限定发送地址</span><span data-l="en">Restricted destinations</span></dt><dd><span data-l="zh">每个账号只发送到所属平台的登录页，允许的网址固定在代码中。</span><span data-l="en">Each account goes only to its own platform’s login page. The allowed addresses are fixed in the code.</span></dd></div>
+        <div><dt><span data-l="zh">只读访问</span><span data-l="en">Read-only access</span></dt><dd><span data-l="zh">只看状态，不会提交、修改或撤回稿件。</span><span data-l="en">It only reads status. It never submits, edits or withdraws a manuscript.</span></dd></div>
+        <div><dt><span data-l="zh">源码公开</span><span data-l="en">Source available</span></dt><dd><span data-l="zh">代码全部公开在 <a href="https://github.com/mituan-ai/manuscript-tracker" target="_blank" rel="noopener">GitHub</a>。</span><span data-l="en">All the code is on <a href="https://github.com/mituan-ai/manuscript-tracker" target="_blank" rel="noopener">GitHub</a>.</span></dd></div>
+      </dl>
+      <p class="policy-link"><a href="privacy.html"><span data-l="zh">阅读完整的隐私政策</span><span data-l="en">Read the full privacy policy</span></a></p>
     </div>
   </section>
 
   <!-- 安装：只从浏览器的扩展商店安装。__EDGE_URL__、__CHROME_URL__ 由 scripts/build-site.sh 填入，还没上架的商店留空。
        Edge 优先用 Edge 加载项，还没上架时改用 Chrome 应用商店（Edge 可以直接安装那里的扩展），由 site.js 选择 -->
-  <section class="wrap" id="install">
+  <section class="wrap sec" id="install">
     <div class="head"><h2><span data-l="zh">安装</span><span data-l="en">Install</span></h2>
-      <p><span data-l="zh">从浏览器的扩展商店安装，点一下就好，之后自动更新。</span><span data-l="en">Install from your browser’s extension store in one click. Updates are automatic.</span></p></div>
-    <div class="mobile-note card" id="mobileNote" hidden><span data-l="zh">手机浏览器不支持扩展，请在电脑上访问 <b>tracker.eonmaze.com</b> 安装。</span><span data-l="en">Mobile browsers do not support extensions. Open <b>tracker.eonmaze.com</b> on a computer to install.</span></div>
+      <p><span data-l="zh">从浏览器的扩展商店安装，之后自动更新。</span><span data-l="en">Install from your browser’s extension store. Updates are automatic.</span></p></div>
+    <div class="mobile-note card" id="mobileNote" hidden><span data-l="zh">手机浏览器不支持扩展，请在电脑上打开本页安装。</span><span data-l="en">Mobile browsers don’t support extensions. Open this page on a computer to install.</span></div>
     <div class="browsers" role="tablist" aria-label="Choose your browser">
-      <button type="button" role="tab" data-b="edge"><span class="bi bi-edge"></span>Edge<small class="rec"><span data-l="zh">推荐</span><span data-l="en">Recommended</span></small></button>
-      <button type="button" role="tab" data-b="chrome"><span class="bi bi-chrome"></span>Chrome<small class="rec"><span data-l="zh">推荐</span><span data-l="en">Recommended</span></small></button>
-      <button type="button" role="tab" data-b="chromium"><span class="bi bi-other"></span><span data-l="zh">其他 Chromium</span><span data-l="en">Other Chromium</span><small><span data-l="zh">Brave、Vivaldi、Opera</span><span data-l="en">Brave, Vivaldi, Opera</span></small></button>
-      <button type="button" role="tab" data-b="firefox"><span class="bi bi-firefox"></span>Firefox<small><span data-l="zh">暂不支持</span><span data-l="en">Not supported</span></small></button>
-      <button type="button" role="tab" data-b="safari"><span class="bi bi-safari"></span>Safari<small><span data-l="zh">暂不支持</span><span data-l="en">Not supported</span></small></button>
+      <button type="button" role="tab" data-b="edge"><img class="bi" src="img/browsers/edge.svg" alt="">Edge</button>
+      <button type="button" role="tab" data-b="chrome"><img class="bi" src="img/browsers/chrome.svg" alt="">Chrome</button>
+      <button type="button" role="tab" data-b="chromium"><img class="bi" src="img/browsers/chromium.svg" alt=""><span data-l="zh">其他 Chromium</span><span data-l="en">Other Chromium</span></button>
+      <button type="button" role="tab" data-b="firefox" class="na"><img class="bi" src="img/browsers/firefox.svg" alt="">Firefox<small><span data-l="zh">暂不支持</span><span data-l="en">Not supported</span></small></button>
+      <button type="button" role="tab" data-b="safari" class="na"><img class="bi" src="img/browsers/safari.svg" alt="">Safari<small><span data-l="zh">暂不支持</span><span data-l="en">Not supported</span></small></button>
     </div>
 
     <div class="card panel" data-for="edge chrome chromium">
@@ -209,94 +200,100 @@
             <a class="btn primary" href="__EDGE_URL__" target="_blank" rel="noopener" data-store="edge"><span data-l="zh">前往 Edge 加载项</span><span data-l="en">Open Edge Add-ons</span></a>
             <ol class="do">
               <li><span data-l="zh">点<b>「获取」</b>，在弹出的窗口中点<b>「添加扩展」</b>。</span><span data-l="en">Click <b>“Get”</b>, then <b>“Add extension”</b> in the dialog.</span></li>
-              <li><span data-l="zh">装好后会自动打开「安装成功」页面，按提示连接账号即可。</span><span data-l="en">A welcome page opens after installing. Follow it to connect your accounts.</span></li>
+              <li><span data-l="zh">安装后会自动打开欢迎页，按提示连接账号。</span><span data-l="en">A welcome page opens after installing. Follow it to connect your accounts.</span></li>
             </ol>
           </div>
           <!-- Edge 页签里只在 Edge 加载项还没上架时出现，见 site.js -->
           <div data-only="edge chrome chromium" data-via="chrome">
             <p class="or" data-only="edge"><span data-l="zh">现在可以先从 Chrome 应用商店安装：</span><span data-l="en">For now, you can install it from the Chrome Web Store:</span></p>
             <a class="btn primary" href="__CHROME_URL__" target="_blank" rel="noopener" data-store="chrome"><span data-l="zh">前往 Chrome 应用商店</span><span data-l="en">Open Chrome Web Store</span></a>
-            <p class="cn-note" data-edge="live" hidden><span data-l="zh">中国大陆通常打不开 Chrome 应用商店，可以改用 Edge 打开本页安装。</span><span data-l="en">The Chrome Web Store usually doesn’t open in mainland China. Open this page in Edge and install from there instead.</span></p>
-            <p class="cn-note" data-edge="pending" hidden><span data-l="zh">中国大陆通常打不开 Chrome 应用商店，可以等 Edge 加载项上线后用 Edge 安装。</span><span data-l="en">The Chrome Web Store usually doesn’t open in mainland China. You can install with Edge once the Edge Add-ons listing is live.</span></p>
+            <p class="cn-note" data-edge="live" hidden><span data-l="zh">中国大陆通常无法访问 Chrome 应用商店，请改用 Edge 安装。</span><span data-l="en">The Chrome Web Store usually isn’t reachable in mainland China. Install with Edge instead.</span></p>
+            <p class="cn-note" data-edge="pending" hidden><span data-l="zh">中国大陆通常无法访问 Chrome 应用商店，请等 Edge 加载项上线后用 Edge 安装。</span><span data-l="en">The Chrome Web Store usually isn’t reachable in mainland China. Install with Edge once the Edge Add-ons listing is live.</span></p>
             <ol class="do">
               <li data-only="edge"><span data-l="zh">首次安装时，点页面顶部的<b>「允许来自其他应用商店的扩展」</b>，再点<b>「允许」</b>。</span><span data-l="en">The first time, click <b>“Allow extensions from other stores”</b> at the top of the page, then <b>“Allow”</b>.</span></li>
               <li data-only="edge"><span data-l="zh">点<b>「添加至 Chrome」</b>，在弹出的窗口中点<b>「添加扩展」</b>。</span><span data-l="en">Click <b>“Add to Chrome”</b>, then <b>“Add extension”</b> in the dialog.</span></li>
               <li data-only="chrome"><span data-l="zh">点<b>「添加至 Chrome」</b>，在弹出的窗口中点<b>「添加扩展程序」</b>。</span><span data-l="en">Click <b>“Add to Chrome”</b>, then <b>“Add extension”</b> in the dialog.</span></li>
               <li data-only="chromium"><span data-l="zh">点<b>「添加至 Chrome」</b>，再确认添加。</span><span data-l="en">Click <b>“Add to Chrome”</b> and confirm.</span></li>
-              <li><span data-l="zh">装好后会自动打开「安装成功」页面，按提示连接账号即可。</span><span data-l="en">A welcome page opens after installing. Follow it to connect your accounts.</span></li>
+              <li><span data-l="zh">安装后会自动打开欢迎页，按提示连接账号。</span><span data-l="en">A welcome page opens after installing. Follow it to connect your accounts.</span></li>
             </ol>
           </div>
           <p class="tip pin" data-only="edge chrome"><span data-l="zh"><b>固定到工具栏</b>：点<span class="nb">右上角<span class="ki" data-ki="puzzle"></span>，</span>再点 mituan 投稿追踪<span class="nb">旁的<span class="ki" data-ki="toolbar"></span>。</span></span><span data-l="en"><b>Pin it to the toolbar:</b> <span class="nb">click <span class="ki" data-ki="puzzle"></span></span> at the top right, <span class="nb">then <span class="ki" data-ki="toolbar"></span></span> next to mituan Manuscript Tracker.</span></p>
-          <p class="tip" data-only="chromium" data-needs="chrome"><span data-l="zh">Brave、Vivaldi 的按钮名称可能略有不同；Opera 要先安装官方的「Install Chrome Extensions」扩展。</span><span data-l="en">Button names may differ slightly in Brave and Vivaldi. Opera needs its official “Install Chrome Extensions” extension first.</span></p>
+          <p class="tip" data-only="chromium" data-needs="chrome"><span data-l="zh">Opera 需先安装官方的「Install Chrome Extensions」扩展。</span><span data-l="en">In Opera, first install its official “Install Chrome Extensions” extension.</span></p>
           <!-- Edge 加载项上架后，Chrome 应用商店在 Edge 页签里退到这一行 -->
           <p class="alt" data-only="edge"><span data-l="zh">也可以从 <a href="__CHROME_URL__" target="_blank" rel="noopener">Chrome 应用商店</a>安装。</span><span data-l="en">You can also install it from the <a href="__CHROME_URL__" target="_blank" rel="noopener">Chrome Web Store</a>.</span></p>
         </div>
         <figure class="ishot">
-          <img id="welcomeShot" src="img/install/welcome-edge.webp" width="1040" height="520" loading="lazy" alt="">
-          <figcaption><span data-l="zh">装好后自动打开的页面</span><span data-l="en">The page that opens after installing</span></figcaption>
+          <img id="welcomeShot" src="img/install/welcome-edge.webp" width="1634" height="1262" loading="lazy" alt="">
+          <figcaption><span data-l="zh">安装后的欢迎页</span><span data-l="en">The welcome page after installing</span></figcaption>
         </figure>
-      </div>
-
-      <div class="trouble">
-        <h3><span data-l="zh">安装后的常见问题</span><span data-l="en">After installing</span></h3>
-        <details><summary><span data-l="zh">怎么更新到新版本？</span><span data-l="en">How do I update?</span></summary>
-          <p data-l="zh">不用操作。商店会自动更新扩展，账号和记录都会保留。</p>
-          <p data-l="en">You don’t need to do anything. The store updates the extension automatically, and your accounts and records are kept.</p></details>
-        <details><summary><span data-l="zh">以前用 zip 手动安装过，怎么换成商店版？</span><span data-l="en">I installed the zip manually before. How do I switch to the store version?</span></summary>
-          <p data-l="zh">在扩展页面（Edge 是 <code>edge://extensions</code>，Chrome 是 <code>chrome://extensions</code>）点旧版卡片上的「移除」，再用上面的按钮安装，然后重新连接一次账号。商店版和手动安装的版本是两个不同的扩展，数据不互通；手动安装的版本以后不再更新。移除后可以关掉「开发人员模式」开关。</p>
-          <p data-l="en">On the extensions page (<code>edge://extensions</code> in Edge, <code>chrome://extensions</code> in Chrome), click “Remove” on the old card, install with the button above, and connect your accounts again. The store version and the manually installed one are separate extensions that don’t share data, and the manual version no longer gets updates. Afterwards you can turn off “Developer mode”.</p></details>
       </div>
     </div>
 
     <div class="card panel soon" data-for="firefox">
-      <span class="bi bi-firefox big"></span>
+      <img class="bi big" src="img/browsers/firefox.svg" alt="">
       <div><h3><span data-l="zh">Firefox 暂不支持</span><span data-l="en">Firefox is not supported</span></h3>
-        <p><span data-l="zh">目前仅支持 Edge、Chrome 等 Chromium 内核浏览器，二者均可与 Firefox 同时安装。</span><span data-l="en">Only Edge, Chrome and other Chromium-based browsers are supported. Either can be installed alongside Firefox.</span></p>
+        <p><span data-l="zh">目前只支持 Edge、Chrome 等 Chromium 内核浏览器。</span><span data-l="en">Only Edge, Chrome and other Chromium browsers are supported for now.</span></p>
         <div class="row"><a class="btn" href="https://www.microsoft.com/edge/download" target="_blank" rel="noopener"><span data-l="zh">下载 Microsoft Edge</span><span data-l="en">Download Microsoft Edge</span></a><a class="btn" href="https://www.google.com/chrome/" target="_blank" rel="noopener"><span data-l="zh">下载 Google Chrome</span><span data-l="en">Download Google Chrome</span></a></div></div>
     </div>
     <div class="card panel soon" data-for="safari">
-      <span class="bi bi-safari big"></span>
+      <img class="bi big" src="img/browsers/safari.svg" alt="">
       <div><h3><span data-l="zh">Safari 暂不支持</span><span data-l="en">Safari is not supported</span></h3>
-        <p><span data-l="zh">Safari 扩展需以 Mac App 形式通过 App Store 发布，暂无上架计划。Mac 上可以使用 Edge 或 Chrome，从对应的扩展商店安装。</span><span data-l="en">Safari extensions must be distributed as a Mac app through the App Store, which is not planned. On a Mac, use Edge or Chrome and install from its extension store.</span></p>
+        <p><span data-l="zh">暂无支持计划。Mac 上可以使用 Edge 或 Chrome。</span><span data-l="en">Not planned for now. On a Mac, use Edge or Chrome.</span></p>
         <div class="row"><a class="btn" href="https://www.microsoft.com/edge/download" target="_blank" rel="noopener"><span data-l="zh">下载 Microsoft Edge</span><span data-l="en">Download Microsoft Edge</span></a><a class="btn" href="https://www.google.com/chrome/" target="_blank" rel="noopener"><span data-l="zh">下载 Google Chrome</span><span data-l="en">Download Google Chrome</span></a></div></div>
     </div>
   </section>
 
   <!-- 常见问题 -->
-  <section class="wrap" id="faq">
+  <section class="wrap sec" id="faq">
+    <div class="faq-grid">
     <div class="head"><h2><span data-l="zh">常见问题</span><span data-l="en">FAQ</span></h2></div>
-    <div class="faq card">
-      <details><summary><span data-l="zh">是否收费？需要注册吗？</span><span data-l="en">Is it free? Do I need an account?</span></summary>
-        <p data-l="zh">免费，无需注册。源码以 <a href="https://polyformproject.org/licenses/noncommercial/1.0.0" target="_blank" rel="noopener">PolyForm Noncommercial 1.0.0</a> 许可公开：个人及高校、科研机构等非商业用途可免费使用和修改，不允许商业使用。</p>
-        <p data-l="en">It is free and requires no sign-up. The source is published under the <a href="https://polyformproject.org/licenses/noncommercial/1.0.0" target="_blank" rel="noopener">PolyForm Noncommercial 1.0.0</a> license: individuals, universities, research institutes and other noncommercial users may use and modify it for free; commercial use is not permitted.</p></details>
-      <details><summary><span data-l="zh">我的期刊不在支持范围内，能用吗？</span><span data-l="en">My journal is not listed. Can I still use it?</span></summary>
-        <p data-l="zh">可以尝试通用识别：登录投稿网站，打开列出稿件的页面（如 Editorial Manager 的「Submissions Being Processed」），点击工具栏上的 mituan 图标，识别到稿件后选择「追踪这些稿件」。这种方式沿用浏览器已有的登录状态，不保存密码；登录过期后重新打开一次该页面即可恢复。无法识别时，欢迎在 <a href="https://github.com/mituan-ai/manuscript-tracker/issues" target="_blank" rel="noopener">GitHub Issues</a> 告知投稿系统名称。</p>
-        <p data-l="en">Try generic recognition: sign in to the submission site, open the page that lists your manuscripts (for example “Submissions Being Processed” in Editorial Manager) and click the mituan icon on the toolbar. When manuscripts are detected, choose to track them. This reuses the browser’s existing login and stores no password; if the login expires, open that page once more to resume. If your system is not recognized, please name it in <a href="https://github.com/mituan-ai/manuscript-tracker/issues" target="_blank" rel="noopener">GitHub Issues</a>.</p></details>
+    <div class="faq">
+      <details><summary><span data-l="zh">要收费吗？需要注册吗？</span><span data-l="en">Is it free? Do I need an account?</span></summary>
+        <p data-l="zh">免费，无需注册。个人和科研用途可免费使用和修改，不可商用（<a href="https://polyformproject.org/licenses/noncommercial/1.0.0" target="_blank" rel="noopener">PolyForm Noncommercial 1.0.0</a> 许可）。</p>
+        <p data-l="en">Free, with no sign-up. Personal and research use and modification are free; commercial use isn’t allowed (<a href="https://polyformproject.org/licenses/noncommercial/1.0.0" target="_blank" rel="noopener">PolyForm Noncommercial 1.0.0</a> license).</p></details>
+      <details><summary><span data-l="zh">把投稿账号填进去安全吗？</span><span data-l="en">Is it safe to enter my submission account?</span></summary>
+        <p data-l="zh">账号只保存在你的浏览器里，密码加密存储，只会发送到对应投稿网站的登录页。我们没有服务器，接触不到你的账号。不想填写密码，也可以直接在投稿网站登录一次，扩展会自动保存。</p>
+        <p data-l="en">The account stays in your browser, the password is encrypted, and it is sent only to that submission site’s login page. We have no server and never see it. If you’d rather not type it here, sign in on the submission site once and the extension saves it.</p></details>
+      <details><summary><span data-l="zh">我的期刊不在列表里，能用吗？</span><span data-l="en">My journal isn’t listed. Can I use it?</span></summary>
+        <p data-l="zh">可以尝试：登录投稿网站，打开稿件列表页（如 Editorial Manager 的「Submissions Being Processed」），点击工具栏上的 mituan 图标，选择「追踪这些稿件」。这种方式不保存密码，登录过期后重新打开该页面即可。无法识别时，请在 <a href="https://github.com/mituan-ai/manuscript-tracker/issues" target="_blank" rel="noopener">GitHub Issues</a> 告诉我们投稿系统名称。</p>
+        <p data-l="en">Try this: sign in to the submission site, open the page that lists your manuscripts (such as “Submissions Being Processed” in Editorial Manager), click the mituan icon on the toolbar and choose to track them. No password is stored; if the login expires, open that page again. If it isn’t recognized, tell us the system’s name in <a href="https://github.com/mituan-ai/manuscript-tracker/issues" target="_blank" rel="noopener">GitHub Issues</a>.</p></details>
       <details><summary><span data-l="zh">多久查询一次？</span><span data-l="en">How often does it check?</span></summary>
-        <p data-l="zh">默认 IEEE 期刊每 2 小时、其他系统每 6 小时查询一次。设置中提供三档频率，最快为 IEEE 每小时、其他每 2 小时。也可以随时点击「立即查询」。</p>
-        <p data-l="en">By default, IEEE journals every 2 hours and other systems every 6 hours. Settings offer three frequencies; the fastest is hourly for IEEE and every 2 hours for other systems. You can also start a check manually at any time.</p></details>
-      <details><summary><span data-l="zh">需要一直开着投稿网站或浏览器吗？</span><span data-l="en">Do the submission sites or the browser need to stay open?</span></summary>
-        <p data-l="zh">不需要开着投稿网站，登录和查询都在后台完成。关闭所有浏览器窗口后，只要浏览器仍在后台运行就会继续查询：Edge 默认如此；Chrome 需在「设置 → 系统」中开启「关闭 Google Chrome 后继续运行后台应用」。完全退出浏览器或关机期间不会查询，下次打开浏览器后会立即补查。</p>
-        <p data-l="en">Submission sites don’t need to be open; logins and checks run in the background. After you close all browser windows, checks continue as long as the browser keeps running in the background. Edge does this by default; in Chrome, turn on “Continue running background apps when Google Chrome is closed” under Settings → System. No checks run while the browser is fully closed or the computer is off; a check runs as soon as the browser starts again.</p></details>
+        <p data-l="zh">IEEE 期刊每 2 小时、其他系统每 6 小时，可在设置中调快到每小时。也可以随时点「立即查询」。</p>
+        <p data-l="en">IEEE journals every 2 hours, other systems every 6 hours. You can make it hourly in Settings, or click “Check now” at any time.</p></details>
+      <details><summary><span data-l="zh">需要一直开着投稿网站或浏览器吗？</span><span data-l="en">Do I need to keep the submission site or browser open?</span></summary>
+        <p data-l="zh">投稿网站不用开。浏览器在后台运行时就会查询：Edge 默认如此；Chrome 需在「设置 → 系统」中开启「关闭 Google Chrome 后继续运行后台应用」。关机期间不查询，下次打开浏览器时立即补查。</p>
+        <p data-l="en">The submission site doesn’t need to be open. Checks run while the browser runs in the background: Edge does this by default; in Chrome, turn on “Continue running background apps when Google Chrome is closed” under Settings → System. Nothing runs while the computer is off; a check runs as soon as the browser starts.</p></details>
+      <details><summary><span data-l="zh">为什么没收到通知？</span><span data-l="en">Why didn’t I get a notification?</span></summary>
+        <p data-l="zh">第一次查询只记录当前状态，之后有变化才会通知。如果状态确实变了却没有通知，请检查追踪面板「设置」里的「状态变化时通知」是否开启，以及系统是否允许浏览器发送通知（Windows 的勿扰模式会拦截通知）。</p>
+        <p data-l="en">The first check only records the current status; you’re notified of changes after that. If a status changed and nothing showed up, check that “Notify on status changes” is on in Settings, and that your system allows notifications from the browser (Do Not Disturb blocks them).</p></details>
       <details><summary><span data-l="zh">为什么偶尔会弹出一个小窗口？</span><span data-l="en">Why does a small window sometimes appear?</span></summary>
-        <p data-l="zh">部分登录页必须在真实页面中完成（例如 IEEE 账号页有防火墙）。扩展会在最小化窗口中自动登录，完成后自动关闭；遇到验证码时窗口会保留，并通知你处理。</p>
-        <p data-l="en">Some logins must be completed in a real page (for example, the IEEE account page is behind a firewall). The extension signs in within a minimized window and closes it when done. If a CAPTCHA appears, the window stays open and you are notified.</p></details>
+        <p data-l="zh">部分系统（如 IEEE）只能在网页中登录。扩展会打开一个最小化窗口自动登录，完成后关闭；遇到验证码时会保留窗口并通知你。</p>
+        <p data-l="en">Some systems, such as IEEE, can only be signed in to on a real page. The extension signs in within a minimized window and closes it when done. If a CAPTCHA appears, the window stays open and you’re notified.</p></details>
       <details><summary><span data-l="zh">会影响我正在使用的投稿网站吗？</span><span data-l="en">Will it interfere with a submission site I’m using?</span></summary>
-        <p data-l="zh">如果你在 10 分钟内使用过 IEEE 投稿网站，或正停留在该页面，扩展会跳过本轮查询，避免把你登出。</p>
-        <p data-l="en">If you have used an IEEE submission site in the last 10 minutes, or are currently on that page, the extension skips that check so you are not signed out.</p></details>
+        <p data-l="zh">不会。你正在使用或 10 分钟内用过 IEEE 投稿网站时，扩展会跳过本轮查询，不会把你登出。</p>
+        <p data-l="en">No. If you’re using an IEEE submission site or used it in the last 10 minutes, the extension skips that round, so you won’t be signed out.</p></details>
+      <details><summary><span data-l="zh">怎么更新？</span><span data-l="en">How do I update?</span></summary>
+        <p data-l="zh">无需操作。商店会自动更新，账号和记录都会保留。</p>
+        <p data-l="en">Nothing to do. The store updates it automatically and keeps your accounts and records.</p></details>
+      <details><summary><span data-l="zh">怎么删除我的数据？</span><span data-l="en">How do I delete my data?</span></summary>
+        <p data-l="zh">在追踪面板「设置」中点「全部清除」。卸载扩展时，数据也会一并删除。</p>
+        <p data-l="en">Click “Clear all” in the dashboard’s Settings. Uninstalling the extension also deletes everything.</p></details>
       <details><summary><span data-l="zh">如何反馈问题？</span><span data-l="en">How do I report a problem?</span></summary>
-        <p data-l="zh">在追踪面板的「设置」中点击「复制诊断信息」，粘贴到 <a href="https://github.com/mituan-ai/manuscript-tracker/issues" target="_blank" rel="noopener">GitHub Issues</a>。诊断信息不包含账号、密码和稿件标题。</p>
-        <p data-l="en">In the dashboard, open Settings, click “Copy diagnostics” and paste the result into <a href="https://github.com/mituan-ai/manuscript-tracker/issues" target="_blank" rel="noopener">GitHub Issues</a>. Diagnostics do not include accounts, passwords or manuscript titles.</p></details>
+        <p data-l="zh">在追踪面板「设置」中点「复制诊断信息」，粘贴到 <a href="https://github.com/mituan-ai/manuscript-tracker/issues" target="_blank" rel="noopener">GitHub Issues</a>。诊断信息不含账号、密码和稿件题目。</p>
+        <p data-l="en">In the dashboard’s Settings, click “Copy diagnostics” and paste it into <a href="https://github.com/mituan-ai/manuscript-tracker/issues" target="_blank" rel="noopener">GitHub Issues</a>. Diagnostics contain no accounts, passwords or manuscript titles.</p></details>
+    </div>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="wrap foot">
-    <span>© 2026 <a href="https://mituan-ai.github.io/" target="_blank" rel="noopener"><b>mituan</b></a> · <span data-l="zh">投稿追踪</span><span data-l="en">Manuscript Tracker</span> v__VERSION__ · PolyForm Noncommercial 1.0.0</span>
-    <span><a href="privacy.html"><span data-l="zh">隐私政策</span><span data-l="en">Privacy policy</span></a> · <a href="https://github.com/mituan-ai/manuscript-tracker" target="_blank" rel="noopener">GitHub</a> · <a href="https://github.com/mituan-ai/manuscript-tracker/issues" target="_blank" rel="noopener"><span data-l="zh">问题反馈</span><span data-l="en">Report an issue</span></a></span>
+    <span class="foot-meta"><span>© 2026 <a href="https://mituan-ai.github.io/" target="_blank" rel="noopener"><b>mituan</b></a></span><span><span data-l="zh">投稿追踪</span><span data-l="en">Manuscript Tracker</span> v__VERSION__</span><span>PolyForm Noncommercial 1.0.0</span></span>
+    <span class="foot-links"><a href="privacy.html"><span data-l="zh">隐私政策</span><span data-l="en">Privacy policy</span></a><a href="https://github.com/mituan-ai/manuscript-tracker" target="_blank" rel="noopener">GitHub</a><a href="https://github.com/mituan-ai/manuscript-tracker/issues" target="_blank" rel="noopener"><span data-l="zh">问题反馈</span><span data-l="en">Report an issue</span></a></span>
   </div>
 </footer>
+<script src="dropdown.js"></script>
+<script src="controls.js"></script>
 <script src="site.js"></script>
 </body>
 </html>

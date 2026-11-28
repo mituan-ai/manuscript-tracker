@@ -16,20 +16,21 @@
 <header class="nav">
   <div class="wrap navin">
     <a class="brand" href="./" aria-label="mituan Manuscript Tracker"><img src="logo.svg" alt=""><span class="wordmark">mituan</span><span class="product"><span data-l="zh">投稿追踪</span><span data-l="en">Manuscript Tracker</span></span></a>
-    <span class="grow"></span>
-    <span id="themeSlot"></span>
-    <span id="langSlot"></span>
-    <a class="btn primary sm" href="./#install"><span data-l="zh">安装</span><span data-l="en">Install</span></a>
+    <div class="tools" style="margin-left:auto">
+      <a class="btn primary sm" href="./#install"><span data-l="zh">安装</span><span data-l="en">Install</span></a>
+      <span id="themeSlot"></span>
+      <span id="langSlot"></span>
+    </div>
   </div>
 </header>
 
 <main class="wrap legal">
   <h1><span data-l="zh">隐私政策</span><span data-l="en">Privacy Policy</span></h1>
-  <p class="updated"><span data-l="zh">适用于 mituan 投稿追踪（Manuscript Tracker）浏览器扩展及本网站 · 更新日期：2026 年 11 月 24 日</span><span data-l="en">Applies to the mituan Manuscript Tracker browser extension and this website · Last updated: November 24, 2026</span></p>
+  <p class="updated"><span data-l="zh">适用于 mituan 投稿追踪浏览器扩展和本网站。更新于 2026 年 11 月 28 日</span><span data-l="en">Covers the mituan Manuscript Tracker extension and this website. Updated November 28, 2026</span></p>
 
   <div class="card summary">
-    <p data-l="zh"><b>一句话：</b>扩展的所有数据都只保存在你自己的浏览器里。开发者没有服务器，收不到你的账号、稿件或任何使用数据；扩展只与你使用的投稿系统通信。</p>
-    <p data-l="en"><b>In short:</b> everything the extension handles stays in your own browser. The developer runs no server and receives none of your accounts, manuscripts or usage data. The extension only talks to the submission systems you use.</p>
+    <p data-l="zh">你的账号、密码和稿件记录只存在你自己的浏览器里。扩展只连接你在用的投稿网站。我们没有服务器，看不到这些数据。</p>
+    <p data-l="en">Your accounts, passwords and manuscript records stay in your own browser. The extension only connects to the submission sites you use. We have no server and can’t see any of it.</p>
   </div>
 
   <h2><span data-l="zh">扩展会处理哪些数据</span><span data-l="en">What the extension handles</span></h2>
@@ -42,9 +43,9 @@
       </tr></thead>
       <tbody>
         <tr>
-          <td><b><span data-l="zh">投稿系统账号和密码</span><span data-l="en">Submission-system usernames and passwords</span></b><span data-l="zh">IEEE（ScholarOne、IEEE Author Portal）、IFAC PaperPlaza、TCCT。你在扩展里填写的，或你在这些网站上成功登录时扩展记下的（可在设置里关闭）。</span><span data-l="en">IEEE (ScholarOne, IEEE Author Portal), IFAC PaperPlaza and TCCT. Entered by you in the extension, or remembered when you sign in on those sites yourself (can be turned off in Settings).</span></td>
+          <td><b><span data-l="zh">投稿系统账号和密码</span><span data-l="en">Submission-system usernames and passwords</span></b><span data-l="zh">IEEE（ScholarOne、IEEE Author Portal）、IFAC PaperPlaza、TCCT 的账号。你在扩展中填写的，或登录这些网站时扩展自动保存的（可在设置中关闭）。</span><span data-l="en">IEEE (ScholarOne, IEEE Author Portal), IFAC PaperPlaza and TCCT. Entered in the extension, or saved when you sign in on those sites (can be turned off in Settings).</span></td>
           <td><span data-l="zh">在后台替你登录，查询稿件状态</span><span data-l="en">Signing in for you in the background to check manuscript status</span></td>
-          <td><span data-l="zh">只发往该账号所属平台的登录地址，代码里有域名白名单</span><span data-l="en">Only the login address of the platform the account belongs to, enforced by a domain allowlist in the code</span></td>
+          <td><span data-l="zh">只发给这个账号所属平台的登录页，允许的网址写在代码里</span><span data-l="en">Only the login address of the platform the account belongs to, enforced by a domain allowlist in the code</span></td>
         </tr>
         <tr>
           <td><b><span data-l="zh">Elsevier 追踪链接</span><span data-l="en">Elsevier tracking links</span></b><span data-l="zh">投稿确认邮件里「Track your submission」链接中的编号。</span><span data-l="en">The ID in the “Track your submission” link from your submission confirmation email.</span></td>
@@ -53,11 +54,11 @@
         </tr>
         <tr>
           <td><b><span data-l="zh">稿件信息</span><span data-l="en">Manuscript information</span></b><span data-l="zh">稿件号、题目、期刊、状态、日期、投稿系统显示的编辑姓名和状态历史。</span><span data-l="en">Manuscript ID, title, journal, status, dates, editor names shown by the submission system, and status history.</span></td>
-          <td><span data-l="zh">显示在面板里，发现状态变化时发桌面通知</span><span data-l="en">Showing your manuscripts and sending a desktop notification when a status changes</span></td>
+          <td><span data-l="zh">显示在面板里，状态变化时发桌面通知</span><span data-l="en">Showing your manuscripts and sending a desktop notification when a status changes</span></td>
           <td><span data-l="zh">不发往任何地方</span><span data-l="en">Not sent anywhere</span></td>
         </tr>
         <tr>
-          <td><b><span data-l="zh">你手动添加的其他投稿网站</span><span data-l="en">Other submission sites you add</span></b><span data-l="zh">网站地址，以及你允许的后台访问权限。扩展不保存这些网站的密码，而是使用浏览器里已有的登录状态。</span><span data-l="en">The site address and the access you grant. The extension stores no password for these sites; it uses the sign-in you already have in the browser.</span></td>
+          <td><b><span data-l="zh">你手动添加的其他投稿网站</span><span data-l="en">Other submission sites you add</span></b><span data-l="zh">网站地址，以及你给的访问权限。扩展不保存这些网站的密码，用的是浏览器里已有的登录。</span><span data-l="en">The site address and the access you grant. The extension stores no password for these sites; it uses the sign-in you already have in the browser.</span></td>
           <td><span data-l="zh">在后台刷新这些网站上的稿件列表</span><span data-l="en">Refreshing the manuscript list on those sites in the background</span></td>
           <td><span data-l="zh">只发往你添加的那个网站</span><span data-l="en">Only the site you added</span></td>
         </tr>
@@ -72,21 +73,21 @@
 
   <h2><span data-l="zh">如何保存</span><span data-l="en">How it is stored</span></h2>
   <ul>
-    <li data-l="zh">所有数据都存在浏览器为这个扩展单独划出的存储里，不使用浏览器同步，不上传到任何服务器。</li>
+    <li data-l="zh">所有数据都存在浏览器给这个扩展的专用存储里，不走浏览器同步，也不上传到任何服务器。</li>
     <li data-l="en">All data is kept in the browser storage that belongs to this extension. It is not synced through your browser account and not uploaded to any server.</li>
-    <li data-l="zh">账号密码用 AES-GCM 加密后保存。密钥由浏览器在安装时生成，设为不可导出，只存在你的电脑上。</li>
+    <li data-l="zh">密码用 AES-GCM 加密后保存。密钥由浏览器在安装时生成，无法导出，只存在你的电脑上。</li>
     <li data-l="en">Passwords are encrypted with AES-GCM. The key is generated by the browser at install time, is marked non-exportable and exists only on your computer.</li>
   </ul>
 
   <h2><span data-l="zh">扩展如何联网</span><span data-l="en">How the extension uses the network</span></h2>
   <ul>
-    <li data-l="zh">只访问查看稿件状态需要的页面：你使用的投稿系统、Elsevier 的追踪接口，以及你自己添加并授权的网站。访问其他网站的权限按网站单独申请，移除网站时一并收回。</li>
-    <li data-l="en">It only opens the pages needed to read manuscript status: the submission systems you use, Elsevier’s tracking service, and sites you add and authorize yourself. Access to other sites is requested per site and revoked when you remove the site.</li>
-    <li data-l="zh">对 IEEE 等需要真实网页才能登录的系统，扩展会打开一个最小化的浏览器窗口登录，查询结束后关闭。</li>
+    <li data-l="zh">只访问查询稿件状态所需的页面：你使用的投稿系统、Elsevier 追踪接口，以及你添加并授权的网站。移除网站时权限一并收回。</li>
+    <li data-l="en">It only opens the pages needed to read manuscript status: the submission systems you use, Elsevier’s tracking service, and sites you add and authorize yourself. Access is revoked when you remove a site.</li>
+    <li data-l="zh">IEEE 等系统只能在网页中登录，扩展会在最小化窗口中登录，完成后关闭。</li>
     <li data-l="en">For systems such as IEEE that require a real page to sign in, the extension opens a minimized browser window and closes it when the check is done.</li>
-    <li data-l="zh">只读：不会提交、修改或撤回任何稿件。密码被平台拒绝一次后停止自动重试，以免账号被锁定。</li>
+    <li data-l="zh">只读：不会提交、修改或撤回任何稿件。密码被平台拒绝一次后就不再自动重试，以免账号被锁。</li>
     <li data-l="en">Read-only: it never submits, edits or withdraws a manuscript. After a platform rejects a password once, it stops retrying so your account is not locked.</li>
-    <li data-l="zh">扩展不连接本网站或开发者的任何服务器，没有统计、广告或追踪代码，也不加载远程代码。</li>
+    <li data-l="zh">扩展不连接本网站，也不连接开发者的任何服务器。扩展里没有统计、广告或追踪代码，也不加载远程代码。</li>
     <li data-l="en">The extension does not contact this website or any developer server. It contains no analytics, ads or tracking code, and loads no remote code.</li>
   </ul>
 
@@ -109,8 +110,8 @@
   <p data-l="en">Click “Clear all” in Settings to delete every account, key, manuscript record and log entry. Uninstalling the extension also deletes all of this data.</p>
 
   <h2><span data-l="zh">本网站</span><span data-l="en">This website</span></h2>
-  <p data-l="zh">tracker.eonmaze.com 是静态网页，只提供介绍和安装说明，不设置 Cookie。网站用 Cloudflare Web Analytics 统计访问量：它不使用 Cookie，也不识别或跟踪个人，只汇总页面浏览次数、来源网站、国家或地区、浏览器类型等数据。为了提供网页，服务器和 Cloudflare 还会产生常规访问日志（如 IP 地址、时间和访问的网址），只用于网站运行和安全防护。</p>
-  <p data-l="en">tracker.eonmaze.com is a static website that only provides information and installation instructions. It sets no cookies. The site uses Cloudflare Web Analytics to count visits; it uses no cookies, does not identify or track individuals, and only aggregates data such as page views, referring sites, country or region and browser type. To serve pages, the server and Cloudflare also keep standard access logs (such as IP address, time and requested URL), used only for operating and protecting the site.</p>
+  <p data-l="zh">tracker.eonmaze.com 是静态网页，不设置 Cookie。我们用 Cloudflare Web Analytics 统计访问量，它不使用 Cookie、不识别个人，只汇总浏览次数、来源网站、地区和浏览器类型。服务器和 Cloudflare 会产生常规访问日志（含 IP 地址、时间和访问的网址），仅用于网站运行和安全防护。</p>
+  <p data-l="en">tracker.eonmaze.com is a static website and sets no cookies. We count visits with Cloudflare Web Analytics, which uses no cookies, doesn’t identify individuals, and only aggregates page views, referring sites, region and browser type. The server and Cloudflare keep standard access logs (IP address, time and URL), used only to run and protect the site.</p>
 
   <h2><span data-l="zh">儿童</span><span data-l="en">Children</span></h2>
   <p data-l="zh">本扩展面向投稿的科研人员，不面向儿童。</p>
@@ -123,10 +124,12 @@
 
 <footer>
   <div class="wrap foot">
-    <span>© 2026 <a href="https://mituan-ai.github.io/" target="_blank" rel="noopener"><b>mituan</b></a> · <span data-l="zh">投稿追踪</span><span data-l="en">Manuscript Tracker</span></span>
-    <span><a href="./"><span data-l="zh">官网首页</span><span data-l="en">Home</span></a> · <a href="https://github.com/mituan-ai/manuscript-tracker" target="_blank" rel="noopener">GitHub</a> · <a href="https://github.com/mituan-ai/manuscript-tracker/issues" target="_blank" rel="noopener"><span data-l="zh">问题反馈</span><span data-l="en">Report an issue</span></a></span>
+    <span class="foot-meta"><span>© 2026 <a href="https://mituan-ai.github.io/" target="_blank" rel="noopener"><b>mituan</b></a></span><span><span data-l="zh">投稿追踪</span><span data-l="en">Manuscript Tracker</span></span></span>
+    <span class="foot-links"><a href="./"><span data-l="zh">官网首页</span><span data-l="en">Home</span></a><a href="https://github.com/mituan-ai/manuscript-tracker" target="_blank" rel="noopener">GitHub</a><a href="https://github.com/mituan-ai/manuscript-tracker/issues" target="_blank" rel="noopener"><span data-l="zh">问题反馈</span><span data-l="en">Report an issue</span></a></span>
   </div>
 </footer>
+<script src="dropdown.js"></script>
+<script src="controls.js"></script>
 <script src="privacy.js"></script>
 </body>
 </html>

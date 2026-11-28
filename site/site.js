@@ -1,43 +1,21 @@
-// 官网交互：主题和语言切换（与扩展共用 mt-theme、mt-lang）、按访问者的浏览器选好扩展商店、滚动浮现。
+// 官网首页交互：按访问者的浏览器选好扩展商店、首屏示意的状态变化。顶栏的主题和语言切换在 controls.js。
 // 静态的双语文字写在 index.html 里（data-l="zh" / data-l="en"），这里只处理标题、按钮、图片等需要脚本填写的部分。
 (() => {
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const html = document.documentElement;
   const svg = (body) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`;
-  const store = (key, v) => {
-    try { v == null ? localStorage.removeItem(key) : localStorage.setItem(key, v); } catch {}
-  };
-  const read = (key, dflt) => {
-    try { return localStorage.getItem(key) || dflt; } catch { return dflt; }
-  };
-
   // 图标来自 Lucide（ISC 许可）
   const ICONS = {
-    system: '<rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/>',
-    dark: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
-    light: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
-    globe: '<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>',
-    list: '<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/><path d="M14 4h7M14 9h7M14 15h7M14 20h7"/>',
-    bell: '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
-    moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
-    clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
     out: '<path d="M7 7h10v10"/><path d="M7 17 17 7"/>', // 商店按钮上的“在新页面打开”
     // 浏览器工具栏上的按钮，与扩展 ui/common.js 里的相同：扩展（拼图）、Edge 的眼睛、Chrome 的图钉
     puzzle: '<path d="M5 7h3V5.25a2.25 2.25 0 0 1 4.5 0V7h3a2 2 0 0 1 2 2v2.75h1.75a2.25 2.25 0 0 1 0 4.5H17.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z"/>',
     eye: '<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>',
     pin: '<path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>',
   };
-  for (const k of ['list', 'bell', 'moon', 'clock']) $$(`.fi-${k}`).forEach((el) => (el.innerHTML = svg(ICONS[k])));
 
-  // 语言：偏好 auto（默认，不存）/ zh / en 存在 mt-lang；auto 时的判断与 theme.js 相同
-  let langPref = read('mt-lang', 'auto');
-  const resolveLang = (pref) => {
-    if (pref === 'zh' || pref === 'en') return pref;
-    const sys = [globalThis.chrome?.i18n?.getUILanguage?.(), Intl.DateTimeFormat().resolvedOptions().locale, navigator.language].find(Boolean) || 'en';
-    return /^zh/i.test(sys) ? 'zh' : 'en';
-  };
-  let lang = html.dataset.lang === 'zh' || html.dataset.lang === 'en' ? html.dataset.lang : resolveLang(langPref);
+  // 语言由 theme.js 设好，切换时 controls.js 派发 langchange
+  let lang = html.dataset.lang === 'zh' ? 'zh' : 'en';
   const L = (zh, en) => (lang === 'zh' ? zh : en);
 
   // 页面标题和分享信息：英文就是 index.html 里写的，中文在这里
@@ -55,32 +33,6 @@
       ogDesc: '后台定时查询 IEEE、Elsevier 等投稿系统，按期刊汇总稿件状态，状态变化时通知。无需注册，账号只保存在本机。',
     },
   };
-
-  // 主题
-  const THEME_TITLE = { system: ['跟随系统', 'Follow system'], dark: ['暗色', 'Dark'], light: ['亮色', 'Light'] };
-  const setTheme = (t) => {
-    store('mt-theme', t === 'system' ? null : t);
-    if (t === 'system') delete html.dataset.theme;
-    else html.dataset.theme = t;
-    $$('.theme button').forEach((b) => b.classList.toggle('on', b.dataset.t === t));
-  };
-  const theme = read('mt-theme', 'system');
-  $('#themeSlot').innerHTML = `<span class="theme" role="group">${['system', 'dark', 'light']
-    .map((t) => `<button type="button" data-t="${t}" class="${t === theme ? 'on' : ''}">${svg(ICONS[t])}</button>`)
-    .join('')}</span>`;
-  $$('.theme button').forEach((b) => b.addEventListener('click', () => setTheme(b.dataset.t)));
-
-  // 语言切换：跟随系统 / 中 / EN，点击后就地切换，不刷新页面
-  $('#langSlot').innerHTML = `<span class="langsw" role="group">`
-    + `<button type="button" data-lg="auto">${svg(ICONS.globe)}</button>`
-    + `<button type="button" data-lg="zh" title="中文" aria-label="中文" lang="zh-CN"><span class="glyph">中</span></button>`
-    + `<button type="button" data-lg="en" title="English" aria-label="English" lang="en"><span class="glyph">EN</span></button></span>`;
-  $$('.langsw button').forEach((b) => b.addEventListener('click', () => {
-    langPref = b.dataset.lg;
-    store('mt-lang', langPref === 'auto' ? null : langPref);
-    lang = resolveLang(langPref);
-    applyLang();
-  }));
 
   // ===== 安装：只从扩展商店装 =====
   // 商店地址由 build-site.sh 写进按钮的 href，还没上架的留空。
@@ -174,8 +126,6 @@
   // 切换语言：静态文字由 CSS 按 <html data-lang> 显示，其余在这里刷新
   const ARIA = [
     ['a.brand', 'mituan 投稿追踪', 'mituan Manuscript Tracker'],
-    ['.theme', '主题', 'Theme'],
-    ['.langsw', '语言', 'Language'],
     ['.browsers', '选择浏览器', 'Choose your browser'],
   ];
   function applyLang() {
@@ -187,35 +137,21 @@
     $('meta[property="og:title"]').content = m.ogTitle;
     $('meta[property="og:description"]').content = m.ogDesc;
     for (const [sel, zh, en] of ARIA) $$(sel).forEach((el) => el.setAttribute('aria-label', L(zh, en)));
-    $$('.theme button').forEach((b) => {
-      b.title = L(...THEME_TITLE[b.dataset.t]);
-      b.setAttribute('aria-label', b.title);
-    });
-    const auto = $('.langsw [data-lg="auto"]');
-    auto.title = L('跟随系统语言', 'Follow system language');
-    auto.setAttribute('aria-label', auto.title);
-    $$('.langsw button').forEach((b) => b.classList.toggle('on', b.dataset.lg === langPref));
     $('#heroCta').textContent = ctaText();
     pick(browser);
   }
   browser = detected;
   applyLang();
 
-  // 滚动到时浮现：章节标题、卡片依次淡入上移。不支持 IntersectionObserver 或要求减少动效时什么都不做，内容直接显示
-  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    html.classList.add('js-reveal');
-    const io = new IntersectionObserver((entries) => {
-      for (const e of entries) {
-        if (!e.isIntersecting) continue;
-        e.target.classList.add('in');
-        io.unobserve(e.target);
-      }
-    }, { rootMargin: '0px 0px -6% 0px' });
-    $$('.head, .feat, .pub, .systab-wrap, .legend, .secure, .browsers, .panel, .faq').forEach((el) => {
-      // 同一行的卡片错开一点出现
-      if (el.matches('.feat, .pub')) el.style.setProperty('--i', [...el.parentElement.children].indexOf(el));
-      el.classList.add('reveal');
-      io.observe(el);
-    });
+  document.addEventListener('langchange', () => {
+    lang = html.dataset.lang === 'zh' ? 'zh' : 'en';
+    applyLang();
+  });
+
+  // 首屏示意：先显示变化前（TPAMI 稿件审稿中），稍后切到变化后并弹出桌面通知。要求减少动效时直接显示变化后的样子
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const shot = $('.shot');
+    shot.classList.add('playing');
+    setTimeout(() => shot.classList.add('changed'), 1400);
   }
 })();
