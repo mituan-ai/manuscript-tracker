@@ -6,11 +6,12 @@
   <title>追踪面板 · mituan 投稿追踪</title>
   <link rel="icon" href="logo.svg">
   <script src="theme.js"></script>
+  <script src="dropdown.js"></script>
   <link rel="stylesheet" href="style.css">
   <style>
     .wrap { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
-    /* 顶栏像期刊的刊头：与页面同一张纸（同样的颗粒和光，固定在视口上所以接缝看不出来），底部一道双细线 */
-    .bar { position: sticky; top: 0; z-index: 10; border-bottom: 3px double var(--line-strong);
+    /* 顶栏与页面同一张纸（同样的颗粒和光，固定在视口上所以接缝看不出来），底部一道细线 */
+    .bar { position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--line);
            background-color: var(--bg); background-image: var(--lamp), var(--grain); background-size: auto, auto, 180px 180px; background-attachment: fixed; }
     .bar .wrap { display: flex; align-items: center; gap: 12px; min-height: 68px; flex-wrap: wrap; padding-top: 8px; padding-bottom: 8px; }
     .bar .tabs { margin-left: 22px; }
@@ -19,23 +20,24 @@
     #checked { font-size: 12.5px; color: var(--faint); white-space: nowrap; }
     /* 主题和语言切换放在顶栏，位置与官网、mituan 控制台一致 */
     .bar .prefs { display: flex; gap: 8px; flex: none; }
-    .bar .prefs > span { display: flex; }
+    .bar .prefs > span { display: flex; align-items: center; }
     main.wrap { padding-top: 26px; padding-bottom: 6px; }
     .view { display: grid; gap: 16px; }
     .alerts { display: grid; gap: 10px; }
     .alerts:empty { display: none; }
 
     /* 稿件 */
-    .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-    /* 统计卡：衬线数字，像论文里的统计表；选中的一张底边亮起一道品牌蓝 */
-    .tile { position: relative; overflow: hidden; display: grid; justify-items: start; justify-content: stretch; gap: 7px; padding: 15px 18px 14px; border-radius: var(--radius);
-            text-align: left; line-height: 1.15; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); }
-    .tile:hover { border-color: rgba(var(--accent-rgb), .35); box-shadow: var(--shadow-lift); }
+    /* 统计行：不做卡片，直接写在纸上，像论文里的统计表：上下两道细线，格子之间竖细线；选中的一格底边一道品牌蓝 */
+    .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line); }
+    .tile { position: relative; display: grid; justify-items: start; justify-content: stretch; gap: 8px; padding: 14px 18px 13px; border: 0; border-radius: 0;
+            text-align: left; line-height: 1.15; background: none; box-shadow: none; }
+    .tile + .tile { border-left: 1px solid var(--line); }
+    .tile:hover { background: var(--hover); border-color: var(--line); }
+    .tile:active { transform: none; }
     .tile b { font: 500 31px/1 var(--serif); letter-spacing: -.01em; }
     .tile span { font-size: 12.5px; color: var(--muted); letter-spacing: .05em; }
-    .tile::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--accent-text);
+    .tile::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--accent-text);
                    transform: scaleX(0); transition: transform .35s cubic-bezier(.2, .7, .2, 1); }
-    .tile.on { border-color: rgba(var(--accent-rgb), .45); }
     .tile.on::after { transform: scaleX(1); }
     .tile.on span { color: var(--text); }
     .tile[data-filter="active"] b { color: var(--accent-text); }
@@ -62,8 +64,8 @@
     @keyframes flash { 30% { background: rgba(var(--gilt-rgb),.16); } }
     .onboard { display: grid; gap: 18px; justify-items: center; text-align: center; padding: 44px 24px; }
     .onboard img { width: 56px; height: 56px; border-radius: 14px; box-shadow: 0 1px 2px rgba(var(--brand-rgb), .25), 0 12px 26px -12px rgba(var(--brand-rgb), .5); }
-    .onboard h2 { font: 600 24px/1.3 var(--serif); margin: 0; letter-spacing: -.005em; } .onboard h2::before { display: none; }
-    .onboard p { margin: 0; color: var(--muted); max-width: 34em; }
+    .onboard h2 { font: 600 24px/1.3 var(--serif); margin: 0; letter-spacing: -.005em; }
+    .onboard p { margin: 0; color: var(--muted); max-width: 34em; text-wrap: balance; }
     .onboard .picks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; width: 100%; max-width: 760px; }
     .onboard .picks button { display: grid; gap: 4px; justify-items: start; align-content: start; text-align: left; white-space: normal; padding: 14px 16px; border-radius: var(--radius); }
     .onboard .picks button:hover { box-shadow: var(--shadow-lift); }
@@ -74,9 +76,10 @@
     .onboard .picks b { font: 600 15px/1.3 var(--serif); } .onboard .picks span { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
     /* 账号 */
-    .intro { display: flex; align-items: center; gap: 14px; padding: 16px 20px; }
-    .intro .ico { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; flex: none; background: rgba(var(--accent-rgb),.12); color: var(--accent-text); }
-    .intro .ico svg { width: 19px; height: 19px; }
+    /* 账号页说明：直接写在纸上，前面一个小锁 */
+    .intro { display: flex; align-items: flex-start; gap: 10px; padding: 0 2px; max-width: 760px; }
+    .intro .ico { flex: none; color: var(--muted); margin-top: 2px; }
+    .intro .ico svg { width: 16px; height: 16px; display: block; }
     .intro p { margin: 0; font-size: 13px; color: var(--muted); }
     .intro b { color: var(--text); }
     .families { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
@@ -127,6 +130,7 @@
     .set .acts { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
     details.logs { padding: 14px 22px; }
     details.logs summary { font-size: 13.5px; }
+    details.logs summary .faint { margin-left: 12px; }
     .setlist .set .txt b { font-size: 14.5px; }
     #logs { margin-top: 12px; max-height: 360px; overflow: auto; font: 12px/1.7 var(--mono); white-space: pre-wrap; color: var(--muted); }
     #logs .err { color: var(--bad); }
@@ -151,6 +155,8 @@
     }
     @media (max-width: 680px) {
       .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .tile:nth-child(3) { border-left: 0; }
+      .tile:nth-child(n+3) { border-top: 1px solid var(--line); }
       .detail { padding-left: 18px; }
       #checked { display: none; }
     }
@@ -200,9 +206,9 @@
       </div>
       <img src="logo.svg" alt="">
       <h2 data-l="zh">连接投稿账号，开始自动追踪</h2><h2 data-l="en">Connect your submission accounts to start tracking</h2>
-      <p data-l="zh">选择投稿的期刊类型并填写账号，扩展将定时查询每篇稿件的状态，并在状态变化时通知你。</p><p data-l="en">Choose where you submit and add the account. The extension checks every manuscript on a schedule and notifies you when a status changes.</p>
+      <p data-l="zh">选择投稿的期刊类型并填写账号。扩展会定时查询稿件状态，有变化时通知你。</p><p data-l="en">Choose where you submit and add the account. Manuscripts are checked on a schedule and you’re notified of changes.</p>
       <div class="picks" id="picks"></div>
-      <p class="small" data-l="zh">也可以直接在投稿网站正常登录一次，扩展会自动保存该账号。</p><p class="small" data-l="en">You can also sign in on the submission website as usual; the extension saves the account automatically.</p>
+      <p class="small" data-l="zh">也可以直接在投稿网站登录一次，扩展会自动保存账号。</p><p class="small" data-l="en">Or sign in on the submission website once; the extension saves the account.</p>
     </div>
     <div id="dash">
       <div class="tiles" id="tiles"></div>
@@ -218,9 +224,9 @@
 
   <!-- 账号 -->
   <section class="view" id="view-accounts" hidden>
-    <div class="card intro">
+    <div class="intro">
       <span class="ico" id="lockIcon"></span>
-      <p data-l="zh"><b>每类期刊只需连接一次。</b>账号使用本机生成的密钥加密，仅保存在本浏览器中，只会发送到对应的投稿网站。也可以不在此填写，直接在投稿网站登录一次，扩展会自动保存。</p><p data-l="en"><b>Connect each type of journal once.</b> Accounts are encrypted with a key generated on this device, stored only in this browser and sent only to the matching submission website. You can also skip this and sign in on the submission website once; the extension saves the account automatically.</p>
+      <p data-l="zh"><b>每类期刊只需连接一次。</b>账号加密保存在本浏览器中，只发送到对应的投稿网站。也可以直接在投稿网站登录一次，扩展会自动保存。</p><p data-l="en"><b>Connect each type of journal once.</b> Accounts are encrypted in this browser and sent only to the matching submission website. Or sign in on the submission website once and the extension saves the account.</p>
     </div>
     <div class="families" id="families"></div>
   </section>
@@ -237,11 +243,11 @@
         <select id="freq" aria-label="查询频率" data-en-aria-label="Check frequency"></select>
       </div>
       <div class="set">
-        <div class="txt"><b data-l="zh">使用投稿网站时暂停查询</b><b data-l="en">Pause while you use a submission website</b><span data-l="zh">10 分钟内使用过 IEEE 投稿页面或正停留在该页面时，跳过本轮查询，避免把你登出。</span><span data-l="en">Skips a round if you used an IEEE submission page in the last 10 minutes or are on one now, so you are not signed out.</span></div>
+        <div class="txt"><b data-l="zh">使用投稿网站时暂停查询</b><b data-l="en">Pause while you use a submission website</b><span data-l="zh">正在使用或 10 分钟内用过 IEEE 投稿网站时，跳过本轮查询，避免把你登出。</span><span data-l="en">Skips a round if you used an IEEE submission page in the last 10 minutes or are on one now, so you are not signed out.</span></div>
         <label class="switch"><input type="checkbox" id="pause" aria-label="使用投稿网站时暂停查询" data-en-aria-label="Pause while you use a submission website"><i></i></label>
       </div>
       <div class="set">
-        <div class="txt"><b data-l="zh">保存在投稿网站登录的账号</b><b data-l="en">Save accounts you sign in with</b><span data-l="zh">在投稿网站手动登录成功后，加密保存该账号，用于之后的自动查询。</span><span data-l="en">After you sign in on a submission website, the account is saved encrypted for automatic checks.</span></div>
+        <div class="txt"><b data-l="zh">保存在投稿网站登录的账号</b><b data-l="en">Save accounts you sign in with</b><span data-l="zh">在投稿网站登录后，加密保存账号用于自动查询。</span><span data-l="en">When you sign in on a submission website, the account is saved encrypted for automatic checks.</span></div>
         <label class="switch"><input type="checkbox" id="capture" aria-label="保存在投稿网站登录的账号" data-en-aria-label="Save accounts you sign in with"><i></i></label>
       </div>
       <div class="set">
@@ -251,21 +257,21 @@
 
     <div class="card setlist">
       <div class="set">
-        <div class="txt"><b data-l="zh">导出投稿记录</b><b data-l="en">Export manuscripts</b><span data-l="zh">全部稿件和每篇的状态历史，Markdown 格式</span><span data-l="en">All manuscripts with their status history, in Markdown</span></div>
+        <div class="txt"><b data-l="zh">导出投稿记录</b><b data-l="en">Export manuscripts</b><span data-l="zh">全部稿件及状态历史，Markdown 格式</span><span data-l="en">All manuscripts with their status history, in Markdown</span></div>
         <div class="acts"><button class="sm" id="copyMd"><span data-l="zh">复制</span><span data-l="en">Copy</span></button><button class="sm" id="downloadMd"><span data-l="zh">下载</span><span data-l="en">Download</span></button></div>
       </div>
       <div class="set">
-        <div class="txt"><b data-l="zh">反馈问题</b><b data-l="en">Report an issue</b><span data-l="zh">复制诊断信息并粘贴到 GitHub Issues。仅包含版本、运行状态和日志，不含账号、密码和稿件标题。</span><span data-l="en">Copy the diagnostics and paste them into GitHub Issues. They contain only the version, run status and logs; no accounts, passwords or manuscript titles.</span></div>
+        <div class="txt"><b data-l="zh">反馈问题</b><b data-l="en">Report an issue</b><span data-l="zh">复制诊断信息，粘贴到 GitHub Issues。不含账号、密码和稿件标题。</span><span data-l="en">Copy diagnostics and paste them into GitHub Issues. No accounts, passwords or manuscript titles are included.</span></div>
         <div class="acts"><button class="sm" id="copyDiag"><span data-l="zh">复制诊断信息</span><span data-l="en">Copy diagnostics</span></button><a class="button sm" id="issues" target="_blank"><span data-l="zh">提交反馈</span><span data-l="en">Open an issue</span></a></div>
       </div>
       <div class="set">
-        <div class="txt"><b data-l="zh">清除全部数据</b><b data-l="en">Clear all data</b><span data-l="zh">删除本机保存的全部账号、密钥、稿件记录和日志。卸载扩展时也会一并删除。</span><span data-l="en">Deletes all accounts, keys, manuscript records and logs stored on this device. Uninstalling the extension also deletes them.</span></div>
+        <div class="txt"><b data-l="zh">清除全部数据</b><b data-l="en">Clear all data</b><span data-l="zh">删除本机保存的全部账号、稿件记录和日志，不能撤销。</span><span data-l="en">Deletes all accounts, manuscript records and logs on this device. This can’t be undone.</span></div>
         <div class="acts"><button class="sm danger" id="clearAll"><span data-l="zh">全部清除</span><span data-l="en">Clear all</span></button></div>
       </div>
     </div>
 
     <details class="card logs" id="logsBox">
-      <summary><span data-l="zh">运行日志 <span class="faint">· 仅保存在本机，用于排查问题</span></span><span data-l="en">Activity log <span class="faint">· Stored only on this device, for troubleshooting</span></span></summary>
+      <summary><span data-l="zh">运行日志<span class="faint">仅保存在本机，用于排查问题</span></span><span data-l="en">Activity log<span class="faint">Stored only on this device, for troubleshooting</span></span></summary>
       <div id="logs"></div>
     </details>
   </section>

@@ -192,7 +192,7 @@ export const BRAND = {
 };
 
 export const footerHtml = () =>
-  `© <a href="${BRAND.author}" target="_blank"><b>mituan</b></a> · <a href="${BRAND.homepage}" target="_blank">${L('官网', 'Website')}</a> · <a href="${BRAND.github}" target="_blank">GitHub</a> · <a href="${BRAND.github}/issues" target="_blank">${L('问题反馈', 'Report an issue')}</a>`;
+  `<span>© <a href="${BRAND.author}" target="_blank"><b>mituan</b></a></span><a href="${BRAND.homepage}" target="_blank">${L('官网', 'Website')}</a><a href="${BRAND.github}" target="_blank">GitHub</a><a href="${BRAND.github}/issues" target="_blank">${L('问题反馈', 'Report an issue')}</a>`;
 
 /** 阶段徽章：只传阶段色，文字、底色和边框的深浅由 style.css 按亮暗主题混出来。 */
 export function stageBadge(stage) {
@@ -206,39 +206,55 @@ const THEME_ICONS = {
   dark: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
   light: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>',
 };
-const THEME_TITLE = bilingual({ system: ['跟随系统', 'Follow system'], dark: ['暗色', 'Dark'], light: ['亮色', 'Light'] });
+const THEME_TITLE = bilingual({ system: ['跟随系统', 'System'], dark: ['暗色', 'Dark'], light: ['亮色', 'Light'] });
 
-export function currentTheme() {
+function currentTheme() {
   try {
-    return localStorage.getItem('mt-theme') || 'system';
+    const t = localStorage.getItem('mt-theme');
+    return t === 'light' || t === 'dark' ? t : 'system';
   } catch {
     return 'system';
   }
 }
 
-export function setTheme(t) {
+function setTheme(t) {
   try {
     if (t === 'system') localStorage.removeItem('mt-theme');
     else localStorage.setItem('mt-theme', t);
   } catch {}
   if (t === 'system') delete document.documentElement.dataset.theme;
   else document.documentElement.dataset.theme = t;
-  document.querySelectorAll('.theme button').forEach((b) => b.classList.toggle('on', b.dataset.t === t));
 }
 
-export function themeSwitchHtml() {
-  const cur = currentTheme();
-  return `<span class="theme" role="group" aria-label="${L('主题', 'Theme')}">${Object.keys(THEME_ICONS)
-    .map(
-      (t) => `<button type="button" data-t="${t}" class="${t === cur ? 'on' : ''}" title="${THEME_TITLE[t]}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${THEME_ICONS[t]}</svg></button>`,
-    )
-    .join('')}</span>`;
-}
+const themeSvg = (t) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${THEME_ICONS[t]}</svg>`;
 
-export function bindThemeSwitch(root = document) {
-  root.addEventListener('click', (e) => {
-    const b = e.target.closest?.('.theme button');
-    if (b) setTheme(b.dataset.t);
+/** 顶栏的主题、语言菜单（ui/dropdown.js，页面要先加载它）。与官网同一种样式和交互。 */
+export function mountPrefs(themeSlot, langSlot) {
+  globalThis.mtMenu(themeSlot, {
+    items: ['system', 'light', 'dark'].map((v) => ({ v, text: () => THEME_TITLE[v], icon: themeSvg(v) })),
+    get: currentTheme,
+    btn: themeSvg,
+    title: (v) => `${L('主题', 'Theme')}: ${THEME_TITLE[v]}`,
+    label: () => L('主题', 'Theme'),
+    pick: setTheme,
+  });
+  const LANG = { auto: L('跟随系统', 'System'), zh: '中文', en: 'English' };
+  globalThis.mtMenu(langSlot, {
+    items: ['auto', 'zh', 'en'].map((v) => ({ v, text: () => LANG[v] })),
+    get: currentLangPref,
+    // 按钮显示正在用的语言；选的是“跟随系统”时也显示系统对应的那种
+    btn: () => `<span class="glyph">${getLang() === 'en' ? 'EN' : '中'}</span>`,
+    title: (v) => `${L('语言', 'Language')}: ${LANG[v]}`,
+    label: () => L('语言', 'Language'),
+    // 记下偏好，同步给后台（通知用），然后重新加载页面，静态和动态文字一起切换
+    pick: async (v) => {
+      try {
+        if (v === 'auto') localStorage.removeItem('mt-lang');
+        else localStorage.setItem('mt-lang', v);
+      } catch {}
+      await send('ui:saveSettings', { patch: { lang: v } }).catch(() => {});
+      location.reload();
+    },
   });
 }
 
@@ -249,8 +265,7 @@ export function localizeAttrs(root = document) {
     for (const a of [...el.attributes]) if (a.name.startsWith('data-en-')) el.setAttribute(a.name.slice(8), a.value);
 }
 
-/* 语言：auto（跟随系统）/ zh / en，存在 localStorage mt-lang（ui/theme.js 在绘制前读取）和 settings.lang（后台通知用）。
-   地球图标来自 Lucide（ISC 许可）：globe */
+/* 语言：auto（跟随系统）/ zh / en，存在 localStorage mt-lang（ui/theme.js 在绘制前读取）和 settings.lang（后台通知用）。 */
 export function currentLangPref() {
   try {
     const v = localStorage.getItem('mt-lang');
@@ -258,31 +273,6 @@ export function currentLangPref() {
   } catch {
     return 'auto';
   }
-}
-
-export function langSwitchHtml() {
-  const cur = currentLangPref();
-  const btn = (lg, title, inner) => `<button type="button" data-lg="${lg}" class="${lg === cur ? 'on' : ''}" title="${title}" aria-pressed="${lg === cur}">${inner}</button>`;
-  return `<span class="langsw" role="group" aria-label="Language">${[
-    btn('auto', L('跟随系统语言', 'Follow system language'), '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>'),
-    btn('zh', '中文', '<span class="glyph">中</span>'),
-    btn('en', 'English', '<span class="glyph">EN</span>'),
-  ].join('')}</span>`;
-}
-
-/** 切换语言：记下偏好，同步给后台，然后重新加载页面（静态文字和动态文字一起切换）。 */
-export function bindLangSwitch(root = document) {
-  root.addEventListener('click', async (e) => {
-    const b = e.target.closest?.('.langsw button');
-    if (!b || b.dataset.lg === currentLangPref()) return;
-    const lg = b.dataset.lg;
-    try {
-      if (lg === 'auto') localStorage.removeItem('mt-lang');
-      else localStorage.setItem('mt-lang', lg);
-    } catch {}
-    await send('ui:saveSettings', { patch: { lang: lg } }).catch(() => {});
-    location.reload();
-  });
 }
 
 export function toast(msg) {

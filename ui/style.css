@@ -106,15 +106,13 @@ code { font-family: var(--mono); font-size: 12px; padding: 1px 6px; border-radiu
 .brand .product::before { content: ""; width: 1px; height: 18px; background: var(--line-strong); }
 /* 英文产品名用衬线小型大写字母 */
 html[data-lang="en"] .brand .product { font-family: var(--serif); font-variant-caps: all-small-caps; font-size: 17px; letter-spacing: .07em; }
-footer { text-align: center; color: var(--faint); font-size: 12.5px; padding: 28px 0 32px; }
+footer { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 18px; color: var(--faint); font-size: 12.5px; padding: 28px 0 32px; }
 footer b { font-family: var(--serif); font-weight: 650; color: var(--text); }
 footer a { color: var(--muted); }
 
 /* ───── 布局 ───── */
 .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
-/* 小标题：前面一颗古金色菱形 */
-h2 { font-size: 16px; margin: 0 0 14px; display: flex; align-items: center; gap: 10px; }
-h2::before { content: ""; width: 6px; height: 6px; transform: rotate(45deg); background: var(--gilt); flex: none; }
+h2 { font-size: 16px; margin: 0 0 14px; }
 h3 { margin: 0; font-size: 15.5px; }
 .muted { color: var(--muted); } .faint { color: var(--faint); } .small { font-size: 12.5px; }
 .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
@@ -215,10 +213,8 @@ details summary { cursor: pointer; color: var(--muted); font-size: 12.5px; }
 .banner.warn .ico { background: var(--soft); color: var(--muted); font-style: italic; }
 
 /* ───── 期刊卡片与稿件行（弹窗、追踪面板、官网示意图共用） ─────
-   期刊名按引文惯例用斜体衬线，缩写用古金色小型大写字母；论文题目用衬线体。卡片顶端一道淡淡的烫金边。 */
+   期刊名按引文惯例用斜体衬线，缩写用古金色小型大写字母；论文题目用衬线体。 */
 .journal { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-.journal::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; pointer-events: none;
-                   background: linear-gradient(90deg, transparent, rgba(var(--gilt-rgb), .55) 18%, rgba(var(--gilt-rgb), .7) 50%, rgba(var(--gilt-rgb), .55) 82%, transparent); }
 .journal > header { display: flex; align-items: baseline; gap: 10px; padding: 15px 18px 11px; }
 .journal > header h3 { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 16px; letter-spacing: .003em;
                        overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
@@ -237,27 +233,29 @@ details summary { cursor: pointer; color: var(--muted); font-size: 12.5px; }
 .ms.compact .t { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.4; }
 .ms.done .t { color: var(--muted); font-weight: 500; }
 .ms.unseen::before { content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 2px; border-radius: 0 2px 2px 0; background: var(--gilt); }
-.ms .new { font: 700 10px/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--on-gilt); background: var(--gilt);
-           border-radius: 3px; padding: 3px 5px; margin-right: 7px; vertical-align: 2px; }
+.ms .new { font: 700 10px/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--gilt);
+           background: rgba(var(--gilt-rgb), .12); box-shadow: inset 0 0 0 1px rgba(var(--gilt-rgb), .3); border-radius: 4px; padding: 3px 5px; margin-right: 7px; vertical-align: 2px; }
 html[data-lang="zh"] .ms .new { font-size: 10.5px; letter-spacing: .04em; }
 
-/* 打开页面时卡片依次浮现（只在首次显示时；页面加 settled 后不再播放，内容更新时不会一闪一闪） */
+/* 主题和语言：各一个按钮，点开是小菜单（跟随系统 / 两个选项），按钮上显示当前的主题图标或语言。扩展和官网共用 */
+.dd { position: relative; display: inline-flex; }
+.dd-btn { width: 36px; height: 36px; padding: 0; border-radius: 9px; border: 1px solid var(--line); background: var(--card-solid); color: var(--muted); box-shadow: var(--btn-hi); }
+.dd-btn:hover, .dd-btn[aria-expanded="true"] { color: var(--text); border-color: var(--line-strong); }
+.dd-btn svg { width: 17px; height: 17px; }
+.dd-btn .glyph { font: 600 13.5px/1 var(--serif); letter-spacing: .02em; }
+.menu { position: absolute; right: 0; top: calc(100% + 8px); z-index: 20; min-width: 148px; padding: 5px; display: grid; gap: 1px;
+        background: var(--raise); border: 1px solid var(--line-strong); border-radius: 11px; box-shadow: 0 2px 4px rgba(40, 30, 10, .06), 0 18px 36px -16px rgba(40, 30, 10, .35); }
+.menu[hidden] { display: none; }
+.menu button { justify-content: flex-start; gap: 10px; width: 100%; padding: 8px 10px; border: 0; border-radius: 7px; background: none; box-shadow: none; color: var(--muted); font-size: 13.5px; }
+.menu button:hover, .menu button:focus-visible { background: var(--hover); color: var(--text); outline: none; }
+.menu button:active { transform: none; }
+.menu button[aria-checked="true"] { color: var(--text); font-weight: 600; }
+.menu button[aria-checked="true"]::after { content: ""; margin-left: auto; width: 4px; height: 8px; border: solid var(--accent-text); border-width: 0 1.5px 1.5px 0; transform: translateY(-1px) rotate(45deg); }
+.menu svg { width: 16px; height: 16px; }
 @media (prefers-reduced-motion: no-preference) {
-  html:not(.settled) .journal, html:not(.settled) .tile { animation: enter .6s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(var(--d, 0) * 55ms); }
-  .journal:nth-child(2), .tile:nth-child(2) { --d: 1; } .journal:nth-child(3), .tile:nth-child(3) { --d: 2; }
-  .journal:nth-child(4), .tile:nth-child(4) { --d: 3; } .journal:nth-child(n+5) { --d: 4; }
+  .menu:not([hidden]) { animation: pop .18s cubic-bezier(.2, .7, .2, 1); }
 }
-@keyframes enter { from { opacity: 0; transform: translateY(8px); } }
-
-/* 主题切换和语言切换（同一种分段图标按钮；语言用单独的类名，切主题时不会改到它） */
-.theme, .langsw { display: inline-flex; padding: 3px; gap: 2px; border: 1px solid var(--line); border-radius: 9px; background: var(--card-solid);
-                  box-shadow: var(--btn-hi); }
-.theme button, .langsw button { border: 0; background: none; box-shadow: none; color: var(--faint); width: 30px; height: 28px; padding: 0;
-                display: grid; place-items: center; border-radius: 6px; }
-.theme button:hover, .langsw button:hover { color: var(--text); }
-.theme button svg, .langsw button svg { width: 16px; height: 16px; }
-.theme button.on, .langsw button.on { background: var(--hover); color: var(--accent-text); box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), .22); }
-.langsw .glyph { font: 600 13px/1 var(--serif); letter-spacing: .02em; }
+@keyframes pop { from { opacity: 0; transform: translateY(-4px); } }
 
 /* 双语静态文字：<span data-l="zh">…</span><span data-l="en">…</span>，按 <html data-lang>（ui/theme.js 设置）只显示一种 */
 html[data-lang="en"] [data-l="zh"], html[data-lang="zh"] [data-l="en"] { display: none !important; }

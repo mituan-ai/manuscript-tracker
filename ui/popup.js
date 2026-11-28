@@ -39,10 +39,10 @@ async function render() {
       $('#list'),
       connected
       ? `<div class="card welcome"><b>${running ? L('正在查询你的稿件…', 'Checking your manuscripts…') : L('还没有查到稿件', 'No manuscripts found yet')}</b><p>${running ? L('首次查询通常需要几十秒。', 'The first check can take up to a minute.') : L('点右上角的刷新按钮立即查询。', 'Click the refresh button at the top right to check now.')}</p></div>`
-      : `<div class="card welcome"><img src="logo.svg" alt=""><b>${L('所有投稿，一处追踪', 'All your submissions in one place')}</b>
-          <p>${L('连接一次投稿账号，之后自动查询各期刊的审稿状态，有变化就通知你。', 'Connect your submission accounts once. Review status is then checked automatically and you are notified of changes.')}</p>
+      : `<div class="card welcome"><img src="logo.svg" alt=""><b>${L('连接投稿账号，开始自动追踪', 'Connect your accounts to start tracking')}</b>
+          <p>${L('填写一次账号，扩展会定时查询审稿状态，有变化时通知你。', 'Add your account once. Review status is checked on a schedule and you’re notified of changes.')}</p>
           <button class="primary" data-panel="#accounts">${L('连接投稿账号', 'Connect accounts')}</button>
-          <p class="small">${L('也可以直接去投稿网站正常登录一次，或在任一投稿网站的稿件列表页点这个图标添加。', 'You can also sign in on the submission website once, or click this icon on any manuscript list page to add it.')}</p></div>`,
+          <p class="small">${L('也可以直接在投稿网站登录一次，或在稿件列表页点击此图标添加。', 'Or sign in on the submission website once, or click this icon on a manuscript list page.')}</p></div>`,
     );
     return;
   }
@@ -121,7 +121,7 @@ async function detectHere(s) {
     <div class="here-head"><span class="ico">${ICON.search}</span><div class="grow"><b>${L(`本页识别到 ${rows.length} 篇稿件`, `${rows.length} manuscript${rows.length === 1 ? '' : 's'} found on this page`)}</b><div class="small">${L('追踪后，状态有变化会出现在这里并通知你', 'Once tracked, status changes appear here and you are notified')}</div></div></div>
     <label>${L('期刊名称', 'Journal name')}<input id="hereJournal" maxlength="120" value="${esc(scan.journal)}"></label>
     <button class="primary" id="hereAdd" type="button">${L('追踪这些稿件', 'Track these manuscripts')}</button>
-    <div class="small faint">${L('通用识别，尚未在这个网站实测，状态以投稿网站为准。不需要密码。', 'Generic detection, not yet tested on this site; the submission website is authoritative. No password needed.')}</div>
+    <div class="small faint">${L('通用识别，尚未在此网站验证，状态以投稿网站为准。无需密码。', 'Generic detection, not yet verified on this site; the site itself is authoritative. No password needed.')}</div>
   </div>`);
   $('#hereAdd').addEventListener('click', () => {
     const journal = $('#hereJournal').value.trim();

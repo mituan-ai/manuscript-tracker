@@ -1,8 +1,8 @@
 // 追踪面板：稿件（按期刊）、账号（按期刊类型）、设置。
 import {
   send, esc, ago, fmtDate, STAGES, stageOf, prepareItems, isActive, groupByJournal, FILTERS, FAMILIES, problems, lastCheckedAt,
-  msRow, journalHead, cleanStatus, peopleText, reviewText, toMarkdown, ICON, BRAND, footerHtml, themeSwitchHtml, bindThemeSwitch, toast, diagnostics,
-  L, loc, langSwitchHtml, bindLangSwitch, currentLangPref, localizeAttrs, setHtml, onlyLogs,
+  msRow, journalHead, cleanStatus, peopleText, reviewText, toMarkdown, ICON, BRAND, footerHtml, mountPrefs, toast, diagnostics,
+  L, loc, currentLangPref, localizeAttrs, setHtml, onlyLogs,
 } from './common.js';
 import { originPattern } from '../lib/scan.js';
 
@@ -199,7 +199,7 @@ const SLOTS = {
     },
   ],
   ifac: [{ cred: 'paperplaza', adapter: 'paperplaza', label: L('PaperPlaza 账号', 'PaperPlaza account'), user: L('PIN / 邮箱 / ORCID', 'PIN / email / ORCID'), hint: L('IFAC 投稿系统 PaperPlaza 的账号，可使用 PIN、邮箱或 ORCID。', 'Your account for PaperPlaza, the IFAC submission system. PIN, email or ORCID all work.') }],
-  tcct: [{ cred: 'tcct', adapter: 'tcct', label: L('TCCT 账号', 'TCCT account'), user: 'PIN', hint: L('TCCT 会议投稿系统的 PIN 和密码。浏览器已登录时可暂不填写，登录过期后需要用它自动重新登录。', 'PIN and password for the TCCT conference submission system. Optional while the browser is signed in; needed to sign in again automatically when the session expires.') }],
+  tcct: [{ cred: 'tcct', adapter: 'tcct', label: L('TCCT 账号', 'TCCT account'), user: 'PIN', hint: L('TCCT 会议投稿系统的 PIN 和密码。浏览器已登录时可不填，但登录过期后无法自动重新登录。', 'PIN and password for the TCCT conference submission system. Optional while the browser is signed in, but without it an expired session can’t be renewed automatically.') }],
 };
 const OPEN_ADAPTER = { ieee: 'rex', ifac: 'paperplaza', tcct: 'tcct' };
 const openUrlOf = (fam) => state?.adapters.find((a) => a.id === OPEN_ADAPTER[fam?.id])?.openUrl || '#';
@@ -466,8 +466,8 @@ function renderSettings() {
   $('#freq').value = cur;
   $('#freqDesc').textContent = cur === 'custom' ? L('当前为自定义查询间隔，选择预设将覆盖它', 'Custom intervals are in use; choosing a preset replaces them') : PRESETS[cur].desc;
   $('#bgHint').textContent = /Edg\//.test(navigator.userAgent)
-    ? L('浏览器在后台运行时，扩展会继续查询。Edge 默认开启，位置：设置 → 系统和性能 →「在 Microsoft Edge 关闭后继续运行后台扩展和应用」。', "Checks continue while the browser runs in the background. On by default in Edge: Settings → System and performance → 'Continue running background extensions and apps when Microsoft Edge is closed'.")
-    : L('浏览器在后台运行时，扩展会继续查询。请在 Chrome「设置 → 系统」中开启「关闭 Google Chrome 后继续运行后台应用」。', "Checks continue while the browser runs in the background. In Chrome, turn on Settings → System → 'Continue running background apps when Google Chrome is closed'.");
+    ? L('Edge 默认开启。如已关闭，请在「设置 → 系统和性能」中开启「在 Microsoft Edge 关闭后继续运行后台扩展和应用」。', "On by default in Edge. If it's off, turn on 'Continue running background extensions and apps when Microsoft Edge is closed' under Settings → System and performance.")
+    : L('请在 Chrome「设置 → 系统」中开启「关闭 Google Chrome 后继续运行后台应用」。', "In Chrome, turn on 'Continue running background apps when Google Chrome is closed' under Settings → System.");
 }
 
 async function saveSetting(patch, msg = L('已保存', 'Saved')) {
@@ -522,12 +522,9 @@ $$('.ki').forEach((el) => {
   el.setAttribute('role', 'img');
   el.setAttribute('aria-label', el.title);
 });
-$('#themeSlot').innerHTML = themeSwitchHtml();
-$('#langSlot').innerHTML = langSwitchHtml();
+mountPrefs($('#themeSlot'), $('#langSlot'));
 $('#footer').innerHTML = footerHtml();
 $('#picks').innerHTML = FAMILIES.map((f) => `<button type="button" data-goto="#accounts/${f.id}"><b>${esc(f.name)}</b><span>${esc(f.covers)}</span></button>`).join('');
-bindThemeSwitch();
-bindLangSwitch();
 buildFamilies();
 
 $('#tabs').addEventListener('click', (e) => {
